@@ -1,0 +1,12 @@
+stage('quarkus-conference/web-app test & build') {
+
+    docker.image('node:12').inside {
+        withEnv(['HOME=.', 'CI=true']) {
+            sh 'yarn install --frozen-lockfile'
+            sh 'yarn lint'
+            sh 'yarn test:coverage'
+            sh 'yarn build'
+        }
+    }
+
+}

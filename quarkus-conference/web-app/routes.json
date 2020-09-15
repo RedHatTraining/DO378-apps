@@ -1,0 +1,6 @@
+{
+    "/speaker/sorted?sort=*": "/speakers",
+    "/speaker/:id": "/speakers/:id",
+    "/vote/averageRatingBySession?sessionId=*": "/ratings/1",
+    "/vote/*": "/ratings"
+}
