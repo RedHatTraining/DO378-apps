@@ -130,10 +130,10 @@
         <div class="right-section">
             <h3>Application</h3>
             <ul>
-                <li>GroupId: org.acme.speaker</li>
-                <li>ArtifactId: microservice-speaker</li>
+                <li>GroupId: ${project.groupId}</li>
+                <li>ArtifactId: ${project.artifactId}</li>
                 <li>Version: ${project.version}</li>
-                <li>Quarkus Version: 1.2.1.Final</li>
+                <li>Quarkus Version: ${quarkus.platform.version}</li>
             </ul>
         </div>
         <div class="right-section">
