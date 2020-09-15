@@ -9,10 +9,11 @@
         "react-dom": "^16.13.1",
         "react-scripts": "3.4.3",
         "typescript": "~3.7.2",
+        "serve": "^11.3.2",
         "wretch": "^1.7.2"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "serve -s build",
         "build": "react-scripts build",
         "json-server": "json-server --watch db.js --routes routes.json --port 3004",
         "test": "react-scripts test",
