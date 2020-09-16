@@ -13,7 +13,7 @@
         "wretch": "^1.7.2"
     },
     "scripts": {
-        "start": "serve -s build",
+        "start": "serve -s build -l tcp://0.0.0.0:8080",
         "dev": "react-scripts start",
         "build": "react-scripts build",
         "json-server": "json-server --watch db.js --routes routes.json --port 3004",

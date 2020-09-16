@@ -13,11 +13,11 @@ export interface RawScheduleData {
 }
 
 export async function get(id: string) {
-    return api.url(`/${id}`).get().json<RawScheduleData>().then(asSchedule);
+    return api.url(`/schedule/${id}`).get().json<RawScheduleData>().then(asSchedule);
 }
 
 export async function getAll() {
-    const scheduleData = await api.get().json<RawScheduleData[]>();
+    const scheduleData = await api.url(`/schedule/all`).get().json<RawScheduleData[]>();
     return scheduleData.map(asSchedule);
 }
 
