@@ -5,7 +5,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -44,7 +43,7 @@ public class RatingStatsResource {
                 .map(SessionRating::getRating)
                 .mapToDouble(Double::valueOf)
                 .average()
-                .orElseThrow(NotFoundException::new);
+                .orElse(0d);
     }
 
     @GET

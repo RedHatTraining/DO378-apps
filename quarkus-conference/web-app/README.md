@@ -71,3 +71,12 @@ More information can be found here: https://create-react-app.dev/docs/adding-cus
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Deploying to OpenShift
+
+This application can be directly built using S2I image.
+
+Use the following command:
+
+    oc new-app https://github.com/RedHatTraining/DO378-apps.git --context-dir='quarkus-conference/web-app' --build-env REACT_APP_SESSION_SERVICE="..." --build-env REACT_APP_SPEAKER_SERVICE="..." --build-env REACT_APP_SCHEDULE_SERVICE="..." --build-env REACT_APP_VOTE_SERVICE="..." --name=frontend --strategy=source
+

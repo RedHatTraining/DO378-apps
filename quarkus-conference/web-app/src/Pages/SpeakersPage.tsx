@@ -9,7 +9,7 @@ export function SpeakersPage() {
     const [speakers, setSpeakers] = useState<Speaker[]>();
 
     useEffect(() => {
-        speakerService.listAllSorted("name").then(setSpeakers);
+        speakerService.listAllSorted("nameFirst").then(setSpeakers);
     }, []);
 
     return (

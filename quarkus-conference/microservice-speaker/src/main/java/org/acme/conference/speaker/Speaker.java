@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotBlank;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 

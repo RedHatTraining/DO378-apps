@@ -81,7 +81,7 @@ export function SessionDetailPage(props: {
                             <List>
                                 {session.speakers.map((speaker) => (
                                     <ListItem key={speaker.id}>
-                                        <Link to={`/speakers/${speaker.id}`}>
+                                        <Link to={`/speakers/${speaker.uuid}`}>
                                             {speaker.name}
                                         </Link>
                                     </ListItem>

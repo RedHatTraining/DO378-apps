@@ -48,7 +48,7 @@ export function ScheduleDetailPage(props: {
                 {session.speakers.map((speaker, index) => (
                     <React.Fragment key={speaker.id}>
                         {index > 0 && <span>,&nbsp;</span>}
-                        <Link to={`/speakers/${speaker.id}`}>
+                        <Link to={`/speakers/${speaker.uuid}`}>
                             {speaker.name}
                         </Link>
                         &nbsp;
