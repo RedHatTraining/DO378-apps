@@ -8,7 +8,7 @@ export function SpeakerList(props: { speakers: Speaker[] }) {
         <List>
             {props.speakers.map((speaker) => (
                 <div key={`speaker_${speaker.id}`} className="speaker">
-                    <a href={`/speakers/${speaker.id}`}>
+                    <a href={`/speakers/${speaker.uuid}`}>
                         {speaker.nameFirst} {speaker.nameLast}
                     </a>
                 </div>
