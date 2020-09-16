@@ -45,13 +45,7 @@ export function SpeakerDetailPage(props: {
                             Twitter
                         </TextListItem>
                         <TextListItem component={TextListItemVariants.dd}>
-                            <a
-                                href={`https://twitter.com/${speaker.twitterHandle.substr(
-                                    1
-                                )}`}
-                            >
-                                {speaker.twitterHandle}
-                            </a>
+                            {speaker.twitterHandle}
                         </TextListItem>
                         <TextListItem component={TextListItemVariants.dt}>
                             Biography
