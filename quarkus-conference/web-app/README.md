@@ -9,7 +9,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `yarn start`
+### `yarn dev`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -18,6 +18,11 @@ The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
 NB: For local development, you will likely need to run `yarn json-server` concurrently (see below).
+
+### `yarn start`
+
+Runs the app in production mode.
+To start the app in production mode, you first need to create the production build with `yarn build`.
 
 ### `yarn test`
 
