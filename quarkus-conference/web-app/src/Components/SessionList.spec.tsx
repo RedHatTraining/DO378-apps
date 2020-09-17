@@ -11,7 +11,7 @@ describe("SessionList", () => {
             <SessionList sessions={sessions}></SessionList>
         );
 
-        await waitForElement(() => getByText(/Session s1/i));
+        await waitForElement(() => getByText(/Session se1/i));
     });
 
     test("renders a link for each session", () => {
@@ -19,7 +19,7 @@ describe("SessionList", () => {
             <SessionList sessions={sessions}></SessionList>
         );
 
-        expect(getByText(/s1/).href).toMatch(/\/sessions\/s1$/);
-        expect(getByText(/s4/).href).toMatch(/\/sessions\/s4$/);
+        expect(getByText(/se2/).href).toMatch(/\/sessions\/se2$/);
+        expect(getByText(/se4/).href).toMatch(/\/sessions\/se4$/);
     });
 });

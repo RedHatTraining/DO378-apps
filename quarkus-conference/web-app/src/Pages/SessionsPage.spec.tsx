@@ -22,7 +22,7 @@ describe("SessionsPage", () => {
     test("fetches list of sessions", async () => {
         const { getByText } = render(<SessionsPage />);
 
-        await waitForElement(() => getByText(/s1/i));
-        await waitForElement(() => getByText(/s2/i));
+        await waitForElement(() => getByText(/se1/i));
+        await waitForElement(() => getByText(/se2/i));
     });
 });

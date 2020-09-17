@@ -26,7 +26,7 @@ describe("SpeakerList", () => {
             <SpeakerList speakers={speakers}></SpeakerList>
         );
 
-        expect(getByText(/speaker1/).href).toMatch(/\/speakers\/1$/);
-        expect(getByText(/speaker2/).href).toMatch(/\/speakers\/2$/);
+        expect(getByText(/speaker1/).href).toMatch(/\/speakers\/s1$/);
+        expect(getByText(/speaker2/).href).toMatch(/\/speakers\/s2$/);
     });
 });
