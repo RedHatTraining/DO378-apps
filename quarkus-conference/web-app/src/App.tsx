@@ -16,7 +16,7 @@ export default function App() {
             <Switch>
                 <Layout>
                     <Route path="/" exact>
-                        <div>Welcome to the Quarkus conference app</div>
+                        <div style={{display: 'flex', justifyContent:'center', alignItems:'center', height: '100vh'}}><h1>Welcome to the Quarkus conference app</h1></div>
                     </Route>
 
                     <Route path="/schedules" exact component={SchedulesPage} />
