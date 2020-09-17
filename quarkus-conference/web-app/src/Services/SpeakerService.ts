@@ -12,5 +12,5 @@ export async function findByUuid(uuid: String) {
 }
 
 export async function create(speaker: Omit<Speaker, "id">): Promise<Speaker> {
-    return api.url(`/speaker`).post(speaker).json<Speaker>();
+    return api.url("/speaker").post(speaker).json<Speaker>();
 }

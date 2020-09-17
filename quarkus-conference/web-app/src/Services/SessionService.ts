@@ -8,5 +8,5 @@ export async function get(id: string) {
 }
 
 export async function getAll() {
-    return api.url(`/sessions`).get().json<Session[]>();
+    return api.url("/sessions").get().json<Session[]>();
 }

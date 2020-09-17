@@ -17,7 +17,7 @@ export async function get(id: string) {
 }
 
 export async function getAll() {
-    const scheduleData = await api.url(`/schedule/all`).get().json<RawScheduleData[]>();
+    const scheduleData = await api.url("/schedule/all").get().json<RawScheduleData[]>();
     return scheduleData.map(asSchedule);
 }
 
