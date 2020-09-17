@@ -16,7 +16,7 @@ import com.redhat.training.service.SolverService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Path("/solver")
+@Path("/solve")
 public class SolverResource implements SolverService {
     final Logger log = LoggerFactory.getLogger(SolverResource.class);
 

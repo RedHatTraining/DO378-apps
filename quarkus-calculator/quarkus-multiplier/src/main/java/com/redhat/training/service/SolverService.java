@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @RegisterRestClient
-@Path("/solver")
+@Path("/solve")
 public interface SolverService {
     @GET
     @Path("{equation}")

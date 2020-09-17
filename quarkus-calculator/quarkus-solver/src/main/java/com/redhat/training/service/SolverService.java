@@ -6,7 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/solver")
+@Path("/solve")
 public interface SolverService {
     @GET
     @Path("{equation}")
