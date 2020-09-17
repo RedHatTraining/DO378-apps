@@ -3,35 +3,39 @@
 module.exports = () => ({
     sessions: [
         {
-            id: "s1",
+            id: "se1",
             schedule: 1500,
             speakers: [
                 {
                     id: 1,
+                    uuid: "s1",
                     name: "Jon",
                 },
             ],
         },
         {
-            id: "s2",
+            id: "se2",
             schedule: 1600,
             speakers: [
                 {
                     id: 2,
+                    uuid: "s2",
                     name: "Lisbeth",
                 },
             ],
         },
         {
-            id: "s4",
+            id: "se4",
             schedule: 1600,
             speakers: [
                 {
                     id: 1,
+                    uuid: "s1",
                     name: "Jon",
                 },
                 {
                     id: 2,
+                    uuid: "s2",
                     name: "Lisbeth",
                 },
             ],
@@ -39,7 +43,7 @@ module.exports = () => ({
     ],
     speakers: [
         {
-            id: 1,
+            id: "s1",
             uuid: "s1",
             nameFirst: "Jon",
             nameLast: "Snow",
@@ -50,7 +54,7 @@ module.exports = () => ({
             twitterHandle: "@RedHat",
         },
         {
-            id: 2,
+            id: "s2",
             uuid: "s2",
             nameFirst: "Lisbeth",
             nameLast: "Salander",
