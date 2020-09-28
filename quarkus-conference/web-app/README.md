@@ -80,3 +80,6 @@ Use the following command:
 
     oc new-app https://github.com/RedHatTraining/DO378-apps.git --context-dir='quarkus-conference/web-app' --build-env REACT_APP_SESSION_SERVICE="..." --build-env REACT_APP_SPEAKER_SERVICE="..." --build-env REACT_APP_SCHEDULE_SERVICE="..." --build-env REACT_APP_VOTE_SERVICE="..." --name=frontend --strategy=source
 
+or use the provided environment file:
+
+    oc new-app https://github.com/RedHatTraining/DO378-apps.git --context-dir='quarkus-conference/web-app' --build-env-file=".env.production" --name=frontend --strategy=source
