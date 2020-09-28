@@ -27,8 +27,8 @@ public class SolverResource implements SolverService {
     @RestClient
     MultiplierService multiplierService;
 
-    static final Pattern multiplyPattern = Pattern.compile("(.*)\\*(.*)");
-    static final Pattern addPattern = Pattern.compile("(.*)\\+(.*)");
+    static final Pattern multiplyPattern = Pattern.compile("(.+)\\*(.+)");
+    static final Pattern addPattern = Pattern.compile("(.+)\\+(.+)");
 
     @Override
     @GET
