@@ -19,8 +19,8 @@ import org.slf4j.LoggerFactory;
 public class SolverResource implements SolverService {
     final Logger log = LoggerFactory.getLogger(SolverResource.class);
 
-    static final Pattern multiplyPattern = Pattern.compile("(.*)\\*(.*)");
-    static final Pattern addPattern = Pattern.compile("(.*)\\+(.*)");
+    static final Pattern multiplyPattern = Pattern.compile("(.+)\\*(.+)");
+    static final Pattern addPattern = Pattern.compile("(.+)\\+(.+)");
 
     @Override
     @GET
