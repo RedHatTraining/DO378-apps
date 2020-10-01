@@ -1,14 +1,6 @@
 package com.redhat.developer.demos.recommendation.rest;
 
-import java.io.ByteArrayInputStream;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.TemporalAmount;
 import java.util.Random;
-
-import javax.json.Json;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -18,6 +10,7 @@ import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Bulkhead;
 
 @Path("/")
 public class RecommendationResource {
@@ -37,36 +30,44 @@ public class RecommendationResource {
      * Flag for throwing a 503 when enabled
      */
     private boolean misbehave = false;
+    
+    /**
+     * Flag for delaying responses 1_000ms, 50% chance
+     */
     private boolean timeout = false;
+
+    /**
+     * Flag for crashing the service, 50% chance
+     */
     private boolean crash = false;
-    private Instant lastFlag;
+    
     private static final String HOSTNAME = parseContainerIdFromHostname(System.getenv().getOrDefault("HOSTNAME", "unknown"));
 
-    private long flagsThreshold = 10;
 
     static String parseContainerIdFromHostname(String hostname) {
         return hostname.replaceAll("recommendation-v\\d+-", "");
     }
 
     @GET
-    // @Retry(maxRetries=5)
-    @Timeout(500)
-    @Fallback(fallbackMethod="getFallbackRecommendations")
-    @CircuitBreaker(requestVolumeThreshold = 5, failureRatio = 0.4)
+    //@Retry(maxRetries=10)
+    //@Timeout(500)
+    //@Fallback(fallbackMethod="getFallbackRecommendations")
+    //@CircuitBreaker(requestVolumeThreshold = 5, failureRatio = 0.4)
+    //@Bulkhead(1)
     public Response getRecommendations() {
         count++;
         logger.info(String.format("recommendation request from %s: %d", HOSTNAME, count));
 
-        if (lastFlag!=null && lastFlag.isBefore(Instant.now().minus(Duration.ofSeconds(flagsThreshold)))){
-            clearAllFlags();
-        }
 
-        if (timeout) {
-            timeout();
-        }
+        if (new Random().nextBoolean()) {
 
-        if (crash) {
-            crash();
+            if (timeout) {
+                timeout();
+            }
+
+            if (crash) {
+                crash();
+            }
         }
 
         logger.debug("recommendation service ready to return");
@@ -77,22 +78,16 @@ public class RecommendationResource {
     }
 
     public Response getFallbackRecommendations() {
-        logger.info("recommendation service returning failback");
+        count++;
+        logger.info(String.format("recommendation request failback from: %s: %d", HOSTNAME, count));
         return Response.ok(String.format(RESPONSE_STRING_FALLBACK_FORMAT, HOSTNAME, count)).build();
-    }
-
-    private void clearAllFlags(){
-        logger.info("Clearing all flags");
-        this.lastFlag=null;
-        this.misbehave = false;
-        this.timeout = false;
-        this.crash = false;
     }
 
     private void timeout() {
         try {
-            logger.info("This request will be delayed");
-            Thread.sleep(new Random().nextInt(1_000));
+            int delay = 1_000;
+            logger.info("This request will be delayed "+delay+"ms");
+            Thread.sleep(delay);
         } catch (InterruptedException e) {
             logger.info("Thread interrupted");
         }
@@ -105,37 +100,43 @@ public class RecommendationResource {
     }
 
     private void crash() {
-        if (new Random().nextBoolean()) {
-            logger.error("Crashing!");
-            throw new RuntimeException("Resource failure.");
-        }
+        logger.error("Crashing!");
+        throw new RuntimeException("Resource failure.");
+    }
+
+    @GET
+    @Path("/reset")
+    public String clearAllFlags(){
+        logger.info("Clearing all flags");
+        this.count=0;
+        this.misbehave = false;
+        this.timeout = false;
+        this.crash = false;
+        return "Service reset.\n";
     }
 
     @GET
     @Path("/misbehave")
     public Response flagMisbehave() {
-        lastFlag = Instant.now();
         this.misbehave = !this.misbehave;
         logger.debug("'misbehave' has been set to " + misbehave);
-        return Response.ok("Following requests to / will return a 503\n").build();
+        return Response.ok("'misbehave' has been set to " + misbehave+"\n").build();
     }
 
     @GET
     @Path("/timeout")
     public Response flagTimeout() {
-        lastFlag = Instant.now();
         this.timeout = !this.timeout;
         logger.debug("'timeout' has been set to " + timeout);
-        return Response.ok("Following requests to / will return 200\n").build();
+        return Response.ok("'timeout' has been set to " + timeout+"\n").build();
     }
 
     @GET
     @Path("/crash")
     public Response flagCrash() {
-        lastFlag = Instant.now();
         this.crash = !this.crash;
         logger.debug("'crash' has been set to " + crash);
-        return Response.ok("Following requests to / will return crash\n").build();
+        return Response.ok("'crash' has been set to " + crash+"\n").build();
     }
 
 }
