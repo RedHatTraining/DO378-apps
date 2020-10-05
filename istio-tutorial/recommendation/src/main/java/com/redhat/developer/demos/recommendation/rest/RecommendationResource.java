@@ -5,12 +5,8 @@ import java.util.Random;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
+
 import org.jboss.logging.Logger;
-import org.eclipse.microprofile.faulttolerance.Retry;
-import org.eclipse.microprofile.faulttolerance.Timeout;
-import org.eclipse.microprofile.faulttolerance.Fallback;
-import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
-import org.eclipse.microprofile.faulttolerance.Bulkhead;
 
 @Path("/")
 public class RecommendationResource {
@@ -40,7 +36,7 @@ public class RecommendationResource {
      * Flag for crashing the service, 50% chance
      */
     private boolean crash = false;
-    
+
     private static final String HOSTNAME = parseContainerIdFromHostname(System.getenv().getOrDefault("HOSTNAME", "unknown"));
 
 
@@ -49,11 +45,6 @@ public class RecommendationResource {
     }
 
     @GET
-    //@Retry(maxRetries=10)
-    //@Timeout(500)
-    //@Fallback(fallbackMethod="getFallbackRecommendations")
-    //@CircuitBreaker(requestVolumeThreshold = 5, failureRatio = 0.4)
-    //@Bulkhead(1)
     public Response getRecommendations() {
         count++;
         logger.info(String.format("recommendation request from %s: %d", HOSTNAME, count));
