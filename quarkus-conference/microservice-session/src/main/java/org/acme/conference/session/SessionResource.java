@@ -23,8 +23,7 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 public class SessionResource {
 
-    @Inject
-    private SessionStore sessionStore;
+    @Inject SessionStore sessionStore;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -89,13 +88,11 @@ public class SessionResource {
     public Response addSessionSpeaker (@PathParam("sessionId") final String sessionId,
             @PathParam("speakerId") final String speakerName) {
 
-        final Optional<Session> result = sessionStore.findById(sessionId);
+        final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
 
         if (result.isPresent()) {
             final Session session = result.get();
-            final Collection<Speaker> speakers = session.speakers;
-            speakers.add(Speaker.from(speakerName));
-            sessionStore.updateById(sessionId, session);
+            sessionStore.addSpeakerToSession(sessionId, speakerName, session);
             return Response.ok(session).build();
         }
 
@@ -106,13 +103,11 @@ public class SessionResource {
     @Path("/{sessionId}/speakers/{speakerId}")
     public Response removeSessionSpeaker (@PathParam("sessionId") final String sessionId,
             @PathParam("speakerId") final String speakerName) {
-        final Optional<Session> result = sessionStore.findById(sessionId);
+        final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
 
         if (result.isPresent()) {
             final Session session = result.get();
-            final Collection<Speaker> speakers = session.speakers;
-            speakers.remove(Speaker.from(speakerName));
-            sessionStore.updateById(sessionId, session);
+            sessionStore.removeSpeakerFromSession(sessionId, speakerName, session);
             return Response.ok(session).build();
         }
 

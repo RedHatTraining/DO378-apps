@@ -27,4 +27,15 @@ public class Speaker {
         return speaker;
     }
 
+	public static Speaker from(SpeakerFromService speakerFromService) {
+        Speaker speaker = new Speaker();
+        enrichFromService(speakerFromService, speaker);
+        return speaker;
+    }
+
+    public static void enrichFromService(SpeakerFromService speakerFromService, Speaker speaker) {
+        speaker.name=speakerFromService.nameFirst+" "+speakerFromService.nameLast;
+        speaker.uuid=speakerFromService.uuid;
+    }
+
 }

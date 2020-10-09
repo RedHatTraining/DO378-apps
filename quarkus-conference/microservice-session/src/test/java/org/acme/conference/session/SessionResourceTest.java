@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.startsWith;
 import org.junit.jupiter.api.Test;
+
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
