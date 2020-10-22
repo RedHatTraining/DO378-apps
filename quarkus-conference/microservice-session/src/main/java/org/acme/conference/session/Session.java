@@ -2,12 +2,13 @@ package org.acme.conference.session;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -23,7 +24,24 @@ public class Session {
 
     public int schedule;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    public Collection<Speaker> speakers = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    public Set<Speaker> speakers = new HashSet<>();
+
+    public void addSpeaker(final Speaker speaker){
+        if (speakers.contains(speaker))
+            return;
+
+        speakers.add(speaker);
+        speaker.addSession(this);
+    }
+
+    public void removeSpeaker(final Speaker speaker){
+        if (!speakers.contains(speaker))
+            return;
+
+        speakers.remove(speaker);
+        speaker.removeSession(this);
+    }
+
   
 }
