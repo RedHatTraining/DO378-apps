@@ -1,7 +1,11 @@
 package org.acme.conference.session;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collection;
 import java.util.Optional;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -16,6 +20,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.faulttolerance.Bulkhead;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Timeout;
+import org.eclipse.microprofile.faulttolerance.Retry;
+
 /**
  * SessionResource
  */
@@ -23,79 +33,85 @@ import javax.ws.rs.core.Response;
 @ApplicationScoped
 public class SessionResource {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
     @Inject
-    private SessionStore sessionStore;
+    SessionStore sessionStore;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Fallback(fallbackMethod = "allSessionsFallback", applyOn = { Exception.class })
     public Collection<Session> allSessions() throws Exception {
         return sessionStore.findAll();
+    }
+
+    public Collection<Session> allSessionsFallback() throws Exception {
+        logger.warn("Fallback sessions");
+        return sessionStore.findAllWithoutEnrichment();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Session createSession (final Session session) {
+    public Session createSession(final Session session) {
         return sessionStore.save(session);
     }
 
     @GET
     @Path("/{sessionId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveSession (@PathParam("sessionId") final String sessionId) {
+    @Fallback(fallbackMethod = "retrieveSessionFallback")
+    @CircuitBreaker(requestVolumeThreshold = 2, failureRatio = 1, delay = 30_000)
+    public Response retrieveSession(@PathParam("sessionId") final String sessionId) {
         final Optional<Session> result = sessionStore.findById(sessionId);
 
-        return result
-            .map(s -> Response.ok(s).build())
-            .orElseThrow(NotFoundException::new);
+        return result.map(s -> Response.ok(s).build()).orElseThrow(NotFoundException::new);
+    }
+
+    public Response retrieveSessionFallback(final String sessionId) {
+        logger.warn("Fallback session");
+        final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
+        return result.map(s -> Response.ok(s).build()).orElseThrow(NotFoundException::new);
     }
 
     @PUT
     @Path("/{sessionId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateSession (@PathParam("sessionId") final String sessionId, final Session session) {
+    @Bulkhead(1)
+    public Response updateSession(@PathParam("sessionId") final String sessionId, final Session session) {
         final Optional<Session> updated = sessionStore.updateById(sessionId, session);
-        return updated
-            .map(s -> Response.ok(s).build())
-            .orElseThrow(NotFoundException::new);
+        return updated.map(s -> Response.ok(s).build()).orElseThrow(NotFoundException::new);
     }
 
     @DELETE
     @Path("/{sessionId}")
-    public Response deleteSession (@PathParam("sessionId") final String sessionId) {
+    public Response deleteSession(@PathParam("sessionId") final String sessionId) {
         final Optional<Session> removed = sessionStore.deleteById(sessionId);
-        return removed
-            .map(s-> Response.noContent().build())
-            .orElseThrow(NotFoundException::new);
+        return removed.map(s -> Response.noContent().build()).orElseThrow(NotFoundException::new);
     }
 
     @GET
     @Path("/{sessionId}/speakers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response sessionSpeakers (@PathParam("sessionId") final String sessionId) {
+    @Timeout(200)
+    public Response sessionSpeakers(@PathParam("sessionId") final String sessionId) {
 
         final Optional<Session> session = sessionStore.findById(sessionId);
-
-        return session
-            .map(s->s.speakers)
-            .map(l -> Response.ok(l).build())
-            .orElseThrow(NotFoundException::new);
+        return session.map(s -> s.speakers).map(l -> Response.ok(l).build()).orElseThrow(NotFoundException::new);
     }
 
     @PUT
-    @Path("/{sessionId}/speakers/{speakerId}")
+    @Path("/{sessionId}/speakers/{speakerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addSessionSpeaker (@PathParam("sessionId") final String sessionId,
-            @PathParam("speakerId") final String speakerName) {
-
-        final Optional<Session> result = sessionStore.findById(sessionId);
+    @Retry(maxRetries = 60, delay = 1_000)
+    public Response addSessionSpeaker(@PathParam("sessionId") final String sessionId,
+            @PathParam("speakerName") final String speakerName) {
+        final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
 
         if (result.isPresent()) {
             final Session session = result.get();
-            final Collection<Speaker> speakers = session.speakers;
-            speakers.add(Speaker.from(speakerName));
-            sessionStore.updateById(sessionId, session);
+            sessionStore.addSpeakerToSession(speakerName, session);
             return Response.ok(session).build();
         }
 
@@ -103,16 +119,16 @@ public class SessionResource {
     }
 
     @DELETE
-    @Path("/{sessionId}/speakers/{speakerId}")
-    public Response removeSessionSpeaker (@PathParam("sessionId") final String sessionId,
-            @PathParam("speakerId") final String speakerName) {
-        final Optional<Session> result = sessionStore.findById(sessionId);
+    @Path("/{sessionId}/speakers/{speakerName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Retry(maxRetries = 60, delay = 1_000)
+    public Response removeSessionSpeaker(@PathParam("sessionId") final String sessionId,
+            @PathParam("speakerName") final String speakerName) {
+        final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
 
         if (result.isPresent()) {
             final Session session = result.get();
-            final Collection<Speaker> speakers = session.speakers;
-            speakers.remove(Speaker.from(speakerName));
-            sessionStore.updateById(sessionId, session);
+            sessionStore.removeSpeakerFromSession(speakerName, session);
             return Response.ok(session).build();
         }
 

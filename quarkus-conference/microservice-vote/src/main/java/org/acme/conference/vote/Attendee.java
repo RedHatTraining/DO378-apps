@@ -13,7 +13,7 @@ import io.quarkus.mongodb.panache.PanacheMongoEntity;
  */
 public class Attendee extends PanacheMongoEntity {
 
-    @BsonId
+    //@BsonId
     private String uuid;
 
     @NotBlank
