@@ -14,7 +14,7 @@
     <quarkus-plugin.version>${quarkus.platform.version}</quarkus-plugin.version>
     <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>com.redhat.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>1.7.5.Final-redhat-00007</quarkus.platform.version>
+    <quarkus.platform.version>1.11.7.Final-redhat-00009</quarkus.platform.version>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
   </properties>
 
