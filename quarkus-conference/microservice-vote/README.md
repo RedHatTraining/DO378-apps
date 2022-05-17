@@ -28,7 +28,7 @@ podman run -d --name mongo-vote -p 27017:27017 mongo:4.0
 ```
 or, if deploying to openshift:
 ```
-oc new-app quay.io/bitnami/mongodb:4.0
+oc new-app quay.io/redhattraining/do378-mongo:4.0
 ```
 
 
