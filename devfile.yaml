@@ -1,0 +1,46 @@
+schemaVersion: 2.1.0
+metadata:
+  name: quarkus-quickstart
+components:
+  - name: tools
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel8:3.1 
+      env:
+        - name: QUARKUS_HTTP_HOST
+          value: 0.0.0.0
+      endpoints:
+        - exposure: none
+          name: debug
+          protocol: tcp
+          targetPort: 5005
+        - exposure: public
+          name: hello-greeting-endpoint
+          protocol: http
+          targetPort: 8080
+          path: /expenses
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+      memoryLimit: 4G
+      mountSources: true
+  - name: m2
+    volume:
+      size: 1G
+commands:
+  - id: 1-package
+    exec:
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/expense-restful-service
+      commandLine: "mvn package"
+      group:
+        kind: build
+        isDefault: true
+  - id: 2-startdev
+    exec:
+      label: "Start Development mode (Hot reload + debug)"
+      component: tools
+      workingDir: ${PROJECTS_ROOT}/expense-restful-service
+      commandLine: "mvn compile quarkus:dev"
+      group:
+        kind: run
+        isDefault: true
