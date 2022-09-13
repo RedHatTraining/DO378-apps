@@ -4,7 +4,7 @@ metadata:
 components:
   - name: tools
     container:
-      image: registry.redhat.io/devspaces/udi-rhel8:3.1 
+      image: rquay.io/devfile/universal-developer-image:ubi8-0e189d9
       env:
         - name: QUARKUS_HTTP_HOST
           value: 0.0.0.0
@@ -23,24 +23,52 @@ components:
           path: /home/user/.m2
       memoryLimit: 4G
       mountSources: true
+    - name: ubi-minimal
+    container:
+      image: registry.access.redhat.com/ubi8/ubi-minimal
+      command: ['tail']
+      args: ['-f', '/dev/null']
+      memoryLimit: 64M
+      mountSources: true
+
   - name: m2
     volume:
       size: 1G
+
 commands:
-  - id: 1-package
+  - id: package
     exec:
       component: tools
-      workingDir: ${PROJECTS_ROOT}/expense-restful-service
-      commandLine: "mvn package"
+      workingDir: ${PROJECT_SOURCE}/getting-started
+      commandLine: "./mvnw package"
       group:
         kind: build
         isDefault: true
-  - id: 2-startdev
+
+  - id: package-native
+    exec:
+      label: "Package Native"
+      component: tools
+      workingDir: ${PROJECT_SOURCE}/getting-started
+      commandLine: "./mvnw package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=2G"
+      group:
+        kind: build
+
+  - id: start-dev
     exec:
       label: "Start Development mode (Hot reload + debug)"
       component: tools
-      workingDir: ${PROJECTS_ROOT}/expense-restful-service
-      commandLine: "mvn compile quarkus:dev"
+      workingDir: ${PROJECT_SOURCE}/getting-started
+      commandLine: "./mvnw compile quarkus:dev"
       group:
         kind: run
         isDefault: true
+
+  - id: start-native
+    exec:
+      label: "Start Native"
+      component: ubi-minimal
+      workingDir: ${PROJECT_SOURCE}/getting-started/target
+      commandLine: "./getting-started-1.0.0-SNAPSHOT-runner"
+      group:
+        kind: run
