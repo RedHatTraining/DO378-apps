@@ -4,7 +4,7 @@ metadata:
 components:
   - name: tools
     container:
-      image: rquay.io/devfile/universal-developer-image:ubi8-0e189d9
+      image: quay.io/devfile/universal-developer-image:ubi8-0e189d9
       env:
         - name: QUARKUS_HTTP_HOST
           value: 0.0.0.0
