@@ -23,7 +23,7 @@ components:
           path: /home/user/.m2
       memoryLimit: 4G
       mountSources: true
-    - name: ubi-minimal
+  - name: ubi-minimal
     container:
       image: registry.access.redhat.com/ubi8/ubi-minimal
       command: ['tail']
