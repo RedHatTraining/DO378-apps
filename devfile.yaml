@@ -21,7 +21,7 @@ components:
       volumeMounts:
         - name: m2
           path: /home/user/.m2
-      memoryLimit: 4G
+      memoryLimit: 5G
       mountSources: true
   - name: ubi-minimal
     container:
@@ -50,7 +50,7 @@ commands:
       label: "Package Native"
       component: tools
       workingDir: ${PROJECT_SOURCE}/expense-restful-service
-      commandLine: "mvn package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=3G"
+      commandLine: "mvn package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=4G"
       group:
         kind: build
 
