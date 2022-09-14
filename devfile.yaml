@@ -14,7 +14,7 @@ components:
           protocol: tcp
           targetPort: 5005
         - exposure: public
-          name: hello-greeting-endpoint
+          name: expenses-endpoint
           protocol: http
           targetPort: 8080
           path: /expenses
@@ -39,8 +39,8 @@ commands:
   - id: package
     exec:
       component: tools
-      workingDir: ${PROJECT_SOURCE}/getting-started
-      commandLine: "./mvnw package"
+      workingDir: ${PROJECT_SOURCE}/expense-restful-service
+      commandLine: "mvn package"
       group:
         kind: build
         isDefault: true
@@ -49,8 +49,8 @@ commands:
     exec:
       label: "Package Native"
       component: tools
-      workingDir: ${PROJECT_SOURCE}/getting-started
-      commandLine: "./mvnw package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=2G"
+      workingDir: ${PROJECT_SOURCE}/expense-restful-service
+      commandLine: "mvn package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=3G"
       group:
         kind: build
 
@@ -58,8 +58,8 @@ commands:
     exec:
       label: "Start Development mode (Hot reload + debug)"
       component: tools
-      workingDir: ${PROJECT_SOURCE}/getting-started
-      commandLine: "./mvnw compile quarkus:dev"
+      workingDir: ${PROJECT_SOURCE}/expense-restful-service
+      commandLine: "mvn compile quarkus:dev"
       group:
         kind: run
         isDefault: true
@@ -68,7 +68,7 @@ commands:
     exec:
       label: "Start Native"
       component: ubi-minimal
-      workingDir: ${PROJECT_SOURCE}/getting-started/target
+      workingDir: ${PROJECT_SOURCE}/expense-restful-service/target
       commandLine: "./getting-started-1.0.0-SNAPSHOT-runner"
       group:
         kind: run
