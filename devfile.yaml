@@ -1,6 +1,6 @@
 schemaVersion: 2.1.0
 metadata:
-  name: quarkus-quickstart
+  name: quarkus-testing
 components:
   - name: tools
     container:
