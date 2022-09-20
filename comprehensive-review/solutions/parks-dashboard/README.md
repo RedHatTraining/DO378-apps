@@ -14,14 +14,14 @@ When performing the comprehensive review lab, students can serve the application
 # Install development/build dependencies
 npm install
 
-# Start the fake backend (only if no real backend is available)
+# Start the fake backend on port 3000 (only if no Quarkus backend is available)
 node fake-backend.js
 
-# Start the development server
-npm run start:dev
+# Start the development server (pointing to the fake backend)
+BACKEND="http://localhost:3000/" npm run dev
 
-# Run a production build (outputs to "dist" dir)
-npm run build
+# Start the development server (pointing to the Quarkus backend)
+npm run dev
 
 # Run the linter
 npm run lint
@@ -32,7 +32,10 @@ npm run format
 # Launch a tool to inspect the bundle size
 npm run bundle-profile:analyze
 
-# Start the express server (run a production build first)
+# Run a production build (outputs to "dist" dir)
+npm run build
+
+# Start the express server (uses the dist folder so you must run "npm run build" first)
 npm run start
 ```
 

@@ -10,7 +10,7 @@
     "prebuild": "npm run clean",
     "build": "webpack --config webpack.prod.js",
     "start": "sirv dist --cors --single --host --port 8080",
-    "start:dev": "webpack serve --color --progress --config webpack.dev.js",
+    "dev": "webpack serve --color --progress --config webpack.dev.js",
     "eslint": "eslint --ext .tsx,.js ./src/",
     "lint": "npm run eslint",
     "format": "prettier --check --write ./src/**/*.{tsx,ts}",

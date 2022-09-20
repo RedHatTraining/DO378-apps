@@ -15,9 +15,11 @@ http.createServer(requestHandler)
 
 function requestHandler(req, res) {
     const routes = {
-        "/sensor/measurements": sseGenerateMeasurements,
+        "/sensor/measurements/enriched": sseGenerateMeasurements,
         "/garden/statuses": sseGenerateGardenStatuses,
-        "/garden/events": sseGenerateEvents,
+        "/garden/events/temperature": sseGenerateEvents,
+        "/garden/events/humidity": sseGenerateEvents,
+        "/garden/events/wind": sseGenerateEvents,
         "/q/health/live": getHealth,
     };
 
@@ -77,7 +79,7 @@ function getHealth(res) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
         checks: [
-            { data: { state: "RUNNING" }}
+            { data: { state: "RUNNING" }, status: "UP"}
         ]
     }));
 }
@@ -87,20 +89,20 @@ function notFound(res) {
     res.end("Not found");
 }
 
+
+const GARDENS = [
+    "Pablo's garden",
+    "Aykut's garden",
+    "Jaime's garden",
+    "Marek's garden"
+]
+
 function generateGardenStatus() {
-
-    const names = [
-        "Pablo's garden",
-        "Aykut's garden",
-        "Enol's garden",
-        "Marek's garden"
-    ]
-
     const id = Math.floor(Math.random() * 4);
 
     return {
         id,
-        name: names[id],
+        gardenName: GARDENS[id],
         humidity: 56,
         temperature: 24,
         sunlight: 45,
@@ -113,7 +115,7 @@ function generateGardenStatus() {
 function generateMeasurement() {
     return {
         type: "Temperature",
-        value: 45,
+        value: Math.random() * 10,
         garden: "Pablo's garden",
         sensorId: 111,
         timestamp: Date.now()
@@ -121,10 +123,11 @@ function generateMeasurement() {
 }
 
 function generateEvent() {
+    const randomGardenIdx = Math.floor(Math.random() * GARDENS.length);
     return {
         name: "LowTemperatureDetected",
-        temperature: 0,
-        garden: "Pablo's garden",
+        value: Math.random() * 10,
+        gardenName: GARDENS[randomGardenIdx],
         sensorId: 34,
         timestamp: Date.now()
     };
