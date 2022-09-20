@@ -1,13 +1,13 @@
-# Garden Dashboard
+# Parks Dashboard
 
-This is a simple React frontend app from the gardens streaming application of AD482 comprehensive review.
+This is a React front-end app from the Ithaca smart parks application of the DO378 comprehensive review.
 
-Because students might not have Node.js installed, we need to provide them with the _built_ web application.
+Because students might not have Node.js installed, we need to provide them with the _built_ web application (the `dist` directory).
 
 Run `npm run build` before pushing changes to generate the `dist` folder.
 This folder is included in the repository.
 
-Students can therefore serve the application by just running `python scripts/serve-frontend.py`.
+When performing the comprehensive review lab, students can serve the application by running `python serve.py` (no Node.js needed).
 
 ## Development scripts
 ```sh
@@ -34,7 +34,6 @@ npm run bundle-profile:analyze
 
 # Start the express server (run a production build first)
 npm run start
-
 ```
 
 ## Configurations
