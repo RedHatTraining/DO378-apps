@@ -6,24 +6,24 @@ import { PageSection, Title, PageSectionVariants, Card,
 import { subscribeToGardenTemperatureEvents,
     subscribeToGardenHumidityEvents, subscribeToGardenWindEvents,
     subscribeToGardenStatuses, subscribeToSensorMeasurements
-} from "../services/GardenServerEvents";
+} from "../services/ParkServerEvents";
 import { waitForLiveness } from "../services/LivenessService";
-import { GardenStatus } from "@app/models/GardenStatus";
-import { GardenStatusCard } from "./GardenStatusCard";
+import { ParkStatus } from "@app/models/ParkStatus";
+import { ParkStatusCard } from "./ParkStatusCard";
 import { SensorMeasurement } from "@app/models/SensorMeasurement";
 import { RecentList } from "@app/models/RecentList";
 import { Caption, TableComposable, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
-import { GardenEvent } from "@app/models/GardenEvent";
+import { ParkEvent } from "@app/models/ParkEvent";
 
 // Icons list: https://patternfly-react.surge.sh/icons/
-import LeafIcon from "@patternfly/react-icons/dist/esm/icons/leaf-icon";
+import TreeIcon from "@patternfly/react-icons/dist/esm/icons/tree-icon";
 import OutLinedCharBarIcon from "@patternfly/react-icons/dist/esm/icons/outlined-chart-bar-icon";
 import ThermometerHalfIcon from "@patternfly/react-icons/dist/esm/icons/thermometer-half-icon";
 import InfoCircleIcon from "@patternfly/react-icons/dist/esm/icons/info-circle-icon";
 
 
 interface StatusByGarden {
-    [gardenName: string]: GardenStatus
+    [gardenName: string]: ParkStatus
 }
 
 
@@ -31,7 +31,7 @@ export function Dashboard(): JSX.Element {
     const [ready, setReady] = useState<boolean>(false);
     const [gardenStatuses, setGardenStatuses] = useState<StatusByGarden>({});
     const [sensorMeasurements, setSensorMeasurements] = useState<RecentList<SensorMeasurement>>(new RecentList());
-    const [gardenEvents, setGardenEvents] = useState<RecentList<GardenEvent>>(new RecentList());
+    const [gardenEvents, setGardenEvents] = useState<RecentList<ParkEvent>>(new RecentList());
 
     useEffect(() => {
         waitForLiveness()
@@ -86,7 +86,7 @@ export function Dashboard(): JSX.Element {
                 </Tr>
             </Thead>
             <Tbody>
-                {gardenEvents.getItems().map(renderGardenEventRow)}
+                {gardenEvents.getItems().slice(0,10).map(renderGardenEventRow)}
             </Tbody>
         </TableComposable>;
     }
@@ -119,7 +119,7 @@ export function Dashboard(): JSX.Element {
             xl: "400px"
         }}>
             {Object.values(gardenStatuses).map(gardenStatus => <GalleryItem key={gardenStatus.gardenName}>
-                <GardenStatusCard gardenStatus={gardenStatus}></GardenStatusCard>
+                <ParkStatusCard gardenStatus={gardenStatus}></ParkStatusCard>
             </GalleryItem>)}
         </Gallery>;
     }
@@ -146,8 +146,7 @@ export function Dashboard(): JSX.Element {
     }
 
 
-    function renderGardenEventRow(e: GardenEvent) {
-        console.log(e);
+    function renderGardenEventRow(e: ParkEvent) {
         const tableIndex = `${e.sensorId}_${e.gardenName}_${e.timestamp.toISOString()}`;
         return (<Tr key={tableIndex}>
             <Td key={`${tableIndex}_name`} dataLabel="Type">
@@ -171,7 +170,7 @@ export function Dashboard(): JSX.Element {
     return (<React.Fragment>
         <PageSection variant={PageSectionVariants.light}>
             <Title headingLevel="h1" size="lg">
-                <LeafIcon size="md" color="#22aa22" />&nbsp;
+                <TreeIcon size="md" color="#22aa22" />&nbsp;
                 Garden Status&nbsp;
             </Title>
             <Text component={TextVariants.small}>
@@ -207,7 +206,7 @@ export function Dashboard(): JSX.Element {
                     </Card>
                 </GridItem>
                 <GridItem span={6}>
-                    <Card>
+                    {/* <Card>
                         <CardTitle>
                             <InfoCircleIcon />
                             &nbsp;Garden Events
@@ -215,7 +214,7 @@ export function Dashboard(): JSX.Element {
                         <CardBody>
                             {ready ? renderGardenEventsTable() : <Skeleton />}
                         </CardBody>
-                    </Card>
+                    </Card> */}
                 </GridItem>
             </Grid>
         </PageSection>

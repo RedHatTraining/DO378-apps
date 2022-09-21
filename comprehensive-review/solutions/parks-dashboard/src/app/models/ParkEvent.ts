@@ -1,4 +1,4 @@
-export interface GardenEvent {
+export interface ParkEvent {
     name: string,
     gardenName: string,
     value: number,

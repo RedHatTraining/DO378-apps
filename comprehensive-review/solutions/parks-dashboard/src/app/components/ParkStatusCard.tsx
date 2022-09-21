@@ -1,9 +1,9 @@
-import { GardenStatus } from "@app/models/GardenStatus";
+import { ParkStatus } from "@app/models/ParkStatus";
 import {
     Card, CardTitle, CardBody,
     DescriptionList, DescriptionListGroup,
     DescriptionListTerm, DescriptionListDescription,
-    Avatar, CardHeader
+    Avatar, CardHeader, CardHeaderMain, Brand
 } from "@patternfly/react-core";
 import React from "react";
 
@@ -20,17 +20,19 @@ const images = {
 };
 
 
-interface GardenStatusCardProps {
-    gardenStatus: GardenStatus
+interface ParkStatusCardProps {
+    gardenStatus: ParkStatus
 }
 
-export function GardenStatusCard(props: GardenStatusCardProps): JSX.Element {
+export function ParkStatusCard(props: ParkStatusCardProps): JSX.Element {
     const { gardenStatus } = props;
     return (<Card isFlat>
         <CardHeader>
-            <Avatar src={getGardenImage(gardenStatus.gardenName)} alt={gardenStatus.gardenName} />
-            <CardTitle>&nbsp;&nbsp;{gardenStatus.gardenName}</CardTitle>
+            <CardHeaderMain>
+                <Brand src={getGardenImage(gardenStatus.gardenName)} alt={gardenStatus.gardenName} style={{ height: '300px' }} />
+            </CardHeaderMain>
         </CardHeader>
+        <CardTitle>&nbsp;&nbsp;{gardenStatus.gardenName}</CardTitle>
         <CardBody>
             <DescriptionList>
                 {gardenStatus.temperature ? <React.Fragment>

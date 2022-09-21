@@ -1,4 +1,4 @@
-export interface GardenStatus {
+export interface ParkStatus {
     gardenName: string;
     temperature: number;
     temperatureTrend: string;
