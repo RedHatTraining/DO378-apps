@@ -58,6 +58,16 @@ Easily start your Reactive RESTful Web Services
 
 ## Creating a JWT token and using it to access a protected resource
 
+Use the `openssl` command to generate keys, as explained in: https://es.quarkus.io/version/2.7/guides/security-jwt#generating-a-jwt
+
+```shell script
+openssl genrsa -out rsaPrivateKey.pem 2048
+openssl rsa -pubout -in rsaPrivateKey.pem -out publicKey.pem
+openssl pkcs8 -topk8 -nocrypt -inform pem -in rsaPrivateKey.pem -outform pem -out privateKey.pem
+```
+
+Next, create the JWT token:
+
 ```shell script
 ./mvnw exec:java -Dexec.mainClass=com.redhat.training.ithaca.GenerateToken -Dexec.classpathScope=test -Dsmallrye.jwt.sign.key.location=privateKey.pem
 ```
