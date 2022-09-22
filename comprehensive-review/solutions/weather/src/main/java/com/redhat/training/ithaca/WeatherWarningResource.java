@@ -8,6 +8,11 @@ import javax.ws.rs.Path;
 
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
+
+import com.redhat.training.ithaca.entities.WeatherWarning;
+import com.redhat.training.ithaca.entities.WeatherWarningType;
+import com.redhat.training.ithaca.entities.WeatherWarningLevel;
+
 import io.quarkus.logging.Log;
 
 @Path( "/warning" )
