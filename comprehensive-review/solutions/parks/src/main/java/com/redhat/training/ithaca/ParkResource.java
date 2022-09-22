@@ -15,7 +15,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 
 
 @Path("/parks")
-@RequestScoped
+// @RequestScoped
 public class ParkResource {
 
     @GET
@@ -30,7 +30,7 @@ public class ParkResource {
 
     @DELETE
     @Path("/{id}")
-    @RolesAllowed({ "Admin" })
+    // @RolesAllowed({ "Admin" })
     @Transactional
     public void delete(@PathParam("id") Long id) {
         var park = Park.findById(id);
