@@ -3,13 +3,14 @@ import { PageSection, Title, PageSectionVariants, Card,
     CardBody, CardTitle, Grid, GridItem, Gallery,
     GalleryItem, Text, TextVariants, Skeleton
 } from "@patternfly/react-core";
-import { subscribeToGardenTemperatureEvents,
-    subscribeToGardenHumidityEvents, subscribeToGardenWindEvents,
-    subscribeToGardenStatuses, subscribeToSensorMeasurements
-} from "../services/ParkServerEvents";
+// import { subscribeToGardenTemperatureEvents,
+//     subscribeToGardenHumidityEvents, subscribeToGardenWindEvents,
+//     subscribeToGardenStatuses, subscribeToSensorMeasurements
+// } from "../services/ParkServerEvents";
+import * as ParksService from "@app/services/ParksService";
 import { waitForLiveness } from "../services/LivenessService";
-import { ParkStatus } from "@app/models/ParkStatus";
-import { ParkStatusCard } from "./ParkStatusCard";
+import { Park } from "@app/models/ParkStatus";
+import { ParkCard } from "./ParkCard";
 import { SensorMeasurement } from "@app/models/SensorMeasurement";
 import { RecentList } from "@app/models/RecentList";
 import { Caption, TableComposable, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
@@ -22,53 +23,54 @@ import ThermometerHalfIcon from "@patternfly/react-icons/dist/esm/icons/thermome
 import InfoCircleIcon from "@patternfly/react-icons/dist/esm/icons/info-circle-icon";
 
 
-interface StatusByGarden {
-    [gardenName: string]: ParkStatus
-}
-
 
 export function Dashboard(): JSX.Element {
     const [ready, setReady] = useState<boolean>(false);
-    const [gardenStatuses, setGardenStatuses] = useState<StatusByGarden>({});
+    const [parks, setParks] = useState<Park[]>([]);
     const [sensorMeasurements, setSensorMeasurements] = useState<RecentList<SensorMeasurement>>(new RecentList());
     const [gardenEvents, setGardenEvents] = useState<RecentList<ParkEvent>>(new RecentList());
 
     useEffect(() => {
         waitForLiveness()
             .then(() => {
-                getGardenStatuses();
-                getGardenEvents();
-                getSensorMeasurements();
+                getParks();
+                // getGardenEvents();
+                // getSensorMeasurements();
                 setReady(true);
             });
     }, []);
 
-    function getGardenStatuses() {
-        subscribeToGardenStatuses((gardenStatus) => {
-            setGardenStatuses(previous => ({
-                ...previous,
-                [gardenStatus.gardenName]: gardenStatus
-            }));
-        });
+    async function getParks() {
+
+        const parks = await ParksService.all();
+
+        setParks(parks);
+
+        // subscribeToGardenStatuses((gardenStatus) => {
+        //     setGardenStatuses(previous => ({
+        //         ...previous,
+        //         [gardenStatus.gardenName]: gardenStatus
+        //     }));
+        // });
     }
 
-    function getGardenEvents() {
-        subscribeToGardenTemperatureEvents((event) => {
-            setGardenEvents(previous => RecentList.createFrom(previous).add(event));
-        });
-        subscribeToGardenHumidityEvents((event) => {
-            setGardenEvents(previous => RecentList.createFrom(previous).add(event));
-        });
-        subscribeToGardenWindEvents((event) => {
-            setGardenEvents(previous => RecentList.createFrom(previous).add(event));
-        });
-    }
+    // function getGardenEvents() {
+    //     subscribeToGardenTemperatureEvents((event) => {
+    //         setGardenEvents(previous => RecentList.createFrom(previous).add(event));
+    //     });
+    //     subscribeToGardenHumidityEvents((event) => {
+    //         setGardenEvents(previous => RecentList.createFrom(previous).add(event));
+    //     });
+    //     subscribeToGardenWindEvents((event) => {
+    //         setGardenEvents(previous => RecentList.createFrom(previous).add(event));
+    //     });
+    // }
 
-    function getSensorMeasurements() {
-        subscribeToSensorMeasurements((measurement) => {
-            setSensorMeasurements(previous => RecentList.createFrom(previous).add(measurement));
-        });
-    }
+    // function getSensorMeasurements() {
+    //     subscribeToSensorMeasurements((measurement) => {
+    //         setSensorMeasurements(previous => RecentList.createFrom(previous).add(measurement));
+    //     });
+    // }
 
     function renderGardenEventsTable() {
         return <TableComposable
@@ -112,14 +114,14 @@ export function Dashboard(): JSX.Element {
         </TableComposable>;
     }
 
-    function renderGardenStatusGallery() {
+    function renderParksGallery() {
         return <Gallery hasGutter minWidths={{
             md: "300px",
             lg: "300px",
             xl: "400px"
         }}>
-            {Object.values(gardenStatuses).map(gardenStatus => <GalleryItem key={gardenStatus.gardenName}>
-                <ParkStatusCard gardenStatus={gardenStatus}></ParkStatusCard>
+            {parks.map(p => <GalleryItem key={p.uuid}>
+                <ParkCard park={p}></ParkCard>
             </GalleryItem>)}
         </Gallery>;
     }
@@ -169,17 +171,16 @@ export function Dashboard(): JSX.Element {
 
     return (<React.Fragment>
         <PageSection variant={PageSectionVariants.light}>
-            <Title headingLevel="h1" size="lg">
-                <TreeIcon size="md" color="#22aa22" />&nbsp;
-                Garden Status&nbsp;
+            <Title title="Parks" icon={<TreeIcon size="md" color="#22aa22" />} headingLevel="h1" size="lg">
+
             </Title>
             <Text component={TextVariants.small}>
-                General data for each garden, aggregated in time windows (garden-status-events).
+                General data for each park.
             </Text>
         </PageSection>
 
         <PageSection variant={PageSectionVariants.light}>
-            {ready ? renderGardenStatusGallery() : <Skeleton />}
+            {ready ? renderParksGallery() : <Skeleton />}
         </PageSection>
 
         <PageSection >

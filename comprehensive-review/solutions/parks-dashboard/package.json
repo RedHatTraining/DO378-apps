@@ -1,5 +1,5 @@
 {
-  "name": "patternfly-seed",
+  "name": "parks-dashboard",
   "version": "0.0.2",
   "description": "An open source build scaffolding utility for web apps.",
   "repository": "https://github.com/patternfly/patternfly-react-seed.git",
@@ -69,7 +69,6 @@
     "@patternfly/react-table": "^4.30.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-router-last-location": "^2.0.1",
     "sirv-cli": "^1.0.12",
     "wretch": "^1.7.6"
   }

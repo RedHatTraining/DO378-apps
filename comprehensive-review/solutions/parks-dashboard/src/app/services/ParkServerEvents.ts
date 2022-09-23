@@ -1,12 +1,12 @@
 import { ParkEvent } from "@app/models/ParkEvent";
 import { SensorMeasurement } from "@app/models/SensorMeasurement";
-import { ParkStatus } from "../models/ParkStatus";
+import { Park } from "../models/Park";
 import { ServiceName, getSSEClient } from "./API";
 
 const sse = getSSEClient(ServiceName.BACKEND);
 
-export function subscribeToGardenStatuses(onEvent: (status: ParkStatus) => void): void {
-    sse.open<ParkStatus>("/garden/statuses", onEvent);
+export function subscribeToGardenStatuses(onEvent: (status: Park) => void): void {
+    sse.open<Park>("/garden/statuses", onEvent);
 }
 
 
