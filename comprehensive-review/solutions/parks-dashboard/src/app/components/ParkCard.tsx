@@ -1,20 +1,18 @@
-import { Park } from "@app/models/Park";
+import React, { useState } from "react";
 import {
     Card, CardTitle, CardBody,
     DescriptionList, DescriptionListGroup,
     DescriptionListTerm, DescriptionListDescription,
-    Avatar, CardHeader, CardHeaderMain, Brand, CardActions, Checkbox, Alert
+    CardHeader, CardHeaderMain, Alert, CardFooter, Button, Modal, ModalVariant
 } from "@patternfly/react-core";
-import React from "react";
-import Map from 'ol/Map';
-import View from 'ol/View';
-import TileLayer from 'ol/layer/Tile';
-import XYZ from 'ol/source/XYZ';
+import { Park } from "@app/models/Park";
+import * as ParksService from "@app/services/ParksService";
 
 import garden0 from "@app/images/garden_0.jpg";
 import garden1 from "@app/images/garden_1.jpg";
 import garden2 from "@app/images/garden_2.jpg";
 import garden3 from "@app/images/garden_3.jpg";
+import { ParkForm } from "./ParkForm";
 
 const images = {
     pablo: garden0,
@@ -25,11 +23,28 @@ const images = {
 
 
 interface ParkCardProps {
-    park: Park
+    park: Park,
+    onParkUpdated: () => unknown
 }
 
 export function ParkCard(props: ParkCardProps): JSX.Element {
-    const { park } = props;
+    const { park, onParkUpdated } = props;
+
+    const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
+    function toggleModal() {
+        setModalOpen(isModalOpen => !isModalOpen);
+    }
+
+    async function editPark({name, city, size}: {name: string, city: string, size: number}) {
+        const newPark = { ...park, name, city, size };
+
+        await ParksService.update(newPark);
+
+        toggleModal();
+        onParkUpdated();
+    }
+
 
     return (<Card isFlat>
         <CardHeader>
@@ -52,16 +67,39 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
                     <DescriptionListDescription>{park.size} square meters</DescriptionListDescription>
                 </DescriptionListGroup>
                 <DescriptionListGroup>
-                    <DescriptionListTerm>Status</DescriptionListTerm>
-                    <DescriptionListDescription>{park.temperatureTrend}</DescriptionListDescription>
+                    <DescriptionListTerm>Conditions</DescriptionListTerm>
+                    {getAlert(park)}
                 </DescriptionListGroup>
-                <Alert variant="warning" title="Park fences are closing." />
             </DescriptionList>
         </CardBody>
+        <CardFooter>
+            <React.Fragment>
+                <Button variant="primary" onClick={toggleModal}>
+                    Manage
+                </Button>
+                <Modal
+                    variant={ModalVariant.small}
+                    title={park.name}
+                    isOpen={isModalOpen}
+                    onClose={toggleModal}
+                >
+                    <ParkForm park={park} onSubmit={editPark}></ParkForm>
+                </Modal>
+            </React.Fragment>
+        </CardFooter>
     </Card>);
 }
 
-function getGardenImage(gardenName: string): string {
+function getAlert(park: Park) {
+    const alerts = {
+        "CLOSING": <Alert variant="warning" title="Park fences are closing" />,
+        "CLOSED": <Alert variant="danger" title="Park is closed" />,
+    }
+
+    return alerts[park.status] || <Alert variant="info" title="Park is open" />
+}
+
+function getParkImage(gardenName: string): string {
     const lowerGardenName = gardenName.toLowerCase();
 
     const key = Object.keys(images).find(key => lowerGardenName.includes(key));

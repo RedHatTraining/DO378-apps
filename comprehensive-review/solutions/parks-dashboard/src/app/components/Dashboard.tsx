@@ -9,7 +9,7 @@ import { PageSection, Title, PageSectionVariants, Card,
 // } from "../services/ParkServerEvents";
 import * as ParksService from "@app/services/ParksService";
 import { waitForLiveness } from "../services/LivenessService";
-import { Park } from "@app/models/ParkStatus";
+import { Park } from "@app/models/Park";
 import { ParkCard } from "./ParkCard";
 import { SensorMeasurement } from "@app/models/SensorMeasurement";
 import { RecentList } from "@app/models/RecentList";
@@ -20,7 +20,6 @@ import { ParkEvent } from "@app/models/ParkEvent";
 import TreeIcon from "@patternfly/react-icons/dist/esm/icons/tree-icon";
 import OutLinedCharBarIcon from "@patternfly/react-icons/dist/esm/icons/outlined-chart-bar-icon";
 import ThermometerHalfIcon from "@patternfly/react-icons/dist/esm/icons/thermometer-half-icon";
-import InfoCircleIcon from "@patternfly/react-icons/dist/esm/icons/info-circle-icon";
 
 
 
@@ -121,7 +120,7 @@ export function Dashboard(): JSX.Element {
             xl: "400px"
         }}>
             {parks.map(p => <GalleryItem key={p.uuid}>
-                <ParkCard park={p}></ParkCard>
+                <ParkCard park={p} onParkUpdated={getParks}></ParkCard>
             </GalleryItem>)}
         </Gallery>;
     }
@@ -171,8 +170,9 @@ export function Dashboard(): JSX.Element {
 
     return (<React.Fragment>
         <PageSection variant={PageSectionVariants.light}>
-            <Title title="Parks" icon={<TreeIcon size="md" color="#22aa22" />} headingLevel="h1" size="lg">
-
+            <Title title="Parks" headingLevel="h1" size="lg">
+                <TreeIcon size="md" color="#22aa22" />&nbsp;
+                Parks&nbsp;
             </Title>
             <Text component={TextVariants.small}>
                 General data for each park.

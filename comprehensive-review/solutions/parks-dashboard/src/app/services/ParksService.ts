@@ -7,3 +7,7 @@ export function all(): Promise<Park[]> {
     return API.url("parks")
         .get().json<Park[]>();
 }
+
+export function update(park: Park): Promise<void> {
+    return API.url("parks").put(park);
+}

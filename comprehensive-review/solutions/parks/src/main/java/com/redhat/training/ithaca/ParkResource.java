@@ -16,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
+import io.quarkus.logging.Log;
+
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.BadRequestException;
@@ -65,17 +67,14 @@ public class ParkResource {
 
     @Transactional
     @PUT
-    @Path("/{uuid}")
-    public void update(@PathParam("uuid") String uuid, Park park) {
-        if (null==uuid || null==park.getUuid()) {
+    @Path("")
+    public void update(Park park) {
+        if (park.getUuid() == null) {
             throw new NotFoundException();
         }
 
-        if (null==park || !uuid.equals(park.uuid)) {
-            throw new BadRequestException();
-        }
+        Log.info("New park size " + park.getSize());
 
-        park.uuid=uuid;
         parkService.update(park);
     }
 }

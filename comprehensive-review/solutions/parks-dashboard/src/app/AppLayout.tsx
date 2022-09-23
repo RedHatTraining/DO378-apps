@@ -2,15 +2,18 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Page,
-  PageHeader
+  PageHeader,
+  PageHeaderTools
 } from '@patternfly/react-core';
 import logo from '@app/images/training_white.png';
+import { AuthMenu } from './components/AuthMenu';
 
 interface IAppLayout {
   children: React.ReactNode;
 }
 
 const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
+
   function LogoImg() {
     const history = useHistory();
     function handleClick() {
@@ -21,18 +24,20 @@ const AppLayout: React.FunctionComponent<IAppLayout> = ({ children }) => {
     );
   }
 
-  const Header = (
+  const headerTools = <AuthMenu></AuthMenu>;
+
+
+  const header = (
     <PageHeader
       logo={<LogoImg />}
+      headerTools={<PageHeaderTools>{headerTools}</PageHeaderTools>}
     />
   );
 
-  const pageId = 'primary-app-container';
-
   return (
     <Page
-      mainContainerId={pageId}
-      header={Header}>
+      mainContainerId="primary-app-container"
+      header={header}>
       {children}
     </Page>
   );

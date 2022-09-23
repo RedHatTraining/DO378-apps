@@ -1,5 +1,6 @@
 html, body, #root {
   height: 100%;
+  --pf-c-dropdown__toggle--before--BorderWidth: 0
 }
 
 .logo {
@@ -25,4 +26,8 @@ html, body, #root {
   100% {
       transform: rotate(360deg);
   }
+}
+
+.pf-c-dropdown {
+  --pf-c-dropdown__toggle--before--BorderWidth: 0
 }
