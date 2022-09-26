@@ -2,6 +2,9 @@ package com.redhat.training.ithaca;
 
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Path;
@@ -21,62 +24,63 @@ import io.quarkus.logging.Log;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.BadRequestException;
+import org.eclipse.microprofile.faulttolerance.Bulkhead;
 
-@Path("/parks")
+@Path( "/parks" )
 @RequestScoped
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
+@Consumes( MediaType.APPLICATION_JSON )
+@Produces( MediaType.APPLICATION_JSON )
 // @RequestScoped
 public class ParkResource {
+
+    private final Logger logger = LoggerFactory.getLogger( getClass() );
 
     @Inject
     public ParkService parkService;
 
     @GET
-    @Operation(
-        summary = "List parks",
-        description = "List all the parks registered in the system"
-    )
+    @Operation( summary = "List parks", description = "List all the parks registered in the system" )
+    @Produces( MediaType.APPLICATION_JSON )
+    // @Fallback(fallbackMethod = "allSessionsFallback", applyOn = { Exception.class
+    // })
     public Set<Park> list() {
         return parkService.list();
     }
 
     @Transactional
+    @Operation( summary = "Add a new Park" )
     @POST
-    public Park create(Park park) {
-        return parkService.create(park);
+    public Park create( Park park ) {
+        return parkService.create( park );
     }
 
     @Transactional
+    @Operation( summary = "Delete an existing Park" )
     @DELETE
     // @RolesAllowed({ "Admin" })
-    @Path("{uuid}")
-    public Set<Park> delete(@PathParam("uuid") String uuid) {
-        if (!parkService.delete(uuid)) {
+    @Path( "{uuid}" )
+    public Set<Park> delete( @PathParam( "uuid" ) String uuid ) {
+        if ( !parkService.delete( uuid ) ) {
             throw new NotFoundException();
         }
         return parkService.list();
     }
 
-    // @Transactional
-    // @PUT
-    // @Path("/{id}")
-    // public void update(Park park) {
-    //     parkService.update(park);
-    // }
-
     @Transactional
     @PUT
-    @Path("")
-    @RolesAllowed({"Admin"})
-    public void update(Park park) {
-        if (park.getUuid() == null) {
+    @Path( "" )
+    @RolesAllowed( { "Admin" } )
+    @Operation( summary = "Update an existing park" )
+    @Consumes( MediaType.APPLICATION_JSON )
+    @Produces( MediaType.APPLICATION_JSON )
+    @Bulkhead( 1 )
+    public void update( Park park ) {
+        if ( park.getUuid() == null ) {
             throw new NotFoundException();
         }
 
-        Log.info("New park size " + park.getSize());
+        Log.info( "New park size " + park.getSize() );
 
-        parkService.update(park);
+        parkService.update( park );
     }
 }

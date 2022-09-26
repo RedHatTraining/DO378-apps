@@ -2,11 +2,18 @@ package com.redhat.training.ithaca.entities;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class WeatherWarning {
+    
     public String city;
     public WeatherWarningType type;
     public WeatherWarningLevel level;
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
     public LocalDateTime startTime;
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
     public LocalDateTime endTime;
 
     public WeatherWarning() {
