@@ -1,33 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CaretDownIcon from "@patternfly/react-icons/dist/esm/icons/caret-down-icon";
-import { ActionGroup, Avatar, Button, Dropdown, DropdownGroup, DropdownItem, DropdownToggle, Form, FormGroup, Modal, ModalVariant, TextInput } from "@patternfly/react-core";
+import {
+    ActionGroup, Avatar, Button, Dropdown, DropdownGroup,
+    DropdownItem, DropdownToggle, Form, FormGroup, Modal,
+    ModalVariant, TextInput
+} from "@patternfly/react-core";
 
 import avatarImg from "@app/images/avatarImg.svg";
-import { ParkForm } from "./ParkForm";
+import * as AuthService from "@app/services/AuthService";
 
-export function AuthMenu(): JSX.Element {
+
+interface AuthMenuProps {
+    onAuthenticationSuccess: ({ username }: { username: string }) => unknown,
+    onAuthenticationFailure: ({ error }) => unknown
+}
+
+export function AuthMenu(props: AuthMenuProps): JSX.Element {
     const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [usernameInput, setUsernameInput] = useState<string>("");
+    const [passwordInput, setPasswordInput] = useState<string>("");
+    const [authenticatedUsername, setAuthenticatedUsername] = useState<string>("");
+
+    useEffect(() => {
+        setAuthenticatedUsername(AuthService.getUsername() || "");
+    }, []);
 
     const dropdownItems = [
         <DropdownGroup key="auth-dropdown">
-            <DropdownItem key="dropdown-login" component="button" isPlainText>
-                <React.Fragment>
-                    <Button variant="primary" onClick={toggleLoginModal}>
-                        Log in
-                    </Button>
-                </React.Fragment>
-            </DropdownItem>
-            <DropdownItem key="dropdown-logout" component="button" isPlainText>
-                Log out
-            </DropdownItem>
+            {!userIsAuthenticated() && <DropdownItem key="dropdown-login" component="button" isPlainText>
+                    <a onClick={toggleLoginModal}>Log in</a>
+            </DropdownItem>}
+            {userIsAuthenticated() && <DropdownItem key="dropdown-logout" component="button" isPlainText>
+            <a onClick={logOut}>Log out</a>
+            </DropdownItem>}
         </DropdownGroup>
     ];
 
-    function submitLoginForm() {
-        // TODO
+
+    function userIsAuthenticated() {
+        return !!authenticatedUsername
+    }
+
+    function logOut() {
+        AuthService.logOut();
+        setAuthenticatedUsername("");
+    }
+
+    function submitLoginForm(event) {
+        AuthService.login(usernameInput, passwordInput)
+            .then((authenticated) => {
+                if (authenticated) {
+                    setAuthenticatedUsername(usernameInput);
+                    props.onAuthenticationSuccess({ username: usernameInput })
+                    setUsernameInput("");
+                    setPasswordInput("")
+                } else {
+                    throw new Error("Invalid credentials");
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                console.log(`Error happened when trying to log in: ${error}`);
+                props.onAuthenticationFailure(error);
+            })
+            .finally(() => {
+                setIsLoginModalOpen(false);
+            });
+
+        event.preventDefault();
+
     }
 
     function toggleLoginModal() {
@@ -55,7 +97,7 @@ export function AuthMenu(): JSX.Element {
                         toggleIndicator={CaretDownIcon}
                         icon={<Avatar src={avatarImg} alt="avatar"></Avatar>}
                     >
-                        Guest
+                        {authenticatedUsername || "Guest"}
                     </DropdownToggle>
                 }
                 isOpen={isDropdownOpen}
@@ -69,10 +111,10 @@ export function AuthMenu(): JSX.Element {
             >
                 <Form onSubmit={submitLoginForm}>
                     <FormGroup label="Username" isRequired>
-                        <TextInput id="auth-login-username-input" isRequired value={username} onChange={setUsername}></TextInput>
+                        <TextInput id="auth-login-username-input" isRequired value={usernameInput} onChange={setUsernameInput}></TextInput>
                     </FormGroup>
                     <FormGroup label="Password" isRequired>
-                        <TextInput id="auth-login-password-input" type="password" isRequired value={password} onChange={setPassword}></TextInput>
+                        <TextInput id="auth-login-password-input" type="password" isRequired value={passwordInput} onChange={setPasswordInput}></TextInput>
                     </FormGroup>
                     <ActionGroup>
                         <Button variant="primary" type="submit">Save</Button>
@@ -80,7 +122,7 @@ export function AuthMenu(): JSX.Element {
                     </ActionGroup>
                 </Form>
             </Modal>
-        </React.Fragment>
+        </React.Fragment >
 
     );
 }

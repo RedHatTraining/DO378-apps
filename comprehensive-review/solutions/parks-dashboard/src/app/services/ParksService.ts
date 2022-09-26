@@ -1,5 +1,6 @@
 import { Park } from "@app/models/Park";
 import { getRESTClient, ServiceName } from "./API";
+import { getToken } from "./AuthService";
 
 const API = getRESTClient(ServiceName.BACKEND);
 
@@ -9,5 +10,7 @@ export function all(): Promise<Park[]> {
 }
 
 export function update(park: Park): Promise<void> {
-    return API.url("parks").put(park);
+    return API.url("parks")
+        .auth(`Bearer ${getToken()}`)
+        .put(park);
 }

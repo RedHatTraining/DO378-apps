@@ -18,6 +18,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 
 import io.quarkus.logging.Log;
 
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.BadRequestException;
@@ -68,6 +69,7 @@ public class ParkResource {
     @Transactional
     @PUT
     @Path("")
+    @RolesAllowed({"Admin"})
     public void update(Park park) {
         if (park.getUuid() == null) {
             throw new NotFoundException();
