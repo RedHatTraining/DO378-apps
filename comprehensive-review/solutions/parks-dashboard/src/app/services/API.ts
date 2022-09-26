@@ -1,4 +1,3 @@
-import { resolve } from "webpack.dev";
 import wretch from "wretch";
 
 export enum ServiceName {
@@ -7,7 +6,7 @@ export enum ServiceName {
 
 // these environment variables are only evaluated/available at build time
 const serviceUrlMap: { [key in ServiceName]: string } = {
-    [ServiceName.BACKEND]: process.env.BACKEND ?? "http://localhost:8081/",
+    [ServiceName.BACKEND]: process.env.BACKEND ?? "http://localhost:8080/",
 };
 console.log("Backend URL:", serviceUrlMap);
 

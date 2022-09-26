@@ -3,72 +3,73 @@ import { PageSection, Title, PageSectionVariants, Card,
     CardBody, CardTitle, Grid, GridItem, Gallery,
     GalleryItem, Text, TextVariants, Skeleton
 } from "@patternfly/react-core";
-import { subscribeToGardenTemperatureEvents,
-    subscribeToGardenHumidityEvents, subscribeToGardenWindEvents,
-    subscribeToGardenStatuses, subscribeToSensorMeasurements
-} from "../services/GardenServerEvents";
+// import { subscribeToGardenTemperatureEvents,
+//     subscribeToGardenHumidityEvents, subscribeToGardenWindEvents,
+//     subscribeToGardenStatuses, subscribeToSensorMeasurements
+// } from "../services/ParkServerEvents";
+import * as ParksService from "@app/services/ParksService";
 import { waitForLiveness } from "../services/LivenessService";
-import { GardenStatus } from "@app/models/GardenStatus";
-import { GardenStatusCard } from "./GardenStatusCard";
+import { Park } from "@app/models/Park";
+import { ParkCard } from "./ParkCard";
 import { SensorMeasurement } from "@app/models/SensorMeasurement";
 import { RecentList } from "@app/models/RecentList";
 import { Caption, TableComposable, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
-import { GardenEvent } from "@app/models/GardenEvent";
+import { ParkEvent } from "@app/models/ParkEvent";
 
 // Icons list: https://patternfly-react.surge.sh/icons/
-import LeafIcon from "@patternfly/react-icons/dist/esm/icons/leaf-icon";
+import TreeIcon from "@patternfly/react-icons/dist/esm/icons/tree-icon";
 import OutLinedCharBarIcon from "@patternfly/react-icons/dist/esm/icons/outlined-chart-bar-icon";
 import ThermometerHalfIcon from "@patternfly/react-icons/dist/esm/icons/thermometer-half-icon";
-import InfoCircleIcon from "@patternfly/react-icons/dist/esm/icons/info-circle-icon";
 
-
-interface StatusByGarden {
-    [gardenName: string]: GardenStatus
-}
 
 
 export function Dashboard(): JSX.Element {
     const [ready, setReady] = useState<boolean>(false);
-    const [gardenStatuses, setGardenStatuses] = useState<StatusByGarden>({});
+    const [parks, setParks] = useState<Park[]>([]);
     const [sensorMeasurements, setSensorMeasurements] = useState<RecentList<SensorMeasurement>>(new RecentList());
-    const [gardenEvents, setGardenEvents] = useState<RecentList<GardenEvent>>(new RecentList());
+    const [gardenEvents, setGardenEvents] = useState<RecentList<ParkEvent>>(new RecentList());
 
     useEffect(() => {
         waitForLiveness()
             .then(() => {
-                getGardenStatuses();
-                getGardenEvents();
-                getSensorMeasurements();
+                getParks();
+                // getGardenEvents();
+                // getSensorMeasurements();
                 setReady(true);
             });
     }, []);
 
-    function getGardenStatuses() {
-        subscribeToGardenStatuses((gardenStatus) => {
-            setGardenStatuses(previous => ({
-                ...previous,
-                [gardenStatus.gardenName]: gardenStatus
-            }));
-        });
+    async function getParks() {
+
+        const parks = await ParksService.all();
+
+        setParks(parks);
+
+        // subscribeToGardenStatuses((gardenStatus) => {
+        //     setGardenStatuses(previous => ({
+        //         ...previous,
+        //         [gardenStatus.gardenName]: gardenStatus
+        //     }));
+        // });
     }
 
-    function getGardenEvents() {
-        subscribeToGardenTemperatureEvents((event) => {
-            setGardenEvents(previous => RecentList.createFrom(previous).add(event));
-        });
-        subscribeToGardenHumidityEvents((event) => {
-            setGardenEvents(previous => RecentList.createFrom(previous).add(event));
-        });
-        subscribeToGardenWindEvents((event) => {
-            setGardenEvents(previous => RecentList.createFrom(previous).add(event));
-        });
-    }
+    // function getGardenEvents() {
+    //     subscribeToGardenTemperatureEvents((event) => {
+    //         setGardenEvents(previous => RecentList.createFrom(previous).add(event));
+    //     });
+    //     subscribeToGardenHumidityEvents((event) => {
+    //         setGardenEvents(previous => RecentList.createFrom(previous).add(event));
+    //     });
+    //     subscribeToGardenWindEvents((event) => {
+    //         setGardenEvents(previous => RecentList.createFrom(previous).add(event));
+    //     });
+    // }
 
-    function getSensorMeasurements() {
-        subscribeToSensorMeasurements((measurement) => {
-            setSensorMeasurements(previous => RecentList.createFrom(previous).add(measurement));
-        });
-    }
+    // function getSensorMeasurements() {
+    //     subscribeToSensorMeasurements((measurement) => {
+    //         setSensorMeasurements(previous => RecentList.createFrom(previous).add(measurement));
+    //     });
+    // }
 
     function renderGardenEventsTable() {
         return <TableComposable
@@ -86,7 +87,7 @@ export function Dashboard(): JSX.Element {
                 </Tr>
             </Thead>
             <Tbody>
-                {gardenEvents.getItems().map(renderGardenEventRow)}
+                {gardenEvents.getItems().slice(0,10).map(renderGardenEventRow)}
             </Tbody>
         </TableComposable>;
     }
@@ -112,14 +113,14 @@ export function Dashboard(): JSX.Element {
         </TableComposable>;
     }
 
-    function renderGardenStatusGallery() {
+    function renderParksGallery() {
         return <Gallery hasGutter minWidths={{
             md: "300px",
             lg: "300px",
             xl: "400px"
         }}>
-            {Object.values(gardenStatuses).map(gardenStatus => <GalleryItem key={gardenStatus.gardenName}>
-                <GardenStatusCard gardenStatus={gardenStatus}></GardenStatusCard>
+            {parks.map(p => <GalleryItem key={p.uuid}>
+                <ParkCard park={p} onParkUpdated={getParks}></ParkCard>
             </GalleryItem>)}
         </Gallery>;
     }
@@ -146,8 +147,7 @@ export function Dashboard(): JSX.Element {
     }
 
 
-    function renderGardenEventRow(e: GardenEvent) {
-        console.log(e);
+    function renderGardenEventRow(e: ParkEvent) {
         const tableIndex = `${e.sensorId}_${e.gardenName}_${e.timestamp.toISOString()}`;
         return (<Tr key={tableIndex}>
             <Td key={`${tableIndex}_name`} dataLabel="Type">
@@ -170,17 +170,17 @@ export function Dashboard(): JSX.Element {
 
     return (<React.Fragment>
         <PageSection variant={PageSectionVariants.light}>
-            <Title headingLevel="h1" size="lg">
-                <LeafIcon size="md" color="#22aa22" />&nbsp;
-                Garden Status&nbsp;
+            <Title title="Parks" headingLevel="h1" size="lg">
+                <TreeIcon size="md" color="#22aa22" />&nbsp;
+                Parks&nbsp;
             </Title>
             <Text component={TextVariants.small}>
-                General data for each garden, aggregated in time windows (garden-status-events).
+                General data for each park.
             </Text>
         </PageSection>
 
         <PageSection variant={PageSectionVariants.light}>
-            {ready ? renderGardenStatusGallery() : <Skeleton />}
+            {ready ? renderParksGallery() : <Skeleton />}
         </PageSection>
 
         <PageSection >
@@ -207,7 +207,7 @@ export function Dashboard(): JSX.Element {
                     </Card>
                 </GridItem>
                 <GridItem span={6}>
-                    <Card>
+                    {/* <Card>
                         <CardTitle>
                             <InfoCircleIcon />
                             &nbsp;Garden Events
@@ -215,7 +215,7 @@ export function Dashboard(): JSX.Element {
                         <CardBody>
                             {ready ? renderGardenEventsTable() : <Skeleton />}
                         </CardBody>
-                    </Card>
+                    </Card> */}
                 </GridItem>
             </Grid>
         </PageSection>

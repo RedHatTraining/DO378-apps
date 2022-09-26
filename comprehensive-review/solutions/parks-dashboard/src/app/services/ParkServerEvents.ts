@@ -1,16 +1,16 @@
-import { GardenEvent } from "@app/models/GardenEvent";
+import { ParkEvent } from "@app/models/ParkEvent";
 import { SensorMeasurement } from "@app/models/SensorMeasurement";
-import { GardenStatus } from "../models/GardenStatus";
+import { Park } from "../models/Park";
 import { ServiceName, getSSEClient } from "./API";
 
 const sse = getSSEClient(ServiceName.BACKEND);
 
-export function subscribeToGardenStatuses(onEvent: (status: GardenStatus) => void): void {
-    sse.open<GardenStatus>("/garden/statuses", onEvent);
+export function subscribeToGardenStatuses(onEvent: (status: Park) => void): void {
+    sse.open<Park>("/garden/statuses", onEvent);
 }
 
 
-interface ApiGardenEvent {
+interface ApiParkEvent {
     name: string,
     gardenName: string,
     value: number,
@@ -18,8 +18,8 @@ interface ApiGardenEvent {
     timestamp: number
 }
 
-export function subscribeToGardenTemperatureEvents(onEvent: (e: GardenEvent) => void): void {
-    sse.open<ApiGardenEvent>("/garden/events/temperature", (receivedEvent: ApiGardenEvent) => {
+export function subscribeToGardenTemperatureEvents(onEvent: (e: ParkEvent) => void): void {
+    sse.open<ApiParkEvent>("/garden/events/temperature", (receivedEvent: ApiParkEvent) => {
         const measurement = {
             ...receivedEvent,
             timestamp: new Date(receivedEvent.timestamp)
@@ -27,8 +27,8 @@ export function subscribeToGardenTemperatureEvents(onEvent: (e: GardenEvent) => 
         onEvent(measurement);
     });
 }
-export function subscribeToGardenHumidityEvents(onEvent: (e: GardenEvent) => void): void {
-    sse.open<ApiGardenEvent>("/garden/events/humidity", (receivedEvent: ApiGardenEvent) => {
+export function subscribeToGardenHumidityEvents(onEvent: (e: ParkEvent) => void): void {
+    sse.open<ApiParkEvent>("/garden/events/humidity", (receivedEvent: ApiParkEvent) => {
         const measurement = {
             ...receivedEvent,
             timestamp: new Date(receivedEvent.timestamp)
@@ -37,8 +37,8 @@ export function subscribeToGardenHumidityEvents(onEvent: (e: GardenEvent) => voi
     });
 }
 
-export function subscribeToGardenWindEvents(onEvent: (e: GardenEvent) => void): void {
-    sse.open<ApiGardenEvent>("/garden/events/wind", (receivedEvent: ApiGardenEvent) => {
+export function subscribeToGardenWindEvents(onEvent: (e: ParkEvent) => void): void {
+    sse.open<ApiParkEvent>("/garden/events/wind", (receivedEvent: ApiParkEvent) => {
         const measurement = {
             ...receivedEvent,
             timestamp: new Date(receivedEvent.timestamp)
