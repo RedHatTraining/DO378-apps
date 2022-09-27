@@ -5,7 +5,7 @@ import {
     DescriptionListTerm, DescriptionListDescription,
     CardHeader, CardHeaderMain, Alert, CardFooter, Button, Modal, ModalVariant
 } from "@patternfly/react-core";
-import { Park } from "@app/models/Park";
+import { Park, ParkStatus } from "@app/models/Park";
 import * as ParksService from "@app/services/ParksService";
 
 import garden0 from "@app/images/garden_0.jpg";
@@ -45,6 +45,27 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
         onParkUpdated();
     }
 
+    function openPark(park: Park) {
+        ParksService.open(park).then(() => onParkUpdated());
+    }
+
+    function closePark(park: Park) {
+        const result = ParksService.close(park);
+        result.then(() => onParkUpdated())
+    }
+
+
+    function renderOpenParkButton(park: Park) {
+        return <Button variant="primary" onClick={() => openPark(park)}>
+            Open Park
+        </Button>
+    }
+    function renderCloseParkButton(park: Park) {
+        return <Button variant="warning" onClick={() => closePark(park)}>
+            Close Park
+        </Button>
+    }
+
 
     return (<Card isFlat>
         <CardHeader>
@@ -73,7 +94,8 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
             </DescriptionList>
         </CardBody>
         <CardFooter>
-            <React.Fragment>
+            { park.status == ParkStatus.OPEN ? renderCloseParkButton(park) : renderOpenParkButton(park) }
+            {/* <React.Fragment>
                 <Button variant="primary" onClick={toggleModal}>
                     Manage
                 </Button>
@@ -85,7 +107,7 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
                 >
                     <ParkForm park={park} onSubmit={editPark}></ParkForm>
                 </Modal>
-            </React.Fragment>
+            </React.Fragment> */}
         </CardFooter>
     </Card>);
 }

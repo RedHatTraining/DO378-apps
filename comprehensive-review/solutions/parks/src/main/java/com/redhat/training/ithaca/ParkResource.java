@@ -68,12 +68,10 @@ public class ParkResource {
 
     @Transactional
     @PUT
-    @Path( "" )
+    @Path( "/" )
     @RolesAllowed( { "Admin" } )
     @Operation( summary = "Update an existing park" )
-    @Consumes( MediaType.APPLICATION_JSON )
-    @Produces( MediaType.APPLICATION_JSON )
-    @Bulkhead( 1 )
+    // @Bulkhead( 1 )
     public void update( Park park ) {
         if ( park.getUuid() == null ) {
             throw new NotFoundException();
