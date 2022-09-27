@@ -1,6 +1,6 @@
 export enum ParkStatus {
     OPEN = "OPEN",
-    CLOSED = "OPEN"
+    CLOSED = "CLOSED"
 }
 
 export interface Park {

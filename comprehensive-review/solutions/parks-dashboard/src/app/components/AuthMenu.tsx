@@ -23,7 +23,10 @@ export function AuthMenu(props: AuthMenuProps): JSX.Element {
     const [authenticatedUsername, setAuthenticatedUsername] = useState<string>("");
 
     useEffect(() => {
-        setAuthenticatedUsername(AuthService.getUsername() || "");
+        AuthService.getUsername()
+            .then(username => {
+                setAuthenticatedUsername(username || "");
+            });
     }, []);
 
     const dropdownItems = [

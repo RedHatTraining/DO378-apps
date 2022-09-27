@@ -24,5 +24,10 @@ export function update(park: Park): Promise<void> {
     return API.url("parks")
         .auth(`Bearer ${getToken()}`)
         .put(park)
+        .unauthorized(error => {
+            throw new Error(
+                "You must be logged in as an admin to perform this action. " +
+                `(${error.response.status} ${error.response.statusText})`);
+        })
         .text();
 }

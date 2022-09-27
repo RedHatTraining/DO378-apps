@@ -24,45 +24,75 @@ const images = {
 
 interface ParkCardProps {
     park: Park,
-    onParkUpdated: () => unknown
+    onParkUpdated: () => Promise<unknown>
 }
 
 export function ParkCard(props: ParkCardProps): JSX.Element {
     const { park, onParkUpdated } = props;
 
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
+    const [isParkUpdating, setIsParkUpdating] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
-    function toggleModal() {
-        setModalOpen(isModalOpen => !isModalOpen);
-    }
+    // function toggleModal() {
+    //     setModalOpen(isModalOpen => !isModalOpen);
+    // }
 
-    async function editPark({name, city, size}: {name: string, city: string, size: number}) {
-        const newPark = { ...park, name, city, size };
+    // async function editPark({ name, city, size }: { name: string, city: string, size: number }) {
+    //     const newPark = { ...park, name, city, size };
 
-        await ParksService.update(newPark);
+    //     await ParksService.update(newPark);
 
-        toggleModal();
-        onParkUpdated();
-    }
+    //     toggleModal();
+    //     onParkUpdated();
+    // }
 
     function openPark(park: Park) {
-        ParksService.open(park).then(() => onParkUpdated());
+        setIsParkUpdating(true);
+        setErrorMessage("");
+
+        ParksService.open(park)
+            .then(() => onParkUpdated())
+            .catch((error) => {
+                setErrorMessage(error.message);
+                setTimeout(() => setErrorMessage(""), 5000);
+            })
+            .finally(() => setIsParkUpdating(false));
     }
 
     function closePark(park: Park) {
-        const result = ParksService.close(park);
-        result.then(() => onParkUpdated())
+        setIsParkUpdating(true);
+        setErrorMessage("");
+
+        ParksService.close(park)
+            .then(() => onParkUpdated())
+            .catch((error) => {
+                setErrorMessage(error.message);
+                setTimeout(() => setErrorMessage(""), 5000);
+            })
+            .finally(() => setIsParkUpdating(false));
     }
+
 
 
     function renderOpenParkButton(park: Park) {
-        return <Button variant="primary" onClick={() => openPark(park)}>
-            Open Park
+        return <Button
+            variant="primary"
+            isDisabled={isParkUpdating}
+            spinnerAriaValueText={isParkUpdating ? "Opening" : undefined}
+            isLoading={isParkUpdating}
+            onClick={() => openPark(park)}>
+            {isParkUpdating ? "Opening...": "Open Park"}
         </Button>
     }
     function renderCloseParkButton(park: Park) {
-        return <Button variant="warning" onClick={() => closePark(park)}>
-            Close Park
+        return <Button
+            variant="warning"
+            isDisabled={isParkUpdating}
+            spinnerAriaValueText={isParkUpdating ? "Closing" : undefined}
+            isLoading={isParkUpdating}
+            onClick={() => closePark(park)}>
+            {isParkUpdating ? "Closing...": "Close Park"}
         </Button>
     }
 
@@ -94,7 +124,9 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
             </DescriptionList>
         </CardBody>
         <CardFooter>
-            { park.status == ParkStatus.OPEN ? renderCloseParkButton(park) : renderOpenParkButton(park) }
+
+            {park.status == ParkStatus.OPEN ? renderCloseParkButton(park) : renderOpenParkButton(park)}
+            {errorMessage && <Alert variant="danger" title={errorMessage} />}
             {/* <React.Fragment>
                 <Button variant="primary" onClick={toggleModal}>
                     Manage
