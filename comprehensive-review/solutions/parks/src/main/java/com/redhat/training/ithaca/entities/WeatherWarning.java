@@ -1,4 +1,4 @@
-package com.redhat.training.ithaca;
+package com.redhat.training.ithaca.entities;
 
 import java.time.LocalDateTime;
 

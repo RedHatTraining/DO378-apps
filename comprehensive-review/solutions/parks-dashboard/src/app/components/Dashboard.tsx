@@ -40,57 +40,16 @@ export function Dashboard(): JSX.Element {
     }, []);
 
     async function getParks() {
-
         const parks = await ParksService.all();
 
+        sortParks(parks);
         setParks(parks);
-
-        // subscribeToGardenStatuses((gardenStatus) => {
-        //     setGardenStatuses(previous => ({
-        //         ...previous,
-        //         [gardenStatus.gardenName]: gardenStatus
-        //     }));
-        // });
     }
 
-    // function getGardenEvents() {
-    //     subscribeToGardenTemperatureEvents((event) => {
-    //         setGardenEvents(previous => RecentList.createFrom(previous).add(event));
-    //     });
-    //     subscribeToGardenHumidityEvents((event) => {
-    //         setGardenEvents(previous => RecentList.createFrom(previous).add(event));
-    //     });
-    //     subscribeToGardenWindEvents((event) => {
-    //         setGardenEvents(previous => RecentList.createFrom(previous).add(event));
-    //     });
-    // }
-
-    // function getSensorMeasurements() {
-    //     subscribeToSensorMeasurements((measurement) => {
-    //         setSensorMeasurements(previous => RecentList.createFrom(previous).add(measurement));
-    //     });
-    // }
-
-    function renderGardenEventsTable() {
-        return <TableComposable
-            aria-label="Events table"
-            variant="compact"
-            borders={true}>
-            <Caption>Real-time events generated after processing sensor measurements (garden-low-temperature-events, garden-low-humidity-events, garden-strong-wind-events)</Caption>
-            <Thead>
-                <Tr>
-                    <Th key={0}>Event</Th>
-                    <Th key={1}>Garden</Th>
-                    <Th key={2}>Value</Th>
-                    <Th key={3}>Sensor id</Th>
-                    <Th key={4}>When</Th>
-                </Tr>
-            </Thead>
-            <Tbody>
-                {gardenEvents.getItems().slice(0,10).map(renderGardenEventRow)}
-            </Tbody>
-        </TableComposable>;
+    function sortParks(parks: Park[]) {
+        parks.sort((p1, p2) => p1.name.localeCompare(p2.name));
     }
+
 
     function renderSensorMeasurementsTable() {
         return <TableComposable
