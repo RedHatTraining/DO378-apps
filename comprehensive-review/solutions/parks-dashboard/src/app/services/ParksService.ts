@@ -11,13 +11,11 @@ export function all(): Promise<Park[]> {
 }
 
 export function open(park: Park): Promise<void> {
-    park.status = ParkStatus.OPEN;
-    return update(park);
+    return update({ ...park, status: ParkStatus.OPEN });
 }
 
 export function close(park: Park): Promise<void> {
-    park.status = ParkStatus.CLOSED;
-    return update(park);
+    return update({ ...park, status: ParkStatus.CLOSED });
 }
 
 export function update(park: Park): Promise<void> {

@@ -16,8 +16,9 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import org.eclipse.microprofile.jwt.Claims;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
-import com.redhat.training.ithaca.services.JwtService;
+import com.redhat.training.ithaca.services.JwtGenerator;
 import com.redhat.training.ithaca.services.UserService;
 
 import io.smallrye.jwt.build.Jwt;
@@ -42,16 +43,19 @@ class UserResponse {
 public class AuthResource {
 
     @Inject
+    JsonWebToken jwt;
+
+    @Inject
     UserService userService;
 
     @Inject
-    JwtService jwtService;
+    JwtGenerator jwtService;
 
     @POST
     @Path("/login")
     public Response login(UserCredentials credentials) {
         if (userService.authenticate(credentials.username, credentials.password)) {
-            var token = jwtService.createTokenForUser(credentials.username);
+            var token = jwtService.generateForUser(credentials.username);
             return Response.ok(token).build();
         } else {
             return Response.status(Status.UNAUTHORIZED).build();
@@ -63,7 +67,7 @@ public class AuthResource {
     @Path( "/user" )
     @RolesAllowed( { "Admin", "User" } )
     public UserResponse user(@Context SecurityContext context) {
-        if (!context.getUserPrincipal().getName().equals(jwtService.getToken().getName())) {
+        if (!context.getUserPrincipal().getName().equals(jwt.getName())) {
             throw new InternalServerErrorException("Principal and JsonWebToken names do not match");
         }
 

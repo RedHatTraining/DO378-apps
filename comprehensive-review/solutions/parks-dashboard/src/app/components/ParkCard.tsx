@@ -51,26 +51,27 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
         setIsParkUpdating(true);
         setErrorMessage("");
 
-        ParksService.open(park)
-            .then(() => onParkUpdated())
-            .catch((error) => {
-                setErrorMessage(error.message);
-                setTimeout(() => setErrorMessage(""), 5000);
-            })
-            .finally(() => setIsParkUpdating(false));
+        ParksService
+            .open(park)
+                .catch(showParkUpdateError)
+                .then(onParkUpdated)
+                .finally(() => setIsParkUpdating(false));
     }
 
     function closePark(park: Park) {
         setIsParkUpdating(true);
         setErrorMessage("");
 
-        ParksService.close(park)
-            .then(() => onParkUpdated())
-            .catch((error) => {
-                setErrorMessage(error.message);
-                setTimeout(() => setErrorMessage(""), 5000);
-            })
-            .finally(() => setIsParkUpdating(false));
+        ParksService
+            .close(park)
+                .catch(showParkUpdateError)
+                .then(onParkUpdated)
+                .finally(() => setIsParkUpdating(false));
+    }
+
+    function showParkUpdateError(error: Error) {
+        setErrorMessage(error.message);
+        setTimeout(() => setErrorMessage(""), 5000);
     }
 
 
