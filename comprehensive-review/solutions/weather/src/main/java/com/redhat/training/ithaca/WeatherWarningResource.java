@@ -73,5 +73,4 @@ public class WeatherWarningResource {
     public WeatherWarning create(WeatherWarning warning) {
         return weatherService.create(warning);
     }
-
 }

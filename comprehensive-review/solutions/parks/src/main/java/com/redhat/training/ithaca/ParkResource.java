@@ -30,19 +30,16 @@ import org.eclipse.microprofile.faulttolerance.Bulkhead;
 @RequestScoped
 @Consumes( MediaType.APPLICATION_JSON )
 @Produces( MediaType.APPLICATION_JSON )
-// @RequestScoped
 public class ParkResource {
 
     private final Logger logger = LoggerFactory.getLogger( getClass() );
 
     @Inject
     public ParkService parkService;
-
+    
     @GET
     @Operation( summary = "List parks", description = "List all the parks registered in the system" )
     @Produces( MediaType.APPLICATION_JSON )
-    // @Fallback(fallbackMethod = "allSessionsFallback", applyOn = { Exception.class
-    // })
     public Set<Park> list() {
         return parkService.list();
     }
@@ -82,5 +79,13 @@ public class ParkResource {
         Log.info( "New park size " + park.getSize() );
 
         parkService.update( park );
+    }
+
+    @GET
+    @Path("{uuid}")
+    @Operation( summary = "Get park by UUID" )
+    @Produces( MediaType.APPLICATION_JSON )
+    public Park getParkByUuid( @PathParam( "uuid" ) String Uuid ) {
+        return parkService.getParkByUuid(Uuid);
     }
 }

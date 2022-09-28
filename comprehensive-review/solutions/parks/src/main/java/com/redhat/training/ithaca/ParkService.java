@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.NotFoundException;
 
 import com.redhat.training.ithaca.Park.Status;
 
@@ -14,10 +15,11 @@ import com.redhat.training.ithaca.Park.Status;
 public class ParkService {
     private Set<Park> parks = Collections.newSetFromMap(Collections.synchronizedMap(new HashMap<>()));
     private ParkIdGenerator generator = new ParkIdGenerator();
+    private Park newPark = new Park();
 
     @PostConstruct
     void initData() {
-        parks.add(new Park("Park Güell", 1000, "Barcelona", Status.OPEN));
+        parks.add(new Park("Park Güell", 1000, "Barcelona", Status.CLOSED));
         parks.add(new Park("Ibirapuera", 500, "São Paulo", Status.CLOSED));
     }
 
@@ -38,6 +40,18 @@ public class ParkService {
     public void update(Park park) {
         delete(park.getUuid());
         create(park);
+    }
+
+    public Park getParkByUuid (String Uuid) {
+       if(Uuid == null) {
+           throw new NotFoundException();
+       }
+       for(Park park : parks) {
+           if(park.getUuid().equals(Uuid)) {
+               newPark = park;
+           }
+       }
+       return newPark;
     }
 
     private static class ParkIdGenerator {

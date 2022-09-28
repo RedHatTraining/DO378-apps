@@ -11,10 +11,8 @@ import com.redhat.training.ithaca.entities.WeatherWarning;
 import com.redhat.training.ithaca.entities.WeatherWarningLevel;
 import com.redhat.training.ithaca.entities.WeatherWarningType;
 
-import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @ApplicationScoped
-@RegisterRestClient
 public class WeatherService {
 
     private Set<WeatherWarning> warnings = Collections.newSetFromMap(Collections.synchronizedMap(new HashMap<>()));
@@ -35,5 +33,4 @@ public class WeatherService {
         warnings.add(warning);
         return warning;
     }
-
 }

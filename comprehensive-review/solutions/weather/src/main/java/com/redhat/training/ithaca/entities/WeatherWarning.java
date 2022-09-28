@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class WeatherWarning {
-    
+
     public String city;
     public WeatherWarningType type;
     public WeatherWarningLevel level;

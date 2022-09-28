@@ -20,6 +20,30 @@ public class WeatherWarning {
         this.endTime = endTime;
     }
 
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setWarningType(WeatherWarningType type) {
+        this.type = type;
+    }
+
+    public WeatherWarningType getWarningType() {
+        return type;
+    }
+
+    public void setWarningLevel(WeatherWarningLevel level) {
+        this.level = level;
+    }
+
+    public WeatherWarningLevel getWarningLevel() {
+        return level;
+    }
+
     @Override
     public String toString() {
         return "WeatherWarning{" +
