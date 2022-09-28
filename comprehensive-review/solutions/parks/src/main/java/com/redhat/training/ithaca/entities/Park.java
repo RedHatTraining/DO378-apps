@@ -10,7 +10,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Entity
 public class Park extends PanacheEntity {
 
-    enum Status {
+    public enum Status {
         OPEN, CLOSED,
     }
 
