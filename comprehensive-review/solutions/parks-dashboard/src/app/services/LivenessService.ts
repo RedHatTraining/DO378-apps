@@ -1,6 +1,7 @@
 import { getRESTClient, ServiceName } from "./API";
 
 interface LivenessResponse {
+    status: string,
     checks: {
         status?: string
     }[]
@@ -9,7 +10,7 @@ interface LivenessResponse {
 const API = getRESTClient(ServiceName.BACKEND);
 
 function kafkaStreamsIsReady(data: LivenessResponse) {
-    return data.checks.some(check => check.status && check.status === "UP");
+    return data.status === "UP";
 }
 
 async function isAppReady() {
@@ -26,10 +27,10 @@ async function isAppReady() {
 export async function waitForLiveness(): Promise<boolean> {
     const ready = await isAppReady();
     if (ready) {
-        console.log("Kafka Streams app is ready!");
+        console.log("Parks service is ready!");
         return ready;
     } else {
-        console.log("Kafka Streams app not ready. Waiting...");
+        console.log("Parks service not ready. Waiting...");
         return new Promise(function(resolve) {
             setTimeout(function() {
                 resolve(waitForLiveness());

@@ -24,7 +24,6 @@ import org.eclipse.microprofile.faulttolerance.Bulkhead;
 @RequestScoped
 @Consumes( MediaType.APPLICATION_JSON )
 @Produces( MediaType.APPLICATION_JSON )
-// @RequestScoped
 public class ParkResource {
 
 
