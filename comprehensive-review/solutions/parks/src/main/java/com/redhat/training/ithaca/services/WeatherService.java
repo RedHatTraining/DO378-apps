@@ -1,4 +1,4 @@
-package com.redhat.training.ithaca;
+package com.redhat.training.ithaca.services;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -12,6 +12,10 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+
+import com.redhat.training.ithaca.entities.WeatherWarning;
+import com.redhat.training.ithaca.entities.WeatherWarningLevel;
+import com.redhat.training.ithaca.entities.WeatherWarningType;
 
 @RegisterRestClient
 @ApplicationScoped

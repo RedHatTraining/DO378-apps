@@ -20,14 +20,31 @@ export async function login(username: string, password: string): Promise<boolean
     return true;
 }
 
-export function getUsername(): string | null {
-    const token = getToken();
-    if (token !== null) {
-        const decoded = jose.decodeJwt(token);
-        return decoded.upn as string;
-    } else {
-        return null;
-    }
+interface UserResponse {
+    username: string
+}
+
+export async function getUsername(): Promise<string | null> {
+    const user = await API.url("auth/user")
+        .auth(`Bearer ${getToken()}`)
+        .get()
+        .unauthorized(() => {
+            logOut();
+            return { username: null };
+        })
+        .json<UserResponse>();
+
+    return user.username;
+
+
+
+    // const token = getToken();
+    // if (token !== null) {
+    //     const decoded = jose.decodeJwt(token);
+    //     return decoded.upn as string;
+    // } else {
+    //     return null;
+    // }
 }
 
 export function getToken(): string | null {

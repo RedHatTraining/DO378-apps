@@ -5,7 +5,7 @@ import {
     DescriptionListTerm, DescriptionListDescription,
     CardHeader, CardHeaderMain, Alert, CardFooter, Button, Modal, ModalVariant
 } from "@patternfly/react-core";
-import { Park } from "@app/models/Park";
+import { Park, ParkStatus } from "@app/models/Park";
 import * as ParksService from "@app/services/ParksService";
 
 import garden0 from "@app/images/garden_0.jpg";
@@ -24,25 +24,77 @@ const images = {
 
 interface ParkCardProps {
     park: Park,
-    onParkUpdated: () => unknown
+    onParkUpdated: () => Promise<unknown>
 }
 
 export function ParkCard(props: ParkCardProps): JSX.Element {
     const { park, onParkUpdated } = props;
 
     const [isModalOpen, setModalOpen] = useState<boolean>(false);
+    const [isParkUpdating, setIsParkUpdating] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
-    function toggleModal() {
-        setModalOpen(isModalOpen => !isModalOpen);
+    // function toggleModal() {
+    //     setModalOpen(isModalOpen => !isModalOpen);
+    // }
+
+    // async function editPark({ name, city, size }: { name: string, city: string, size: number }) {
+    //     const newPark = { ...park, name, city, size };
+
+    //     await ParksService.update(newPark);
+
+    //     toggleModal();
+    //     onParkUpdated();
+    // }
+
+    function openPark(park: Park) {
+        setIsParkUpdating(true);
+        setErrorMessage("");
+
+        ParksService
+            .open(park)
+                .catch(showParkUpdateError)
+                .then(onParkUpdated)
+                .finally(() => setIsParkUpdating(false));
     }
 
-    async function editPark({name, city, size}: {name: string, city: string, size: number}) {
-        const newPark = { ...park, name, city, size };
+    function closePark(park: Park) {
+        setIsParkUpdating(true);
+        setErrorMessage("");
 
-        await ParksService.update(newPark);
+        ParksService
+            .close(park)
+                .catch(showParkUpdateError)
+                .then(onParkUpdated)
+                .finally(() => setIsParkUpdating(false));
+    }
 
-        toggleModal();
-        onParkUpdated();
+    function showParkUpdateError(error: Error) {
+        setErrorMessage(error.message);
+        setTimeout(() => setErrorMessage(""), 5000);
+    }
+
+
+
+    function renderOpenParkButton(park: Park) {
+        return <Button
+            variant="primary"
+            isDisabled={isParkUpdating}
+            spinnerAriaValueText={isParkUpdating ? "Opening" : undefined}
+            isLoading={isParkUpdating}
+            onClick={() => openPark(park)}>
+            {isParkUpdating ? "Opening...": "Open Park"}
+        </Button>
+    }
+    function renderCloseParkButton(park: Park) {
+        return <Button
+            variant="warning"
+            isDisabled={isParkUpdating}
+            spinnerAriaValueText={isParkUpdating ? "Closing" : undefined}
+            isLoading={isParkUpdating}
+            onClick={() => closePark(park)}>
+            {isParkUpdating ? "Closing...": "Close Park"}
+        </Button>
     }
 
 
@@ -73,7 +125,10 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
             </DescriptionList>
         </CardBody>
         <CardFooter>
-            <React.Fragment>
+
+            {park.status == ParkStatus.OPEN ? renderCloseParkButton(park) : renderOpenParkButton(park)}
+            {errorMessage && <Alert variant="danger" title={errorMessage} />}
+            {/* <React.Fragment>
                 <Button variant="primary" onClick={toggleModal}>
                     Manage
                 </Button>
@@ -85,7 +140,7 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
                 >
                     <ParkForm park={park} onSubmit={editPark}></ParkForm>
                 </Modal>
-            </React.Fragment>
+            </React.Fragment> */}
         </CardFooter>
     </Card>);
 }

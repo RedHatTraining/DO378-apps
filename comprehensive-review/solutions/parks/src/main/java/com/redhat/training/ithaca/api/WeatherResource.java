@@ -1,4 +1,4 @@
-package com.redhat.training.ithaca;
+package com.redhat.training.ithaca.api;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -11,6 +11,9 @@ import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
+import com.redhat.training.ithaca.entities.Park;
+import com.redhat.training.ithaca.services.ParkGuard;
+
 @Path("/weather")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -20,16 +23,15 @@ public class WeatherResource {
     @Inject
     ParkGuard parkGuard;
 
-    @Inject
-    ParkService parkService;
-
     @GET
-    @Path( "{uuid}" )
+    @Path( "{id}" )
     @Operation( summary = "Get the Park status corresponding to the UUID" )
     @Produces( MediaType.APPLICATION_JSON )
-    public String getParkStatusByUuid(@PathParam( "uuid" ) String uuid) {
+    public String getParkStatusByUuid(@PathParam( "id" ) String id) {
 
-        String status = parkGuard.checkWeather(parkService.getParkByUuid(uuid));
+        Park p = Park.findById(id);
+
+        String status = parkGuard.checkWeather(p);
         return status;
     }
 }

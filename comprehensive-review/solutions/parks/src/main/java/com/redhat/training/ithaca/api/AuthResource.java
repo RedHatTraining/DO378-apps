@@ -1,7 +1,5 @@
 package com.redhat.training.ithaca.api;
 
-import java.util.Arrays;
-import java.util.HashSet;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
@@ -15,17 +13,24 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
-import org.eclipse.microprofile.jwt.Claims;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
-import com.redhat.training.ithaca.services.JwtService;
+import com.redhat.training.ithaca.services.JwtGenerator;
 import com.redhat.training.ithaca.services.UserService;
 
-import io.smallrye.jwt.build.Jwt;
 
 
 class UserCredentials {
 	public String username;
 	public String password;
+}
+
+class UserResponse {
+    public String username;
+
+    UserResponse(String username) {
+        this.username = username;
+    }
 }
 
 
@@ -34,19 +39,35 @@ class UserCredentials {
 public class AuthResource {
 
     @Inject
+    JsonWebToken jwt;
+
+    @Inject
     UserService userService;
 
     @Inject
-    JwtService jwtService;
+    JwtGenerator jwtService;
 
     @POST
     @Path("/login")
     public Response login(UserCredentials credentials) {
         if (userService.authenticate(credentials.username, credentials.password)) {
-            var token = jwtService.createTokenForUser(credentials.username);
+            var token = jwtService.generateForUser(credentials.username);
             return Response.ok(token).build();
         } else {
             return Response.status(Status.UNAUTHORIZED).build();
         }
+    }
+
+
+    @GET
+    @Path( "/user" )
+    @RolesAllowed( { "Admin", "User" } )
+    public UserResponse user(@Context SecurityContext context) {
+        if (!context.getUserPrincipal().getName().equals(jwt.getName())) {
+            throw new InternalServerErrorException("Principal and JsonWebToken names do not match");
+        }
+
+        String username = context.getUserPrincipal().getName();
+        return new UserResponse(username);
     }
 }

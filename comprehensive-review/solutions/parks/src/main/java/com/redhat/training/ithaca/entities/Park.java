@@ -1,21 +1,25 @@
-package com.redhat.training.ithaca;
+package com.redhat.training.ithaca.entities;
 
 import java.util.UUID;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
 public class Park extends PanacheEntity {
 
-    enum Status {
+    public enum Status {
         OPEN, CLOSED,
     }
 
     public String uuid;
-    private String name;
-    private Integer size;
-    private String city;
-    private Status status;
+    public String name;
+    public Integer size;
+    public String city;
+    @Enumerated(EnumType.STRING)
+    public Status status;
 
     public Park() {}
 
