@@ -1,30 +1,26 @@
 package com.redhat.training.ithaca;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Set;
+import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.Consumes;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
+
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import io.quarkus.logging.Log;
 
 import com.redhat.training.ithaca.entities.WeatherWarning;
-import com.redhat.training.ithaca.entities.WeatherWarningType;
-import com.redhat.training.ithaca.entities.WeatherWarningLevel;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 
-@Path("/warning")
-@Consumes(MediaType.APPLICATION_JSON)
+@Path("/warnings")
 @Produces(MediaType.APPLICATION_JSON)
 @ApplicationScoped
 public class WeatherWarningResource {
@@ -33,44 +29,41 @@ public class WeatherWarningResource {
     Emitter<WeatherWarning> emitter;
 
     @Inject
-    public WeatherService weatherService;
+    public WeatherWarningsRepository repository;
 
-    @GET
-    @Path("/simulate")
-    public WeatherWarning simulate() {
-        var warning = new WeatherWarning(
-                "Brussels",
-                WeatherWarningType.Rain,
-                WeatherWarningLevel.Orange,
-                LocalDateTime.now(),
-                LocalDateTime.now().plus( 1, ChronoUnit.DAYS ) );
-        emitter.send( warning );
-
-        Log.info("Emitted " + warning);
-
-        return warning;
-    }
-
-    @GET
-    @Path("/alerts")
-    @Operation(
-        summary = "List weather warning alerts",
-        description = "List all the warnings alerts."
-    )
-    @Produces(MediaType.APPLICATION_JSON)
-    public Set<WeatherWarning> listAll() {
-        return weatherService.listAll();
-    }
-
-    @Transactional
     @POST
+    @Path("/simulation")
     @Operation(
-        summary = "Add a new Warning alert",
-        description = "Adding a new warning"
+        summary = "Create a new weather simulation",
+        description = "Start a weather simulation that produces random alerts."
     )
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public WeatherWarning create(WeatherWarning warning) {
-        return weatherService.create(warning);
+    public void simulate() {
+        repository.clear();
+
+        Log.info("Starting new simulation");
+        for(var warning:  WeatherSimulation.run()) {
+            repository.add(warning);
+            emitter.send(warning);
+            Log.info("Emitted " + warning);
+        }
+    }
+
+    @GET
+    @Operation(
+        summary = "List weather warnings",
+        description = "List all the active warnings."
+    )
+    public List<WeatherWarning> listAll() {
+        return repository.all();
+    }
+
+    @GET
+    @Path("/{city}")
+    @Operation(
+        summary = "List weather warnings",
+        description = "List all the active warnings."
+    )
+    public List<WeatherWarning> listByCity(@PathParam("city") String city) {
+        return repository.listByCity(city);
     }
 }
