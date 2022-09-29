@@ -11,8 +11,6 @@ import com.redhat.training.ithaca.entities.WeatherWarningLevel;
 
 public class WeatherSimulation {
 
-
-
     public static List<WeatherWarning> run() {
         List<WeatherWarning> warnings = new ArrayList<>();
 

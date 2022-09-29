@@ -3,7 +3,7 @@ import { SensorMeasurement } from "@app/models/SensorMeasurement";
 import { Park } from "../models/Park";
 import { ServiceName, getSSEClient } from "./API";
 
-const sse = getSSEClient(ServiceName.BACKEND);
+const sse = getSSEClient(ServiceName.PARKS_BACKEND);
 
 export function subscribeToGardenStatuses(onEvent: (status: Park) => void): void {
     sse.open<Park>("/garden/statuses", onEvent);

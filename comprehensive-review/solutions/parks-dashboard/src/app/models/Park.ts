@@ -4,7 +4,7 @@ export enum ParkStatus {
 }
 
 export interface Park {
-    uuid: string;
+    id: number;
     name: string;
     city: string;
     size: number;

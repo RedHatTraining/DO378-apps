@@ -7,7 +7,7 @@ interface LivenessResponse {
     }[]
 }
 
-const API = getRESTClient(ServiceName.BACKEND);
+const API = getRESTClient(ServiceName.PARKS_BACKEND);
 
 function kafkaStreamsIsReady(data: LivenessResponse) {
     return data.status === "UP";

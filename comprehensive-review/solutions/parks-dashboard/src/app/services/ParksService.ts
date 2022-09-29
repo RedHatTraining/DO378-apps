@@ -2,7 +2,7 @@ import { Park, ParkStatus } from "@app/models/Park";
 import { getRESTClient, ServiceName } from "./API";
 import { getToken } from "./AuthService";
 
-const API = getRESTClient(ServiceName.BACKEND);
+const API = getRESTClient(ServiceName.PARKS_BACKEND);
 
 export function all(): Promise<Park[]> {
     return API.url("parks")

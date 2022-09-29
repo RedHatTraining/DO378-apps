@@ -1,7 +1,7 @@
 import * as jose from 'jose'
 import { getRESTClient, ServiceName } from "./API";
 
-const API = getRESTClient(ServiceName.BACKEND);
+const API = getRESTClient(ServiceName.PARKS_BACKEND);
 
 export async function login(username: string, password: string): Promise<boolean> {
 
