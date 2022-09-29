@@ -3,23 +3,21 @@ import {
     Card, CardTitle, CardBody,
     DescriptionList, DescriptionListGroup,
     DescriptionListTerm, DescriptionListDescription,
-    CardHeader, CardHeaderMain, Alert, CardFooter, Button, Modal, ModalVariant
+    CardHeader, CardHeaderMain, Alert, CardFooter, Button, Avatar
 } from "@patternfly/react-core";
 import { Park, ParkStatus } from "@app/models/Park";
 import * as ParksService from "@app/services/ParksService";
+import LockOpenIcon from "@patternfly/react-icons/dist/esm/icons/lock-open-icon";
+import LockIcon from "@patternfly/react-icons/dist/esm/icons/lock-icon";
+import LeafIcon from "@patternfly/react-icons/dist/esm/icons/leaf-icon";
+import TreeIcon from "@patternfly/react-icons/dist/esm/icons/tree-icon";
 
-import garden0 from "@app/images/garden_0.jpg";
-import garden1 from "@app/images/garden_1.jpg";
-import garden2 from "@app/images/garden_2.jpg";
-import garden3 from "@app/images/garden_3.jpg";
-import { ParkForm } from "./ParkForm";
-
-const images = {
-    pablo: garden0,
-    aykut: garden1,
-    marek: garden2,
-    jaime: garden3,
-};
+const icons = [
+    <TreeIcon key="park-icon-1" size="md" color="#bb4400" />,
+    <LeafIcon key="park-icon-2" size="md" color="#aaaa22" />,
+    <TreeIcon key="park-icon-3" size="md" color="#11bb22" />,
+    <LeafIcon key="park-icon-4" size="md" color="#55aa11" />,
+];
 
 
 interface ParkCardProps {
@@ -29,23 +27,8 @@ interface ParkCardProps {
 
 export function ParkCard(props: ParkCardProps): JSX.Element {
     const { park, onParkUpdated } = props;
-
-    const [isModalOpen, setModalOpen] = useState<boolean>(false);
     const [isParkUpdating, setIsParkUpdating] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
-
-    // function toggleModal() {
-    //     setModalOpen(isModalOpen => !isModalOpen);
-    // }
-
-    // async function editPark({ name, city, size }: { name: string, city: string, size: number }) {
-    //     const newPark = { ...park, name, city, size };
-
-    //     await ParksService.update(newPark);
-
-    //     toggleModal();
-    //     onParkUpdated();
-    // }
 
     function openPark(park: Park) {
         setIsParkUpdating(true);
@@ -75,39 +58,39 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
     }
 
 
-
     function renderOpenParkButton(park: Park) {
         return <Button
-            variant="primary"
+            icon={<LockOpenIcon></LockOpenIcon>}
             isDisabled={isParkUpdating}
             spinnerAriaValueText={isParkUpdating ? "Opening" : undefined}
             isLoading={isParkUpdating}
             onClick={() => openPark(park)}>
-            {isParkUpdating ? "Opening...": "Open Park"}
+            {isParkUpdating ? "Opening...": "Open"}
         </Button>
     }
     function renderCloseParkButton(park: Park) {
         return <Button
             variant="warning"
+            icon={<LockIcon></LockIcon>}
             isDisabled={isParkUpdating}
             spinnerAriaValueText={isParkUpdating ? "Closing" : undefined}
             isLoading={isParkUpdating}
             onClick={() => closePark(park)}>
-            {isParkUpdating ? "Closing...": "Close Park"}
+            {isParkUpdating ? "Closing...": "Close"}
         </Button>
     }
 
 
     return (<Card isFlat>
-        <CardHeader>
+        {/* <CardHeader>
             <CardHeaderMain>
                 <iframe width="500" height="800" frameBorder="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-1.8620699644088747%2C38.985566521593654%2C-1.8531382083892824%2C38.989027359465815&amp;layer=hot"></iframe>
                 <br />
                 <small><a href="https://www.openstreetmap.org/#map=18/38.98730/-1.85760&amp;layers=H">View Larger Map</a></small>
 
             </CardHeaderMain>
-        </CardHeader>
-        <CardTitle>&nbsp;&nbsp;{park.name}</CardTitle>
+        </CardHeader> */}
+        <CardTitle>{getParkIcon(park)}{" "}{park.name}</CardTitle>
         <CardBody>
             <DescriptionList>
                 <DescriptionListGroup>
@@ -128,36 +111,20 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
 
             {park.status == ParkStatus.OPEN ? renderCloseParkButton(park) : renderOpenParkButton(park)}
             {errorMessage && <Alert variant="danger" title={errorMessage} />}
-            {/* <React.Fragment>
-                <Button variant="primary" onClick={toggleModal}>
-                    Manage
-                </Button>
-                <Modal
-                    variant={ModalVariant.small}
-                    title={park.name}
-                    isOpen={isModalOpen}
-                    onClose={toggleModal}
-                >
-                    <ParkForm park={park} onSubmit={editPark}></ParkForm>
-                </Modal>
-            </React.Fragment> */}
+
         </CardFooter>
     </Card>);
 }
 
 function getAlert(park: Park) {
     const alerts = {
-        "CLOSING": <Alert variant="warning" title="Park fences are closing" />,
+        "OPEN": <Alert variant="info" title="Park is open" />,
         "CLOSED": <Alert variant="danger" title="Park is closed" />,
     }
 
-    return alerts[park.status] || <Alert variant="info" title="Park is open" />
+    return alerts[park.status] || <Alert variant="warning" title="Park status is unknown" />
 }
 
-function getParkImage(gardenName: string): string {
-    const lowerGardenName = gardenName.toLowerCase();
-
-    const key = Object.keys(images).find(key => lowerGardenName.includes(key));
-
-    return key ? images[key] : "";
+function getParkIcon(park: Park) {
+    return icons[park.id - 1] || <LeafIcon key="park-icon-4" size="md" color="#ffaa22" />
 }

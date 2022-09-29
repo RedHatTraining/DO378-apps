@@ -11,8 +11,8 @@ export function all(): Promise<WeatherWarning[]> {
 }
 
 
-export function simulate(): Promise<void> {
+export function simulateWarnings(): Promise<void> {
     return API.url("warnings/simulation")
         .post()
-        .json();
+        .text();
 }

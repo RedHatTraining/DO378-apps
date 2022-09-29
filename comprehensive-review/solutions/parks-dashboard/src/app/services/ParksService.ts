@@ -18,6 +18,12 @@ export function close(park: Park): Promise<void> {
     return update({ ...park, status: ParkStatus.CLOSED });
 }
 
+export function checkWeather(park: Park): Promise<void> {
+    return API.url(`parks/${park.id}/weathercheck`)
+        .post()
+        .text();
+}
+
 export function update(park: Park): Promise<void> {
     return API.url("parks")
         .auth(`Bearer ${getToken()}`)

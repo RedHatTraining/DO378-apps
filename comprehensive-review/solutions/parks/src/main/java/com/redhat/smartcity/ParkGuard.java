@@ -23,8 +23,8 @@ public class ParkGuard {
     WeatherService weatherService;
 
     private List<WeatherWarningLevel> unsafeLevels = Arrays.asList(
-        WeatherWarningLevel.Yellow,
-        WeatherWarningLevel.Orange
+        WeatherWarningLevel.Orange,
+        WeatherWarningLevel.Red
     );
 
     private List<WeatherWarningType> unsafeTypes = Arrays.asList(
