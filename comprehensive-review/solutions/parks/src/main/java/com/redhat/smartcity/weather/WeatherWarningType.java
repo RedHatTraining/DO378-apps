@@ -1,12 +1,10 @@
-package com.redhat.training.ithaca.entities;
+package com.redhat.smartcity.weather;
 
 public enum WeatherWarningType {
     Rain,
     Snow,
     Wind,
-    Tornado,
     Storm,
-    Hurricane,
     MaxTemperature,
     MinTemperature,
     DenseFog

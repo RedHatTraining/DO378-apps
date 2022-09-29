@@ -1,4 +1,4 @@
-package com.redhat.training.ithaca.services;
+package com.redhat.smartcity;
 
 import javax.enterprise.context.ApplicationScoped;
 

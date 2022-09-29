@@ -1,4 +1,4 @@
-package com.redhat.training.ithaca.api;
+package com.redhat.smartcity;
 
 
 import javax.annotation.security.RolesAllowed;
@@ -14,10 +14,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
-
-import com.redhat.training.ithaca.services.JwtGenerator;
-import com.redhat.training.ithaca.services.UserService;
-
 
 
 class UserCredentials {
