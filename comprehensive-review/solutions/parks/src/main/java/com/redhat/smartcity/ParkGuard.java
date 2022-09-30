@@ -1,15 +1,14 @@
 package com.redhat.smartcity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
+import java.util.Arrays;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Timeout;
-import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import com.redhat.smartcity.weather.WeatherService;
@@ -18,7 +17,6 @@ import com.redhat.smartcity.weather.WeatherWarningLevel;
 import com.redhat.smartcity.weather.WeatherWarningType;
 
 import io.quarkus.logging.Log;
-import io.smallrye.reactive.messaging.annotations.Blocking;
 
 @ApplicationScoped
 public class ParkGuard {
@@ -26,6 +24,9 @@ public class ParkGuard {
     @Inject
     @RestClient
     WeatherService weatherService;
+
+    @Inject
+    io.micrometer.core.instrument.MeterRegistry registry;
 
     private List<WeatherWarningLevel> unsafeLevels = Arrays.asList(
         WeatherWarningLevel.Orange,
@@ -58,6 +59,7 @@ public class ParkGuard {
             Log.info("Unsafe conditions in " + park.city + " due to " + warning.level + " weather warning (" + warning.type + ")");
             closePark(park);
             Log.info("Park " + park.id + " (" + park.name + ") has been closed");
+            registry.counter("parksAffected.count").increment();
             return true;
         }
 

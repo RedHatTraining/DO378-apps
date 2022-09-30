@@ -42,8 +42,6 @@ export function Dashboard(): JSX.Element {
                 getParks();
                 setInterval(getParks, 2000);
                 getWeatherWarnings();
-                // getGardenEvents();
-                // getSensorMeasurements();
                 setReady(true);
             });
 
