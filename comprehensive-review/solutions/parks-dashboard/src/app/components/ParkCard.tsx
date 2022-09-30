@@ -3,7 +3,7 @@ import {
     Card, CardTitle, CardBody,
     DescriptionList, DescriptionListGroup,
     DescriptionListTerm, DescriptionListDescription,
-    CardHeader, CardHeaderMain, Alert, CardFooter, Button, Avatar
+    Alert, CardFooter, Button
 } from "@patternfly/react-core";
 import { Park, ParkStatus } from "@app/models/Park";
 import * as ParksService from "@app/services/ParksService";
@@ -13,10 +13,10 @@ import LeafIcon from "@patternfly/react-icons/dist/esm/icons/leaf-icon";
 import TreeIcon from "@patternfly/react-icons/dist/esm/icons/tree-icon";
 
 const icons = [
-    <TreeIcon key="park-icon-1" size="md" color="#bb4400" />,
-    <LeafIcon key="park-icon-2" size="md" color="#aaaa22" />,
-    <TreeIcon key="park-icon-3" size="md" color="#11bb22" />,
-    <LeafIcon key="park-icon-4" size="md" color="#55aa11" />,
+    <TreeIcon key="park-icon-1" size="sm" color="#bb4400" />,
+    <LeafIcon key="park-icon-2" size="sm" color="#aaaa22" />,
+    <TreeIcon key="park-icon-3" size="sm" color="#11bb22" />,
+    <LeafIcon key="park-icon-4" size="sm" color="#55aa11" />,
 ];
 
 
@@ -52,6 +52,10 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
                 .finally(() => setIsParkUpdating(false));
     }
 
+    function isOpen(park: Park) {
+        return park.status === ParkStatus.OPEN;
+    }
+
     function showParkUpdateError(error: Error) {
         setErrorMessage(error.message);
         setTimeout(() => setErrorMessage(""), 5000);
@@ -59,37 +63,33 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
 
 
     function renderOpenParkButton(park: Park) {
+        const isInactive = isOpen(park);
+
         return <Button
             icon={<LockOpenIcon></LockOpenIcon>}
-            isDisabled={isParkUpdating}
-            spinnerAriaValueText={isParkUpdating ? "Opening" : undefined}
-            isLoading={isParkUpdating}
+            isDisabled={isInactive|| isParkUpdating}
+            spinnerAriaValueText={!isInactive && isParkUpdating ? "Opening" : undefined}
+            isLoading={!isInactive && isParkUpdating}
             onClick={() => openPark(park)}>
             {isParkUpdating ? "Opening...": "Open"}
         </Button>
     }
     function renderCloseParkButton(park: Park) {
+        const isInactive = !isOpen(park);
+
         return <Button
             variant="warning"
             icon={<LockIcon></LockIcon>}
-            isDisabled={isParkUpdating}
-            spinnerAriaValueText={isParkUpdating ? "Closing" : undefined}
-            isLoading={isParkUpdating}
+            isDisabled={isInactive|| isParkUpdating}
+            spinnerAriaValueText={!isInactive && isParkUpdating ? "Closing" : undefined}
+            isLoading={!isInactive && isParkUpdating}
             onClick={() => closePark(park)}>
             {isParkUpdating ? "Closing...": "Close"}
         </Button>
     }
 
-
     return (<Card isFlat>
-        {/* <CardHeader>
-            <CardHeaderMain>
-                <iframe width="500" height="800" frameBorder="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-1.8620699644088747%2C38.985566521593654%2C-1.8531382083892824%2C38.989027359465815&amp;layer=hot"></iframe>
-                <br />
-                <small><a href="https://www.openstreetmap.org/#map=18/38.98730/-1.85760&amp;layers=H">View Larger Map</a></small>
 
-            </CardHeaderMain>
-        </CardHeader> */}
         <CardTitle>{getParkIcon(park)}{" "}{park.name}</CardTitle>
         <CardBody>
             <DescriptionList>
@@ -108,8 +108,8 @@ export function ParkCard(props: ParkCardProps): JSX.Element {
             </DescriptionList>
         </CardBody>
         <CardFooter>
-
-            {park.status == ParkStatus.OPEN ? renderCloseParkButton(park) : renderOpenParkButton(park)}
+            {renderOpenParkButton(park)}{" "}
+            {renderCloseParkButton(park)}
             {errorMessage && <Alert variant="danger" title={errorMessage} />}
 
         </CardFooter>

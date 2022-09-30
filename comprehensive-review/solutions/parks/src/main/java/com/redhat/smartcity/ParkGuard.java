@@ -1,11 +1,15 @@
 package com.redhat.smartcity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
+import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import com.redhat.smartcity.weather.WeatherService;
@@ -14,6 +18,7 @@ import com.redhat.smartcity.weather.WeatherWarningLevel;
 import com.redhat.smartcity.weather.WeatherWarningType;
 
 import io.quarkus.logging.Log;
+import io.smallrye.reactive.messaging.annotations.Blocking;
 
 @ApplicationScoped
 public class ParkGuard {
@@ -34,19 +39,30 @@ public class ParkGuard {
         WeatherWarningType.Wind
     );
 
+    @Fallback(fallbackMethod = "getEmptyWarnings")
+    @Timeout
     public void checkWeatherForPark(Park park) {
         var warnings = weatherService.getWarningsByCity(park.city);
 
         for (WeatherWarning warning : warnings) {
-            if (mustCloseParkDueTo( warning )) {
-                Log.info("Unsafe conditions in " + park.city + " due to " + warning.level + "  weather warning (" + warning.type + ")");
-                closePark(park);
-                Log.info("Park " + park.id + " (" + park.name + ") has been closed");
+            var parkClosed = assessParkRisk(park, warning);
+            if (parkClosed) {
                 return;
             }
         }
 
+    }
+
+    public boolean assessParkRisk(Park park, WeatherWarning warning) {
+        if (mustCloseParkDueTo( warning )) {
+            Log.info("Unsafe conditions in " + park.city + " due to " + warning.level + " weather warning (" + warning.type + ")");
+            closePark(park);
+            Log.info("Park " + park.id + " (" + park.name + ") has been closed");
+            return true;
+        }
+
         openPark(park);
+        return false;
     }
 
     private boolean mustCloseParkDueTo( WeatherWarning warning ) {
@@ -61,5 +77,12 @@ public class ParkGuard {
     public void closePark(Park park) {
         park.status = Park.Status.CLOSED;
         park.persist();
+    }
+
+    public void getEmptyWarnings(Park park) {
+        Log.warn(
+            "Weather service is not reachable. " +
+            "Assuming no weather warnings are active for park " + park.id + " (" + park.name + ")."
+        );
     }
 }

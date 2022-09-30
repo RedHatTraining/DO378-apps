@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
     PageSection, Title, PageSectionVariants, Card,
-    CardBody, CardTitle, Grid, GridItem, Gallery,
+    CardBody, Gallery,
     GalleryItem, Text, TextVariants, Skeleton, Button, CardFooter, Badge
 } from "@patternfly/react-core";
 // import { subscribeToGardenTemperatureEvents,
@@ -40,6 +40,7 @@ export function Dashboard(): JSX.Element {
         waitForLiveness()
             .then(() => {
                 getParks();
+                setInterval(getParks, 2000);
                 getWeatherWarnings();
                 // getGardenEvents();
                 // getSensorMeasurements();
