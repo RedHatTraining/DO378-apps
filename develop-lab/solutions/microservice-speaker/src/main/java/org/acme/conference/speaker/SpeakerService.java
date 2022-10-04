@@ -2,6 +2,11 @@ package org.acme.conference.speaker;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -11,15 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.panache.common.Page;
-import io.quarkus.panache.common.Sort;
-
-/**
- * SpeakerDAO
- */
 @ApplicationScoped
-public class SpeakerDAO {
+public class SpeakerService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private SpeakerIdGenerator generator = new SpeakerIdGenerator();
@@ -64,5 +62,4 @@ public class SpeakerDAO {
         PanacheQuery<Speaker> activeSpeakers = Speaker.findAll();
         return activeSpeakers.page(Page.ofSize(20)).list();
     }
-
 }

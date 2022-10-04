@@ -34,7 +34,7 @@ public class SpeakerResource {
     private static final int SEARCH_MINIMUM_CHARS = 3;
 
     @Inject
-    SpeakerDAO speakerDAO;
+    SpeakerService speakerService;
 
     @GET
     public Collection<Speaker> listAll () {
@@ -44,7 +44,7 @@ public class SpeakerResource {
     @GET
     @Path("/sorted")
     public Collection<Speaker> listAllSorted(@QueryParam("sort") String sortField) {
-        return speakerDAO.findAll(sortBy(sortField));
+        return speakerService.findAll(sortBy(sortField));
     }
 
     private Sort sortBy(String sortField) {
@@ -54,7 +54,7 @@ public class SpeakerResource {
     @GET
     @Path("/{uuid}")
     public Speaker findByUuid(@PathParam("uuid") String uuid) {
-        return speakerDAO.getByUuid(uuid)
+        return speakerService.getByUuid(uuid)
                     .orElseThrow(NotFoundException::new);
     }
 
@@ -65,21 +65,21 @@ public class SpeakerResource {
             .filter(q -> q.length()>=SEARCH_MINIMUM_CHARS)
             .orElseThrow(() -> new BadRequestException("Insufficient number of chars"));
 
-        return speakerDAO.search(queryValid, sortBy(sort));
+        return speakerService.search(queryValid, sortBy(sort));
     }
 
     @Transactional
     @POST
     @Path("/add")
     public Speaker insert(Speaker speaker) {
-        return speakerDAO.create(speaker);
+        return speakerService.create(speaker);
     }
 
     @Transactional
     @PUT
     @Path("/update/{uuid}")
     public Speaker update(@PathParam("uuid") String uuid, Speaker speaker) {
-        if (null==uuid || null==speakerDAO.getByUuid(uuid)) {
+        if (null==uuid || null==speakerService.getByUuid(uuid)) {
             throw new NotFoundException();
         }
 
@@ -88,7 +88,7 @@ public class SpeakerResource {
         }
 
         speaker.uuid=uuid;
-        return speakerDAO.update(speaker);
+        return speakerService.update(speaker);
     }
 
     @Transactional
@@ -97,16 +97,16 @@ public class SpeakerResource {
     public void remove (@PathParam("uuid") String uuid) {
 
         Speaker speaker = Optional.ofNullable(uuid)
-            .flatMap(speakerDAO::getByUuid)
+            .flatMap(speakerService::getByUuid)
             .orElseThrow(NotFoundException::new);
 
-        speakerDAO.delete(speaker);
+            speakerService.delete(speaker);
     }
 
     @GET
     @Path("/paging")
     public List<Speaker> listPages() {
-        return speakerDAO.getActiveSpeakers();
+        return speakerService.getActiveSpeakers();
     }
 
 }
