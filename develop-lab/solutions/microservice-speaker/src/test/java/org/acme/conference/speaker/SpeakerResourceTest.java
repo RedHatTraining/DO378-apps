@@ -16,7 +16,7 @@ public class SpeakerResourceTest {
           .when().get("/speaker")
           .then()
              .statusCode(200)
-             .body("size()",is(4));
+             .body("size()",is(8));
     }
 
     @Test
