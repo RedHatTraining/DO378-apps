@@ -1,11 +1,11 @@
-package com.redhat.training.ithaca;
+package com.redhat.smartcity;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
-import com.redhat.training.ithaca.entities.WeatherWarning;
+import com.redhat.smartcity.entities.WeatherWarning;
 
 @ApplicationScoped
 public class WeatherWarningsRepository {

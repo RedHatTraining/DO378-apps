@@ -1,4 +1,4 @@
-package com.redhat.training.ithaca.entities;
+package com.redhat.smartcity.entities;
 
 public enum WeatherWarningLevel {
     Yellow,

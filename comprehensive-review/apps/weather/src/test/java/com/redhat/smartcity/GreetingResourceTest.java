@@ -1,4 +1,4 @@
-package com.redhat.training.ithaca;
+package com.redhat.smartcity;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

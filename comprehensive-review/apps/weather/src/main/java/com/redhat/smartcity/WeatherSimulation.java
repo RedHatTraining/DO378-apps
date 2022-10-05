@@ -1,13 +1,13 @@
-package com.redhat.training.ithaca;
+package com.redhat.smartcity;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-import com.redhat.training.ithaca.entities.WeatherWarning;
-import com.redhat.training.ithaca.entities.WeatherWarningType;
-import com.redhat.training.ithaca.entities.WeatherWarningLevel;
+import com.redhat.smartcity.entities.WeatherWarning;
+import com.redhat.smartcity.entities.WeatherWarningType;
+import com.redhat.smartcity.entities.WeatherWarningLevel;
 
 public class WeatherSimulation {
 

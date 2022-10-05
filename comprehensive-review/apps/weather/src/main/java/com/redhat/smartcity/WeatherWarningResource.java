@@ -1,4 +1,4 @@
-package com.redhat.training.ithaca;
+package com.redhat.smartcity;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import io.quarkus.logging.Log;
 
-import com.redhat.training.ithaca.entities.WeatherWarning;
+import com.redhat.smartcity.entities.WeatherWarning;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.reactive.messaging.Channel;
