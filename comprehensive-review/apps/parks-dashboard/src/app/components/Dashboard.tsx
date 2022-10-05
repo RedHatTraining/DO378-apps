@@ -35,7 +35,7 @@ export function Dashboard(): JSX.Element {
                 setReady(true);
             });
 
-    });
+    }, []);
 
     async function getParks() {
         const parks = await ParksService.all();
