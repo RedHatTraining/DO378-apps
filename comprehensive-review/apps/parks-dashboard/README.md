@@ -1,6 +1,6 @@
 # Parks Dashboard
 
-This is a React front-end app from the Ithaca smart parks application of the DO378 comprehensive review.
+This is a React front-end app for the smart parks application of the DO378 comprehensive review.
 
 Because students might not have Node.js installed, we need to provide them with the _built_ web application (the `dist` directory).
 
