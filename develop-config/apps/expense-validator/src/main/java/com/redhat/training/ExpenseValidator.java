@@ -1,4 +1,4 @@
-package org.redhat.training;
+package com.redhat.training;
 
 import javax.enterprise.context.ApplicationScoped;
 

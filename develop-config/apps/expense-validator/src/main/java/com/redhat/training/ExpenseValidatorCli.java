@@ -1,4 +1,4 @@
-package org.redhat.training;
+package com.redhat.training;
 
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
