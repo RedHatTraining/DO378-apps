@@ -4,24 +4,16 @@ import {
     CardBody, Gallery,
     GalleryItem, Text, TextVariants, Skeleton, Button, CardFooter, Badge
 } from "@patternfly/react-core";
-// import { subscribeToGardenTemperatureEvents,
-//     subscribeToGardenHumidityEvents, subscribeToGardenWindEvents,
-//     subscribeToGardenStatuses, subscribeToSensorMeasurements
-// } from "../services/ParkServerEvents";
 import * as ParksService from "@app/services/ParksService";
 import * as WeatherService from "@app/services/WeatherService";
 import { waitForLiveness } from "../services/LivenessService";
 import { Park } from "@app/models/Park";
 import { ParkCard } from "./ParkCard";
-import { SensorMeasurement } from "@app/models/SensorMeasurement";
-import { RecentList } from "@app/models/RecentList";
-import { Caption, TableComposable, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
-import { ParkEvent } from "@app/models/ParkEvent";
+import { TableComposable, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
+
 
 // Icons list: https://patternfly-react.surge.sh/icons/
 import TreeIcon from "@patternfly/react-icons/dist/esm/icons/tree-icon";
-import CloudSunRainIcon from "@patternfly/react-icons/dist/esm/icons/cloud-sun-rain-icon";
-import ThermometerHalfIcon from "@patternfly/react-icons/dist/esm/icons/thermometer-half-icon";
 import WindIcon from "@patternfly/react-icons/dist/esm/icons/wind-icon";
 import CloudShowersHeavyIcon from "@patternfly/react-icons/dist/esm/icons/cloud-showers-heavy-icon";
 import ProcessAutomationIcon from "@patternfly/react-icons/dist/esm/icons/process-automation-icon";
@@ -34,8 +26,6 @@ export function Dashboard(): JSX.Element {
     const [parks, setParks] = useState<Park[]>([]);
     const [weatherWarnings, setWeatherWarnings] = useState<WeatherWarning[]>([]);
 
-
-
     useEffect(() => {
         waitForLiveness()
             .then(() => {
@@ -45,7 +35,7 @@ export function Dashboard(): JSX.Element {
                 setReady(true);
             });
 
-    }, []);
+    });
 
     async function getParks() {
         const parks = await ParksService.all();
@@ -108,10 +98,10 @@ export function Dashboard(): JSX.Element {
 
     function renderWeatherWarningRow(w: WeatherWarning) {
 
-        const badges={
-            yellow: <Badge style={{ "backgroundColor": "#bfaf00"}}>{w.level}</Badge>,
-            orange: <Badge style={{ "backgroundColor": "orange"}}>{w.level}</Badge>,
-            red: <Badge style={{ "backgroundColor": "red"}}>{w.level}</Badge>,
+        const badges = {
+            yellow: <Badge style={{ "backgroundColor": "#bfaf00" }}>{w.level}</Badge>,
+            orange: <Badge style={{ "backgroundColor": "orange" }}>{w.level}</Badge>,
+            red: <Badge style={{ "backgroundColor": "red" }}>{w.level}</Badge>,
         }
 
         const tableIndex = `${w.city}_${w.level}_${w.type}`;
@@ -162,12 +152,12 @@ export function Dashboard(): JSX.Element {
                     <Button
                         icon={<CloudShowersHeavyIcon></CloudShowersHeavyIcon>}
                         onClick={simulateWeatherAlerts}>
-                            Simulate weather warnings
+                        Simulate weather warnings
                     </Button>{" "}
                     <Button
                         icon={<ProcessAutomationIcon></ProcessAutomationIcon>}
                         variant="secondary" onClick={runWeatherChecks}>
-                            Run park weather checks
+                        Run park weather checks
                     </Button>
                 </CardFooter>
             </Card>
@@ -175,4 +165,3 @@ export function Dashboard(): JSX.Element {
         </PageSection>
     </React.Fragment >);
 }
-
