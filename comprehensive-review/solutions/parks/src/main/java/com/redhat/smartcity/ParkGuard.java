@@ -40,7 +40,7 @@ public class ParkGuard {
         WeatherWarningType.Wind
     );
 
-    @Fallback(fallbackMethod = "getEmptyWarnings")
+    @Fallback(fallbackMethod = "assumeNoWarnings")
     @Timeout
     public void checkWeatherForPark(Park park) {
         var warnings = weatherService.getWarningsByCity(park.city);
@@ -81,10 +81,11 @@ public class ParkGuard {
         park.persist();
     }
 
-    public void getEmptyWarnings(Park park) {
+    public void assumeNoWarnings(Park park) {
         Log.warn(
             "Weather service is not reachable. " +
-            "Assuming no weather warnings are active for park " + park.id + " (" + park.name + ")."
+            "Assuming no weather warnings are active for park " +
+            park.id + " (" + park.name + ")."
         );
     }
 }
