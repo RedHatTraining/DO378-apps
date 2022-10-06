@@ -8,7 +8,7 @@ export enum ServiceName {
 // these environment variables are only evaluated/available at build time
 const serviceUrlMap: { [key in ServiceName]: string } = {
     [ServiceName.PARKS_BACKEND]: process.env.BACKEND ?? "http://localhost:8080/",
-    [ServiceName.WEATHER_BACKEND]: process.env.WEATHER_BACKEND ?? "http://localhost:8081/",
+    [ServiceName.WEATHER_BACKEND]: process.env.WEATHER_BACKEND ?? "http://localhost:8090/",
 };
 console.log("Backend URL:", serviceUrlMap);
 

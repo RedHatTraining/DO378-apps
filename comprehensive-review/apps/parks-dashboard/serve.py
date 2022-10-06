@@ -5,7 +5,7 @@ from pathlib import Path
 import http.server
 import socketserver
 
-PORT = 8083
+PORT = 9000
 
 directory = (Path(__file__)
     .parent
