@@ -40,13 +40,19 @@ public class ParkGuard {
         WeatherWarningType.Wind
     );
 
+    /**
+     * Retrieve all weather alerts relevant for a park, based on the city,
+     * and update the parks status if necessary
+     *
+     * @param park
+     */
     @Fallback(fallbackMethod = "assumeNoWarnings")
     @Timeout
     public void checkWeatherForPark(Park park) {
         var warnings = weatherService.getWarningsByCity(park.city);
 
         for (WeatherWarning warning : warnings) {
-            var parkClosed = assessParkRisk(park, warning);
+            var parkClosed = updateParkBasedOnWarning(park, warning);
             if (parkClosed) {
                 return;
             }
@@ -54,7 +60,14 @@ public class ParkGuard {
 
     }
 
-    public boolean assessParkRisk(Park park, WeatherWarning warning) {
+    /**
+     * Assess the severity of a single weather warning for a particular park,
+     * and close the park if necessary
+     * @param park
+     * @param warning
+     * @return true if the park is closed, false otherwise
+     */
+    public boolean updateParkBasedOnWarning(Park park, WeatherWarning warning) {
         if (mustCloseParkDueTo( warning )) {
             Log.info("Unsafe conditions in " + park.city + " due to " + warning.level + " weather warning (" + warning.type + ")");
             closePark(park);
