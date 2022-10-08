@@ -2,8 +2,6 @@ package org.acme.conference.speaker;
 
 import java.util.UUID;
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbTransient;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -12,9 +10,6 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
  * Speaker
  */
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "Speaker.getByOrganization", query = "from Speaker where organization = ?1")
-})
 public class Speaker extends PanacheEntity {
 
   public String uuid;
