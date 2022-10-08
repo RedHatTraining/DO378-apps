@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.BadRequestException;
@@ -25,7 +24,6 @@ import javax.ws.rs.core.MediaType;
 import io.quarkus.panache.common.Sort;
 
 @Path("/speaker")
-@ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class SpeakerResource {
@@ -71,8 +69,9 @@ public class SpeakerResource {
     @Transactional
     @POST
     @Path("/add")
-    public Speaker insert(Speaker speaker) {
-        return speakerService.create(speaker);
+    public Speaker insert(Speaker newspeaker) {
+            speakerService.create(newspeaker);
+            return newspeaker;
     }
 
     @Transactional

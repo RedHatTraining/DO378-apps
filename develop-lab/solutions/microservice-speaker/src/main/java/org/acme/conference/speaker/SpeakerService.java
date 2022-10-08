@@ -13,17 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class SpeakerService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-    private SpeakerIdGenerator generator = new SpeakerIdGenerator();
 
     public Speaker create (Speaker speaker) {
-        //speaker.uuid=generator.generate();
         speaker.persist();
         return speaker;
     }
@@ -43,13 +40,6 @@ public class SpeakerService {
 
     public Optional<Speaker> getByUuid(String uuid) {
         return Speaker.find("uuid", uuid).firstResultOptional();
-    }
-
-    private static class SpeakerIdGenerator {
-
-        public String generate() {
-            return UUID.randomUUID().toString();
-        }
     }
 
     public Collection<Speaker> search(String query, Sort sort) {
