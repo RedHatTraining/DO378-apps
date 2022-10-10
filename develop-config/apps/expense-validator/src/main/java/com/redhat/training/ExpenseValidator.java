@@ -13,7 +13,7 @@ public class ExpenseValidator {
 
     public void debugRanges() {
         System.out.println("Range - High: " + RANGE_HIGH);
-        System.out.println("Range - LOW: " + RANGE_LOW);
+        System.out.println("Range - Low: " + RANGE_LOW);
     }
 
     public boolean isValidAmount(int amount) {
