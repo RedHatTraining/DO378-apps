@@ -1,0 +1,16 @@
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-1', 'Carrie', 'Lewis');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-2', 'Allan', 'Royston');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-3', 'Al', 'Case');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-4', 'Tracie', 'Burns');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-5', 'Bruce', 'Black');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-6', 'Debra', 'Callis');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-7', 'Harold', 'Trout');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-8', 'Todd', 'Cole');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-9', 'Alex', 'Beneke');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-10', 'Coral', 'Dorian');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-11', 'Bailey', 'Gemma');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-12', 'Huynh', 'Fenton');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-13', 'Jon', 'Knights');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-14', 'Lee', 'Mccabe');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-15', 'Kiera', 'Chavez');
+insert into Speaker (id, uuid, nameFirst, nameLast) values (nextval('hibernate_sequence'), 's-1-16', 'Freddy', 'Owens');

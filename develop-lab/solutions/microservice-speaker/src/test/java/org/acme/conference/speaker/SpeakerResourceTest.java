@@ -9,14 +9,14 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 public class SpeakerResourceTest {
-    
+
     @Test
     public void testListAll() {
         given()
           .when().get("/speaker")
           .then()
              .statusCode(200)
-             .body("size()",is(8));
+             .body("size()",is(16));
     }
 
     @Test

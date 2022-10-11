@@ -50,6 +50,6 @@ public class SpeakerService {
 
     public List<Speaker> getActiveSpeakers() {
         PanacheQuery<Speaker> activeSpeakers = Speaker.findAll();
-        return activeSpeakers.page(Page.ofSize(20)).list();
+        return activeSpeakers.page(Page.ofSize(10)).list();
     }
 }
