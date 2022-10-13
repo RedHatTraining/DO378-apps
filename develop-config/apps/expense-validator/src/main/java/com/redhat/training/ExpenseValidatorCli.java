@@ -12,16 +12,24 @@ public class ExpenseValidatorCli implements QuarkusApplication {
 
     @Override
     public int run(String... args) throws Exception {
-        int amountValue = Integer.parseInt(args[0]);
-
-        if (validator.isValidAmount(amountValue)) {
-            System.out.println("Valid amount: " + amountValue);
-
-            return 0;
+        if (args.length != 1) {
+            throw new IllegalArgumentException("The command requires 1 argument");
         }
 
-        System.out.println("Invalid amount: " + amountValue);
+        try {
+            int amountValue = Integer.parseInt(args[0]);
 
-        return 1;
+            if (validator.isValidAmount(amountValue)) {
+                System.out.println("Valid amount: " + amountValue);
+
+                return 0;
+            }
+
+            System.out.println("Invalid amount: " + amountValue);
+
+            return 1;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("The argument must be an integer");
+        }
     }
 }
