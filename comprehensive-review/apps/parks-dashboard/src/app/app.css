@@ -1,0 +1,33 @@
+html, body, #root {
+  height: 100%;
+  --pf-c-dropdown__toggle--before--BorderWidth: 0
+}
+
+.logo {
+  width: 7em;
+}
+
+.turbineGraphic {
+  margin: 2em 1em ;
+  text-align: center;
+}
+
+.turbineGraphicBlades {
+  animation: spin 1s linear infinite;
+  transform-origin: 140px 157px;
+}
+
+
+@keyframes spin {
+  0% {
+      transform: rotate(0);
+  }
+
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+.pf-c-dropdown {
+  --pf-c-dropdown__toggle--before--BorderWidth: 0
+}
