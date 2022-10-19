@@ -11,9 +11,9 @@ import java.util.Set;
 
 public interface ExpenseServiceClient {
 
-
+    @GET
     Set<Expense> getAll();
 
-
+    @POST
     Expense create(Expense expense);
 }
