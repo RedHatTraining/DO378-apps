@@ -26,11 +26,11 @@ public class SpeakerResource {
         speakers.add(newSpeaker);
 
         return Response.created(generateUriForSpeaker(newSpeaker, uriInfo))
-            .header("id", newSpeaker.ID)
+            .header("id", newSpeaker.id)
             .build();
     }
 
     private URI generateUriForSpeaker(Speaker speaker, UriInfo uriInfo) {
-        return uriInfo.getAbsolutePathBuilder().path("/{id}").build(speaker.ID);
+        return uriInfo.getAbsolutePathBuilder().path("/{id}").build(speaker.id);
     }
 }
