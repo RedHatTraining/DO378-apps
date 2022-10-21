@@ -1,5 +1,4 @@
-package com.redhat.model;
-
+package com.redhat.training;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,7 +18,7 @@ public class Expense {
 
 
     public Expense(UUID uuid, String name, LocalDateTime creationDate,
-                   PaymentMethod paymentMethod, String amount) {
+            PaymentMethod paymentMethod, String amount) {
         this.uuid = uuid;
         this.name = name;
         this.creationDate = creationDate;

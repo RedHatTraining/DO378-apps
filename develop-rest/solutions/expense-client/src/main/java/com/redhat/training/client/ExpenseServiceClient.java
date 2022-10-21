@@ -1,6 +1,6 @@
-package com.redhat.client;
+package com.redhat.training.client;
 
-import com.redhat.model.Expense;
+import com.redhat.training.model.Expense;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import javax.ws.rs.POST;

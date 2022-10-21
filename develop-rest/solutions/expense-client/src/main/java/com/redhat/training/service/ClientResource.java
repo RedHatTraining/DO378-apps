@@ -1,8 +1,8 @@
-package com.redhat.service;
+package com.redhat.training.service;
 
 
-import com.redhat.client.ExpenseServiceClient;
-import com.redhat.model.Expense;
+import com.redhat.training.client.ExpenseServiceClient;
+import com.redhat.training.model.Expense;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.inject.Inject;

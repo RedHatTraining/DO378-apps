@@ -1,4 +1,4 @@
-package com.redhat.rest;
+package com.redhat.training;
 
 import java.util.Set;
 import java.util.UUID;
