@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.containsString;
 
 @QuarkusTest
-public class ExpenseResourceTest {
+public class ExpenseCreationTest {
 
     @Test
     public void testCreateExpense() {

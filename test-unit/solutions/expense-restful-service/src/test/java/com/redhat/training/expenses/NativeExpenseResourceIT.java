@@ -1,9 +1,9 @@
 package com.redhat.training.expenses;
 
-import io.quarkus.test.junit.NativeImageTest;
+import io.quarkus.test.junit.QuarkusIntegrationTest;
 
-@NativeImageTest
-public class NativeExpenseResourceIT extends ExpenseResourceTest {
+@QuarkusIntegrationTest
+public class NativeExpenseResourceIT extends ExpenseCreationTest {
 
     // Execute the same tests but in native mode.
 }
