@@ -1,4 +1,4 @@
-package org.acme.rest.json;
+package com.redhat.training.rest;
 
 import java.util.List;
 import java.util.UUID;
@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -15,6 +16,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.QueryParam;
+
+import com.redhat.training.model.Expense;
+
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 
 @Path("/expenses")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -22,14 +30,18 @@ import javax.ws.rs.core.Response;
 public class ExpenseResource {
 
     @GET
-    public List<Expense> list() {
-        return Expense.listAll();
+    public List<Expense> list(@DefaultValue("5") @QueryParam("pageSize") int pageSize,
+            @DefaultValue("1") @QueryParam("pageNum") int pageNum) {
+        PanacheQuery<Expense> expenseQuery = Expense.findAll(
+                Sort.by("amount").and("associateId"));
+        return expenseQuery.page(Page.of(pageNum - 1, pageSize)).list();
     }
 
     @POST
     @Transactional
     public Expense create(final Expense expense) {
-        Expense newExpense = Expense.of(expense.name, expense.paymentMethod, expense.amount.toString());
+        Expense newExpense = Expense.of(expense.name, expense.paymentMethod,
+                expense.amount.toString(), expense.associateId);
         newExpense.persist();
 
         return newExpense;
@@ -51,6 +63,10 @@ public class ExpenseResource {
     @PUT
     @Transactional
     public void update(final Expense expense) {
-        Expense.update(expense);
+        try {
+            Expense.update(expense);
+        } catch (RuntimeException e) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
     }
 }
