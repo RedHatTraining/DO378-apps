@@ -30,6 +30,8 @@ import io.quarkus.panache.common.Sort;
 public class ExpenseResource {
 
     @GET
+    // TODO 1: Implement with a call to "listAll()" of Expense entity.
+    // TODO 2: Add pagination and sort by "amount" and "associateId".
     public List<Expense> list(@DefaultValue("5") @QueryParam("pageSize") int pageSize,
             @DefaultValue("1") @QueryParam("pageNum") int pageNum) {
         PanacheQuery<Expense> expenseQuery = Expense.findAll(
@@ -38,10 +40,12 @@ public class ExpenseResource {
     }
 
     @POST
+    // TODO: Make the method transactional
     @Transactional
     public Expense create(final Expense expense) {
         Expense newExpense = Expense.of(expense.name, expense.paymentMethod,
                 expense.amount.toString(), expense.associateId);
+        // TODO: Use the "persist()" method of the entity.
         newExpense.persist();
 
         return newExpense;
@@ -49,6 +53,7 @@ public class ExpenseResource {
 
     @DELETE
     @Path("{uuid}")
+    // TODO: Make the method transactional
     @Transactional
     public List<Expense> delete(@PathParam("uuid") final UUID uuid) {
         long numExpensesDeleted = Expense.delete("uuid", uuid);
@@ -61,8 +66,10 @@ public class ExpenseResource {
     }
 
     @PUT
+    // TODO: Make the method transactional
     @Transactional
     public void update(final Expense expense) {
+        // TODO: Use the "update()" method of the entity.
         try {
             Expense.update(expense);
         } catch (RuntimeException e) {

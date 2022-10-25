@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
+// TODO: Add @Entity annotation and extend PanacheEntity
 @Entity
 public class Expense extends PanacheEntity {
 
@@ -31,14 +32,16 @@ public class Expense extends PanacheEntity {
     public PaymentMethod paymentMethod;
     public BigDecimal amount;
 
-    @Column(name = "associate_id")
-    public Long associateId;
-
     @JsonbTransient
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "associate_id", insertable = false, updatable = false)
+    // TODO: Add many-to-one relationship between expense and associate
     public Associate associate;
 
+    @Column(name = "associate_id")
+    public Long associateId;
+
+    // TODO: Add a default constructor
     public Expense() {
     }
 
@@ -68,6 +71,7 @@ public class Expense extends PanacheEntity {
         }
     }
 
+    // TODO: Add update() method
     public static void update(final Expense expense) throws RuntimeException{
         Optional<Expense> previousExpense = Expense.findByIdOptional(expense.id);
 

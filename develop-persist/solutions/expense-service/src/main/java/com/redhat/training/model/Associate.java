@@ -2,7 +2,6 @@ package com.redhat.training.model;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbTransient;
@@ -13,14 +12,17 @@ import javax.persistence.OneToMany;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
+// TODO: Add @Entity annotation and extend PanacheEntity
 @Entity
 public class Associate extends PanacheEntity {
     public String name;
 
     @JsonbTransient
     @OneToMany(mappedBy = "associate", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    // TODO: Add one to many relationship between associate and expenses
     public List<Expense> expenses = new ArrayList<>();
 
+    // TODO: Add a default constructor
     public Associate() {
     }
 
