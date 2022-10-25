@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
-
 import javax.persistence.Entity;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -27,25 +26,25 @@ public class Expense extends PanacheEntity {
     public Expense() {
     }
 
-    public Expense(UUID uuid, String name, PaymentMethod paymentMethod, String amount) {
+    public Expense( UUID uuid, String name, PaymentMethod paymentMethod, String amount ) {
         this.uuid = uuid;
         this.name = name;
         this.paymentMethod = paymentMethod;
-        this.amount = new BigDecimal(amount);
+        this.amount = new BigDecimal( amount );
     }
 
-    public Expense(String name, PaymentMethod paymentMethod, String amount) {
-        this(UUID.randomUUID(), name, paymentMethod, amount);
+    public Expense( String name, PaymentMethod paymentMethod, String amount ) {
+        this( UUID.randomUUID(), name, paymentMethod, amount );
     }
 
-    public static Expense of(String name, PaymentMethod paymentMethod, String amount) {
-        return new Expense(name, paymentMethod, amount);
+    public static Expense of( String name, PaymentMethod paymentMethod, String amount ) {
+        return new Expense( name, paymentMethod, amount );
     }
 
-    public static void update(final Expense expense) {
-        Optional<Expense> previous = Expense.findByIdOptional(expense.id);
+    public static void update( final Expense expense ) {
+        Optional<Expense> previous = Expense.findByIdOptional( expense.id );
 
-        previous.ifPresentOrElse((update) -> {
+        previous.ifPresentOrElse( ( update ) -> {
             update.uuid = expense.uuid;
             update.name = expense.name;
             update.amount = expense.amount;
@@ -53,8 +52,8 @@ public class Expense extends PanacheEntity {
 
             update.persist();
         }, () -> {
-            throw new WebApplicationException(Response.Status.NOT_FOUND);
-        });
+            throw new WebApplicationException( Response.Status.NOT_FOUND );
+        } );
     }
 
 }

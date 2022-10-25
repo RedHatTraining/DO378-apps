@@ -1,14 +1,11 @@
 package com.redhat.training.expenses;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.net.URI;
-
 import org.junit.jupiter.api.Test;
-
-import io.quarkus.test.common.http.TestHTTPEndpoint;
-import io.quarkus.test.common.http.TestHTTPResource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.common.http.TestHTTPResource;
+import io.quarkus.test.common.http.TestHTTPEndpoint;
 
 @QuarkusTest
 public class EndPointTest {
