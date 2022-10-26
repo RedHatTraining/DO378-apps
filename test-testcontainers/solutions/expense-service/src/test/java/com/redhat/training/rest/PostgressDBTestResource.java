@@ -9,7 +9,7 @@ import io.quarkus.test.common.QuarkusTestResourceConfigurableLifecycleManager;
 
 public class PostgressDBTestResource implements QuarkusTestResourceConfigurableLifecycleManager<WithPostgressDB> {
 
-    public static final PostgreSQLContainer<?> DATABASE = new PostgreSQLContainer<>( "postgres:11.7" );
+    public static final PostgreSQLContainer<?> DATABASE = new PostgreSQLContainer<>( "postgres:15" );
 
     private String name;
     private String username;

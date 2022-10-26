@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 import io.quarkus.test.common.QuarkusTestResource;
 
-@QuarkusTestResource(PostgressDBTestResource.class)
+@QuarkusTestResource(value = PostgressDBTestResource.class, restrictToAnnotatedClass = true)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface WithPostgressDB {
