@@ -10,7 +10,7 @@ import io.quarkus.test.common.QuarkusTestResource;
 @QuarkusTestResource(value = PostgressDBTestResource.class, restrictToAnnotatedClass = true)
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface WithPostgressDB {
+public @interface WithPostgresDB {
     String username() default "";
     String password() default "";
     String name() default "";

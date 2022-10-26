@@ -7,7 +7,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import io.quarkus.test.common.QuarkusTestResourceConfigurableLifecycleManager;
 
-public class PostgressDBTestResource implements QuarkusTestResourceConfigurableLifecycleManager<WithPostgressDB> {
+public class PostgressDBTestResource implements QuarkusTestResourceConfigurableLifecycleManager<WithPostgresDB> {
 
     public static final PostgreSQLContainer<?> DATABASE = new PostgreSQLContainer<>( "postgres:15" );
 
@@ -16,7 +16,7 @@ public class PostgressDBTestResource implements QuarkusTestResourceConfigurableL
     private String password;
 
     @Override
-    public void init( WithPostgressDB params ) {
+    public void init( WithPostgresDB params ) {
         username = params.username();
         password = params.password();
         name = params.name();
