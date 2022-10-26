@@ -6,7 +6,6 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -17,6 +16,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.DefaultValue;
 
 import com.redhat.training.model.Expense;
 
@@ -56,7 +56,7 @@ public class ExpenseResource {
     // TODO: Make the method transactional
     @Transactional
     public List<Expense> delete(@PathParam("uuid") final UUID uuid) {
-        // TODO: Use the "delete()" method of the entity.
+        // TODO: Use the "delete()" method of the entity and list the expenses
         long numExpensesDeleted = Expense.delete("uuid", uuid);
 
         if (numExpensesDeleted == 0) {

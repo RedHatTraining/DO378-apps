@@ -18,7 +18,7 @@ public class Associate extends PanacheEntity {
     public String name;
 
     @JsonbTransient
-    @OneToMany(mappedBy = "associate", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "associate", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // TODO: Add one to many relationship between associate and expenses
     public List<Expense> expenses = new ArrayList<>();
 

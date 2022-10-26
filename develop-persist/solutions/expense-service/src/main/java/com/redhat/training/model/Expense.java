@@ -46,15 +46,15 @@ public class Expense extends PanacheEntity {
     public Expense() {
     }
 
-    public Expense(UUID uuid, String name, LocalDateTime creationDate, PaymentMethod paymentMethod, String amount,
-            Associate associate) {
+    public Expense(UUID uuid, String name, LocalDateTime creationDate,
+            PaymentMethod paymentMethod, String amount, Associate associate) {
         this.uuid = uuid;
         this.name = name;
         this.creationDate = creationDate;
         this.paymentMethod = paymentMethod;
         this.amount = new BigDecimal(amount);
         this.associate = associate;
-        // TODO: Add associateId equasion
+        // TODO: Add associateId association
         this.associateId = associate.id;
     }
 
@@ -67,7 +67,7 @@ public class Expense extends PanacheEntity {
 
         // TODO: Update regarding the new relationship
         Optional<Associate> associateOpt = Associate.findByIdOptional(associateId);
-        if(associateOpt.isPresent()){
+        if (associateOpt.isPresent()) {
             return new Expense(name, paymentMethod, amount, associateOpt.get());
         } else {
             throw new RuntimeException();
@@ -75,7 +75,7 @@ public class Expense extends PanacheEntity {
     }
 
     // TODO: Add update() method
-    public static void update(final Expense expense) throws RuntimeException{
+    public static void update(final Expense expense) throws RuntimeException {
         Optional<Expense> previousExpense = Expense.findByIdOptional(expense.id);
 
         previousExpense.ifPresentOrElse((updatedExpense) -> {
