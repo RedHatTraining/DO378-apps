@@ -3,6 +3,7 @@ package com.redhat.training.expenses;
 import java.util.List;
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -22,6 +23,9 @@ import javax.ws.rs.core.Response;
 @Produces( MediaType.APPLICATION_JSON )
 public class ExpenseResource {
 
+    @Inject
+    ExpenseValidator validator;
+
     @GET
     public List<Expense> list() {
         return Expense.listAll();
@@ -31,6 +35,11 @@ public class ExpenseResource {
     @Transactional
     public Expense create( final Expense expense ) {
         Expense newExpense = Expense.of( expense.name, expense.paymentMethod, expense.amount.toString() );
+
+        if ( !validator.isValid( newExpense ) ) {
+            throw new WebApplicationException( Response.Status.BAD_REQUEST );
+        }
+
         newExpense.persist();
 
         return newExpense;
