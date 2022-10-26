@@ -20,7 +20,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 @Entity
 public class Expense extends PanacheEntity {
 
-    enum PaymentMethod {
+    public enum PaymentMethod {
         CASH, CREDIT_CARD, DEBIT_CARD,
     }
 
@@ -38,6 +38,7 @@ public class Expense extends PanacheEntity {
     // TODO: Add many-to-one relationship between expense and associate
     public Associate associate;
 
+    // TODO: Annotate the associateId with @Column
     @Column(name = "associate_id")
     public Long associateId;
 
@@ -53,6 +54,7 @@ public class Expense extends PanacheEntity {
         this.paymentMethod = paymentMethod;
         this.amount = new BigDecimal(amount);
         this.associate = associate;
+        // TODO: Add associateId equasion
         this.associateId = associate.id;
     }
 
@@ -62,8 +64,9 @@ public class Expense extends PanacheEntity {
 
     @JsonbCreator
     public static Expense of(String name, PaymentMethod paymentMethod, String amount, Long associateId) {
-        Optional<Associate> associateOpt = Associate.findByIdOptional(associateId);
 
+        // TODO: Update regarding the new relationship
+        Optional<Associate> associateOpt = Associate.findByIdOptional(associateId);
         if(associateOpt.isPresent()){
             return new Expense(name, paymentMethod, amount, associateOpt.get());
         } else {
