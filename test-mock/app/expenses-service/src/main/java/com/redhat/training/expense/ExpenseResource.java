@@ -4,6 +4,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.headers.Header;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -20,6 +21,11 @@ import java.util.UUID;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ExpenseResource {
+
+    @Inject
+    @RestClient
+    FraudScoreService fraudScoreService;
+
     @Inject
     public ExpenseService expenseService;
 
@@ -101,6 +107,27 @@ public class ExpenseResource {
         expenseService.delete(uuid);
 
         return Response.noContent().build();
+    }
+
+    @POST
+    @Path("/score")
+    @Operation(summary = "Provides the fraud score from an external service")
+    @APIResponse(
+            responseCode = "200",
+            description = "Entity successfully scored"
+    )
+    @APIResponse(
+            responseCode = "400",
+            description = "Invalid entity"
+    )
+    public Response fraudScore(Expense expense) {
+        FraudScore fraud = fraudScoreService.getByAmount(expense.amount);
+
+        if (fraud.score > 200) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        return Response.ok().build();
     }
 
     private URI generateUriForExpense(Expense expense, UriInfo uriInfo) {

@@ -9,7 +9,7 @@ import static io.restassured.RestAssured.given;
 
 
 @QuarkusTest
-public class ExpenseResourceValidationsTest {
+public class ServiceMockTest {
 
     @InjectMock
     ExpenseService mockExpenseService;
@@ -22,7 +22,7 @@ public class ExpenseResourceValidationsTest {
 
         given()
             .body(
-                ExpenseResourceCrudTest.generateExpenseJson(
+                CrudTest.generateExpenseJson(
                     "",
                     "Expense 1",
                     "CASH",

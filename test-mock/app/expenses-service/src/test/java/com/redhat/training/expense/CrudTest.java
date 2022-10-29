@@ -2,12 +2,8 @@ package com.redhat.training.expense;
 
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
-
-import java.math.BigDecimal;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
@@ -16,7 +12,7 @@ import static org.hamcrest.CoreMatchers.*;
 @QuarkusTest
 @TestHTTPEndpoint(ExpenseResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ExpenseResourceCrudTest {
+public class CrudTest {
     public static final String NON_EXISTING_UUID = "3fa85f64-5717-4562-b3fc-2c963f66afa6";
 
     @Test
