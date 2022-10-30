@@ -12,47 +12,4 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTest
 public class RestClientMockTest {
 
-    @InjectMock
-    @RestClient
-    FraudScoreService fraudScoreService;
-
-    @Test
-    public void highFraudScoreReturns400() {
-        Mockito.when(fraudScoreService.getByAmount(Mockito.anyDouble())).thenReturn(new FraudScore(500));
-
-        given()
-            .body(
-                CrudTest.generateExpenseJson(
-                    "",
-                    "Expense 1",
-                    "CASH",
-                    50000
-                )
-            )
-            .contentType("application/json")
-        .when()
-            .post("/expenses/score")
-        .then()
-            .statusCode(400);
-    }
-
-    @Test
-    public void lowFraudScoreReturns200() {
-        Mockito.when(fraudScoreService.getByAmount(Mockito.anyDouble())).thenReturn(new FraudScore(50));
-
-        given()
-            .body(
-                CrudTest.generateExpenseJson(
-                    "",
-                    "Expense 1",
-                    "CASH",
-                    50000
-                )
-            )
-            .contentType("application/json")
-        .when()
-            .post("/expenses/score")
-        .then()
-            .statusCode(200);
-    }
 }
