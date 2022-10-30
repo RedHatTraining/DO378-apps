@@ -7,7 +7,6 @@ import org.mockito.Mockito;
 
 import static io.restassured.RestAssured.given;
 
-
 @QuarkusTest
 public class ServiceMockTest {
 
