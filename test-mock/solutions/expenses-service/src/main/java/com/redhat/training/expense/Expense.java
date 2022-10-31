@@ -6,8 +6,6 @@ import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Entity;
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
