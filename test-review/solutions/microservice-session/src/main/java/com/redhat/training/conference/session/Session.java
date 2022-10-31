@@ -1,4 +1,4 @@
-package org.acme.conference.session;
+package com.redhat.training.conference.session;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,12 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 
-/**
- * Session entity
- *
- */
+import com.redhat.training.conference.speaker.Speaker;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+
+
 @Entity
-public class Session {
+public class Session extends PanacheEntity {
 
     @Id
     @NotBlank

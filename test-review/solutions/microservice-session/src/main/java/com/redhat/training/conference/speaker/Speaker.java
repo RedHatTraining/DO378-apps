@@ -1,4 +1,4 @@
-package org.acme.conference.session;
+package com.redhat.training.conference.speaker;
 
 import java.util.UUID;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
-import javax.json.bind.annotation.JsonbTransient;
+import com.redhat.training.conference.session.Session;
 
 @Entity
 public class Speaker {
@@ -26,11 +26,10 @@ public class Speaker {
     public String name;
 
     @Column(unique = true)
-    public String uuid; 
+    public String uuid;
 
     @ManyToMany(mappedBy="speakers", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Transient
-    @JsonbTransient
     public Set<Session> sessions = new HashSet<>();
 
     public static Speaker from (String speakerName) {
@@ -50,7 +49,7 @@ public class Speaker {
         speaker.name=speakerFromService.nameFirst+" "+speakerFromService.nameLast;
         speaker.uuid=speakerFromService.uuid;
     }
-    
+
     public void addSession(final Session session){
         if (sessions.contains(session))
             return;

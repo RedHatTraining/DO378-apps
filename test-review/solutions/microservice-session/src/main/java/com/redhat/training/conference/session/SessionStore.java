@@ -1,4 +1,4 @@
-package org.acme.conference.session;
+package com.redhat.training.conference.session;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,11 +12,15 @@ import javax.ws.rs.NotFoundException;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
+import com.redhat.training.conference.speaker.Speaker;
+import com.redhat.training.conference.speaker.SpeakerFromService;
+import com.redhat.training.conference.speaker.SpeakerRepository;
+import com.redhat.training.conference.speaker.SpeakerService;
+
+
+
 @ApplicationScoped
 public class SessionStore {
-
-    @Inject
-    public SessionRepository repository;
 
     @Inject
     public SpeakerRepository speakerRepository;
@@ -41,19 +45,19 @@ public class SessionStore {
     }
 
     public Collection<Session> findAllWithEnrichment(){
-        List<Session> sessions = repository.findAll().list();
+        List<Session> sessions = Session.findAll().list();
         final List<SpeakerFromService> allSpeakers = speakerService.listAll();
         sessions.stream().flatMap(s->s.speakers.stream()).forEach(sp->this.enrichSpeaker(allSpeakers, sp));
         return sessions;
 }
 
     public Collection<Session> findAllWithoutEnrichment(){
-        return repository.findAll().list();
+        return Session.findAll().list();
     }
 
     @Transactional
     public Session save(Session session) {
-        repository.persist(session);
+        session.persist();
         return session;
     }
 
@@ -67,7 +71,7 @@ public class SessionStore {
         sessionOld.ifPresent(ses -> {
             ses.schedule = newSession.schedule;
             //TODO: Update the speakers
-            repository.persist(ses);
+            ses.persist();
         });
 
         return sessionOld;
@@ -83,11 +87,11 @@ public class SessionStore {
     }
 
     public Optional<Session> findByIdWithoutEnrichment(String sessionId) {
-        return repository.find("id", sessionId).stream().findFirst();
+        return Session.find("id", sessionId).stream().findFirst();
     }
 
     public Optional<Session> findByIdWithEnrichedSpeakers(String sessionId) {
-        Optional<Session> result = repository.find("id", sessionId).stream().findFirst();
+        Optional<Session> result = Session.find("id", sessionId).stream().findFirst();
 
         // Fake delay!
         try {
@@ -116,7 +120,7 @@ public class SessionStore {
         if (!session.isPresent()) {
             return Optional.empty();
         }
-        repository.delete(session.get());
+        Session.delete(session.get());
         return session;
     }
 

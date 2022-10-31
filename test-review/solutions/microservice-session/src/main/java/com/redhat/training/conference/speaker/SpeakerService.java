@@ -1,4 +1,4 @@
-package org.acme.conference.session;
+package com.redhat.training.conference.speaker;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,7 +17,7 @@ public interface SpeakerService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<SpeakerFromService> listAll();
-    
+
     @GET
     @Path("/search")
     public Collection<SpeakerFromService> search(@QueryParam("query") String query, @QueryParam("sort") String sort);

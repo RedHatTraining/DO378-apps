@@ -1,4 +1,4 @@
-package org.acme.conference.session;
+package com.redhat.training.conference.session;
 
 public class SessionFakeFactory {
 

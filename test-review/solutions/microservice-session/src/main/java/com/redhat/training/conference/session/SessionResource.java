@@ -1,4 +1,4 @@
-package org.acme.conference.session;
+package com.redhat.training.conference.session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,17 +20,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.microprofile.faulttolerance.Bulkhead;
-import org.eclipse.microprofile.faulttolerance.Fallback;
-import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
-import org.eclipse.microprofile.faulttolerance.Timeout;
-import org.eclipse.microprofile.faulttolerance.Retry;
-
 /**
  * SessionResource
  */
 @Path("sessions")
 @ApplicationScoped
+@Produces(MediaType.APPLICATION_JSON)
 public class SessionResource {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -39,8 +34,6 @@ public class SessionResource {
     SessionStore sessionStore;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Fallback(fallbackMethod = "allSessionsFallback", applyOn = { Exception.class })
     public Collection<Session> allSessions() throws Exception {
         return sessionStore.findAll();
     }
@@ -52,16 +45,12 @@ public class SessionResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Session createSession(final Session session) {
         return sessionStore.save(session);
     }
 
     @GET
     @Path("/{sessionId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Fallback(fallbackMethod = "retrieveSessionFallback")
-    @CircuitBreaker(requestVolumeThreshold = 2, failureRatio = 1, delay = 30_000)
     public Response retrieveSession(@PathParam("sessionId") final String sessionId) {
         final Optional<Session> result = sessionStore.findById(sessionId);
         return result.map(s -> Response.ok(s).build()).orElseThrow(NotFoundException::new);
@@ -76,8 +65,6 @@ public class SessionResource {
     @PUT
     @Path("/{sessionId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Bulkhead(1)
     public Response updateSession(@PathParam("sessionId") final String sessionId, final Session session) {
         final Optional<Session> updated = sessionStore.updateById(sessionId, session);
         return updated.map(s -> Response.ok(s).build()).orElseThrow(NotFoundException::new);
@@ -92,8 +79,6 @@ public class SessionResource {
 
     @GET
     @Path("/{sessionId}/speakers")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Timeout(2000)
     public Response sessionSpeakers(@PathParam("sessionId") final String sessionId) {
         final Optional<Session> session = sessionStore.findById(sessionId);
         return session.map(s -> s.speakers).map(l -> Response.ok(l).build()).orElseThrow(NotFoundException::new);
@@ -101,8 +86,6 @@ public class SessionResource {
 
     @PUT
     @Path("/{sessionId}/speakers/{speakerName}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Retry(maxRetries = 60, delay = 1_000)
     public Response addSessionSpeaker(@PathParam("sessionId") final String sessionId,
             @PathParam("speakerName") final String speakerName) {
         final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
@@ -119,7 +102,6 @@ public class SessionResource {
     @DELETE
     @Path("/{sessionId}/speakers/{speakerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    @Retry(maxRetries = 60, delay = 1_000)
     public Response removeSessionSpeaker(@PathParam("sessionId") final String sessionId,
             @PathParam("speakerName") final String speakerName) {
         final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
