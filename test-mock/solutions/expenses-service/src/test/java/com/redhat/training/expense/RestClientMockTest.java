@@ -37,7 +37,9 @@ public class RestClientMockTest {
 
     @Test
     public void lowFraudScoreReturns200() {
-        Mockito.when(fraudScoreService.getByAmount(Mockito.anyDouble())).thenReturn(new FraudScore(50));
+        Mockito.when(
+                fraudScoreService.getByAmount(Mockito.anyDouble())
+        ).thenReturn(new FraudScore(50));
 
         given()
             .body(
