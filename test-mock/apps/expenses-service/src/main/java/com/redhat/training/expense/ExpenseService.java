@@ -1,11 +1,7 @@
 package com.redhat.training.expense;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
