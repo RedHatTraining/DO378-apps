@@ -1,87 +1,97 @@
 package com.redhat.training.speaker;
 
-import io.quarkus.panache.common.Sort;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.headers.Header;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
-
+import java.util.Collection;
+import java.util.Optional;
+import javax.inject.Inject;
 import javax.transaction.Transactional;
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.net.URI;
-import java.util.List;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import io.quarkus.panache.common.Sort;
 
-@Path("/speakers")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
+@Path( "/speaker" )
+@Produces( MediaType.APPLICATION_JSON )
+@Consumes( MediaType.APPLICATION_JSON )
 public class SpeakerResource {
 
+    private static final int SEARCH_MINIMUM_CHARS = 3;
+
+    @Inject
+    SpeakerDAO speakerDAO;
+
     @GET
-    @Operation(summary = "Retrieves the list of speakers")
-    @APIResponse(responseCode = "200")
-    public List<Speaker> getSpeakers(
-            @DefaultValue("id") @QueryParam("sortBy") String sortBy,
-            @DefaultValue("0") @QueryParam("pageIndex") int pageIndex,
-            @DefaultValue("25") @QueryParam("pageSize") int pageSize
-    ) {
-        return Speaker
-                .findAll(Sort.by(filterSortBy(sortBy)))
-                .page(pageIndex, pageSize)
-                .list();
+    public Collection<Speaker> listAll() {
+        return Speaker.listAll();
     }
 
+    @GET
+    @Path( "/sorted" )
+    public Collection<Speaker> listAllSorted( @QueryParam( "sort" ) String sortField ) {
+        return speakerDAO.findAll( sortBy( sortField ) );
+    }
+
+    private Sort sortBy( String sortField ) {
+        return Optional.ofNullable( sortField ).map( Sort::by ).orElse( Sort.by( "nameLast" ) );
+    }
+
+    @GET
+    @Path( "/{uuid}" )
+    public Speaker findByUuid( @PathParam( "uuid" ) String uuid ) {
+        return speakerDAO.getByUuid( uuid )
+                .orElseThrow( NotFoundException::new );
+    }
+
+    @GET
+    @Path( "/search" )
+    public Collection<Speaker> search( @QueryParam( "query" ) String query, @QueryParam( "sort" ) String sort ) {
+        String queryValid = Optional.ofNullable( query )
+                .filter( q -> q.length() >= SEARCH_MINIMUM_CHARS )
+                .orElseThrow( () -> new BadRequestException( "Insufficient number of chars" ) );
+
+        return speakerDAO.search( queryValid, sortBy( sort ) );
+    }
+
+    @Transactional
     @POST
-    @Transactional
-    @Operation(summary = "Adds a speaker")
-    @APIResponse(
-            responseCode = "201",
-            headers = {
-                    @Header(
-                            name = "id",
-                            description = "ID of the created entity",
-                            schema = @Schema(implementation = Integer.class)
-                    ),
-                    @Header(
-                            name = "location",
-                            description = "URI of the created entity",
-                            schema = @Schema(implementation = String.class)
-                    ),
-            },
-            description = "Entity successfully created"
-    )
-    public Response createSpeaker(Speaker newSpeaker, @Context UriInfo uriInfo) {
-        newSpeaker.persist();
-
-        return Response.created(generateUriForSpeaker(newSpeaker, uriInfo))
-            .header("id", newSpeaker.id)
-            .build();
+    public Speaker insert( Speaker speaker ) {
+        return speakerDAO.create( speaker );
     }
 
-    @DELETE
-    @Path("/{id}")
     @Transactional
-    public Response deleteSpeaker(@PathParam("id") Long id) {
-        Speaker speaker = Speaker.findById(id);
-
-        if (speaker == null) {
+    @PUT
+    @Path( "/{uuid}" )
+    public Speaker update( @PathParam( "uuid" ) String uuid, Speaker speaker ) {
+        if ( null == uuid || null == speakerDAO.getByUuid( uuid ) ) {
             throw new NotFoundException();
         }
 
-        speaker.delete();
-
-        return Response.noContent().build();
-    }
-
-    private URI generateUriForSpeaker(Speaker speaker, UriInfo uriInfo) {
-        return uriInfo.getAbsolutePathBuilder().path("/{id}").build(speaker.id);
-    }
-
-    private String filterSortBy(String sortBy) {
-        if (!sortBy.equals("id") && !sortBy.equals("name")){
-            return "id";
+        if ( null == speaker || !uuid.equals( speaker.uuid ) ) {
+            throw new BadRequestException();
         }
 
-        return sortBy;
+        speaker.uuid = uuid;
+        return speakerDAO.update( speaker );
     }
+
+    @Transactional
+    @DELETE
+    @Path( "/{uuid}" )
+    public void remove( @PathParam( "uuid" ) String uuid ) {
+
+        Speaker speaker = Optional.ofNullable( uuid )
+                .flatMap( speakerDAO::getByUuid )
+                .orElseThrow( NotFoundException::new );
+
+        speakerDAO.delete( speaker );
+    }
+
 }
