@@ -29,7 +29,5 @@ public class PanacheMockTest {
         .then()
             .statusCode(200)
             .body("$.size()", is(0));
-
-        PanacheMock.verify(Expense.class, Mockito.times(1)).listAll();
     }
 }
