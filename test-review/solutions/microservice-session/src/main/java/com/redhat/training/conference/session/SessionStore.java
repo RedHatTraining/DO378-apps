@@ -61,22 +61,6 @@ public class SessionStore {
         return session;
     }
 
-    @Transactional
-    public Optional<Session> updateById(String sessionId, Session newSession) {
-        Optional<Session> sessionOld = findById(sessionId);
-        if (!sessionOld.isPresent()) {
-            return Optional.empty();
-        }
-
-        sessionOld.ifPresent(ses -> {
-            ses.schedule = newSession.schedule;
-            //TODO: Update the speakers
-            ses.persist();
-        });
-
-        return sessionOld;
-    }
-
     public Optional<Session> findById(String sessionId) {
         // Feature toggle
         if (sessionIntegration) {
@@ -105,35 +89,11 @@ public class SessionStore {
         }
         return result;
     }
-
-    private void enrichSpeaker(List<SpeakerFromService> allSpeakers, Speaker speaker) {
-        var serviceSpeaker = allSpeakers.stream().filter(s -> s.uuid.equals(speaker.uuid)).findFirst();
-        if (serviceSpeaker.isPresent()) {
-            var speakerFromService = serviceSpeaker.get();
-            Speaker.enrichFromService(speakerFromService, speaker);
-        }
-    }
-
-    @Transactional
-    public Optional<Session> deleteById(String sessionId) {
-        Optional<Session> session = findById(sessionId);
-        if (!session.isPresent()) {
-            return Optional.empty();
-        }
-        Session.delete(session.get());
-        return session;
-    }
-
+    
 	public void addSpeakerToSession(final String speakerName, final Session session) {
         Speaker speaker = getOrCreateSpeakerByName(speakerName);
         session.addSpeaker(speaker);
         repository.persist(session);
-	}
-
-	public void removeSpeakerFromSession(final String speakerName, final Session session) {
-        Speaker speaker = getOrCreateSpeakerByName(speakerName);
-        session.removeSpeaker(speaker);
-	    repository.persist(session);
 	}
 
     public Speaker getOrCreateSpeakerByName(final String speakerName) {
@@ -143,30 +103,5 @@ public class SessionStore {
         } else {
             return getSpeakerByNameLocally(speakerName).orElse(Speaker.from(speakerName));
         }
-    }
-
-    private Optional<Speaker> getSpeakerByNameLocally(final String speakerName) {
-        var speakers = speakerRepository.find("name", speakerName);
-        return speakers.stream().findFirst();
-    }
-
-    private Optional<Speaker> getSpeakerByNameFromService(final String speakerName) {
-        Optional<SpeakerFromService> serviceSpeaker = speakerService.search(speakerName, "uuid").stream().findFirst();
-        Optional<Speaker> localSpeaker = getSpeakerByNameLocally(speakerName);
-
-        if (localSpeaker.isPresent()){
-            Speaker speaker = localSpeaker.get();
-            if (serviceSpeaker.isPresent()){
-                Speaker.enrichFromService(serviceSpeaker.get(), speaker);
-            }
-            return localSpeaker;
-        } else {
-            if (serviceSpeaker.isPresent()){
-                return Optional.of(Speaker.from(serviceSpeaker.get()));
-            } else {
-                return Optional.empty();
-            }
-        }
-
     }
 }

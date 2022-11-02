@@ -1,0 +1,45 @@
+FROM registry.redhat.io/openjdk/openjdk-11-rhel8
+
+ENV DERBY_VERSION=10.15.2.0
+ENV DERBY_HOME=/derby
+ENV DERBY_LIB=${DERBY_HOME}/lib
+ENV DERBY_CLASSPATH=${DERBY_LIB}/derby.jar:${DERBY_LIB}/derbynet.jar:${DERBY_LIB}/derbytools.jar:${DERBY_LIB}/derbyoptionaltools.jar:${DERBY_LIB}/derbyclient.jar
+
+
+LABEL \
+    io.k8s.description="Open source relational database implemented entirely in Java image for Red Hat OpenShift providing OpenJDK 11"  \
+    io.k8s.display-name="Apache Derby Database"  \
+    io.openshift.tags="java,database,derby"  \
+    maintainer="Juan Zuriaga <jzuriaga@redhat.com>"  \
+    name="db-derby/openjdk-11-db-derby"  \
+    usage="--name db-derby -p 1527:1527 -v /myvol:/volumes/data db-derby/openjdk-11-db-derby"  \
+    summary="Open source relational database implemented entirely in Java image for Red Hat OpenShift providing OpenJDK 11" 
+
+USER 0
+
+RUN \
+    dnf install -y wget && \
+    wget https://dist.apache.org/repos/dist/release/db/derby/db-derby-${DERBY_VERSION}/db-derby-${DERBY_VERSION}-bin.tar.gz && \
+    tar xzf db-derby-${DERBY_VERSION}-bin.tar.gz && \
+    mv db-derby-${DERBY_VERSION}-bin /derby && \
+    rm -Rf *.tar.gz ${DERBY_HOME}/demo ${DERBY_HOME}/javadoc ${DERBY_HOME}/docs ${DERBY_HOME}/test ${DERBY_HOME}/*.html ${DERBY_HOME}/KEYS && \
+    dnf remove -y wget && \
+    dnf clean all
+
+USER jboss
+
+ENV JAVA_LIB_DIR=/derby/lib/
+ENV JAVA_MAIN_CLASS="org.apache.derby.drda.NetworkServerControl"
+ENV JAVA_ARGS="start -h 0.0.0.0"
+ENV JAVA_CLASSPATH="$DERBY_CLASSPATH"
+ENV JAVA_OPTIONS="-Dderby.stream.error.field=java.lang.System.out"
+
+WORKDIR /deployments/data
+VOLUME ["/deployments/data"]
+EXPOSE 1527
+
+HEALTHCHECK CMD nc -z localhost 1527 || exit 1
+
+# Command moved to environment variables. 
+# Use this command to run Apache Derby under another java base image 
+# CMD ["java", "-cp $DERBY_CLASSPATH", "-Dderby.stream.error.field=java.lang.System.out", "org.apache.derby.drda.NetworkServerControl", "start", "-h", "0.0.0.0"]

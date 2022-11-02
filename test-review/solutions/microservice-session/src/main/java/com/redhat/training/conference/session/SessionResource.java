@@ -38,11 +38,6 @@ public class SessionResource {
         return sessionStore.findAll();
     }
 
-    public Collection<Session> allSessionsFallback() throws Exception {
-        logger.warn("Fallback sessions");
-        return sessionStore.findAllWithoutEnrichment();
-    }
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Session createSession(final Session session) {
@@ -56,62 +51,10 @@ public class SessionResource {
         return result.map(s -> Response.ok(s).build()).orElseThrow(NotFoundException::new);
     }
 
-    public Response retrieveSessionFallback(final String sessionId) {
-        logger.warn("Fallback session");
-        final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
-        return result.map(s -> Response.ok(s).build()).orElseThrow(NotFoundException::new);
-    }
-
-    @PUT
-    @Path("/{sessionId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateSession(@PathParam("sessionId") final String sessionId, final Session session) {
-        final Optional<Session> updated = sessionStore.updateById(sessionId, session);
-        return updated.map(s -> Response.ok(s).build()).orElseThrow(NotFoundException::new);
-    }
-
-    @DELETE
-    @Path("/{sessionId}")
-    public Response deleteSession(@PathParam("sessionId") final String sessionId) {
-        final Optional<Session> removed = sessionStore.deleteById(sessionId);
-        return removed.map(s -> Response.noContent().build()).orElseThrow(NotFoundException::new);
-    }
-
     @GET
     @Path("/{sessionId}/speakers")
     public Response sessionSpeakers(@PathParam("sessionId") final String sessionId) {
         final Optional<Session> session = sessionStore.findById(sessionId);
         return session.map(s -> s.speakers).map(l -> Response.ok(l).build()).orElseThrow(NotFoundException::new);
-    }
-
-    @PUT
-    @Path("/{sessionId}/speakers/{speakerName}")
-    public Response addSessionSpeaker(@PathParam("sessionId") final String sessionId,
-            @PathParam("speakerName") final String speakerName) {
-        final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
-
-        if (result.isPresent()) {
-            final Session session = result.get();
-            sessionStore.addSpeakerToSession(speakerName, session);
-            return Response.ok(session).build();
-        }
-
-        throw new NotFoundException();
-    }
-
-    @DELETE
-    @Path("/{sessionId}/speakers/{speakerName}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response removeSessionSpeaker(@PathParam("sessionId") final String sessionId,
-            @PathParam("speakerName") final String speakerName) {
-        final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
-
-        if (result.isPresent()) {
-            final Session session = result.get();
-            sessionStore.removeSpeakerFromSession(speakerName, session);
-            return Response.ok(session).build();
-        }
-
-        throw new NotFoundException();
     }
 }

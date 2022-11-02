@@ -42,6 +42,4 @@ public class Session extends PanacheEntity {
         speakers.remove(speaker);
         speaker.removeSession(this);
     }
-
-  
 }
