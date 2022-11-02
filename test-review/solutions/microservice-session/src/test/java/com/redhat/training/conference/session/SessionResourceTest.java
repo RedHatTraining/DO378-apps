@@ -1,33 +1,69 @@
 package com.redhat.training.conference.session;
 
-import static com.redhat.training.conference.session.SessionFakeFactory.DEFAULT_ID;
-import static com.redhat.training.conference.session.SessionFakeFactory.composeSession;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.startsWith;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.mockito.InjectMock;
+
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.equalTo;
+
+import com.redhat.training.conference.speaker.Speaker;
+import com.redhat.training.conference.speaker.SpeakerService;
 
 @QuarkusTest
 public class SessionResourceTest {
 
-    private static final String SESSION_ID = "s-1-1";
-    private static final String OTHER_SESSION_ID = "s-1-2";
+    @InjectMock
+    SpeakerService speakerService;
 
     @Test
     public void testCreateSession () {
-        Session session = composeSession();
-        given().when()
-                .body(session)
-                .contentType("application/json")
-                .post("/sessions")
-                .then()
-                .statusCode(200)
-                .contentType("application/json")
-                .body("id", equalTo(DEFAULT_ID));
+
+        given()
+            .contentType("application/json")
+            .and()
+            .body(sessionWithSpeakerId(12))
+        .when()
+            .post("/sessions")
+        .then()
+            .statusCode(200)
+            .contentType("application/json")
+            .body("speakerId", equalTo(12));
     }
 
-    
+    @Test
+    public void testGetSessionWithSpeaker () {
+
+        int speakerId = 12;
+
+        // TODO: students have create this mock
+        Mockito.when(
+            speakerService.getById(Mockito.anyInt())
+        ).thenReturn(
+            new Speaker(speakerId, "Pablo", "Solar")
+        );
+
+        given()
+            .contentType("application/json")
+            .and()
+            .body(sessionWithSpeakerId(speakerId))
+            .post("/sessions");
+
+        when()
+            .get("/sessions/1")
+        .then()
+            .statusCode(200)
+            .contentType("application/json")
+            .body("speaker.firstName", equalTo("Pablo"));
+    }
+
+    private Session sessionWithSpeakerId(int speakerId) {
+        Session session = new Session();
+        session.speakerId = speakerId;
+        return session;
+    }
+
 }

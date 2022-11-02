@@ -1,45 +1,18 @@
 package com.redhat.training.conference.session;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.validation.constraints.NotBlank;
-
 import com.redhat.training.conference.speaker.Speaker;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-
 
 @Entity
 public class Session extends PanacheEntity {
 
-    @Id
-    @NotBlank
-    public String id;
-
     public int schedule;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    public Set<Speaker> speakers = new HashSet<>();
+    public int speakerId;
 
-    public void addSpeaker(final Speaker speaker){
-        if (speakers.contains(speaker))
-            return;
-
-        speakers.add(speaker);
-        speaker.addSession(this);
+    public SessionWithSpeaker withSpeaker( final Speaker speaker ) {
+        return new SessionWithSpeaker( id, schedule, speaker );
     }
 
-    public void removeSpeaker(final Speaker speaker){
-        if (!speakers.contains(speaker))
-            return;
-
-        speakers.remove(speaker);
-        speaker.removeSession(this);
-    }
 }
