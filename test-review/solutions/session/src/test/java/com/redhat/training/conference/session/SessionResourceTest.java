@@ -39,7 +39,6 @@ public class SessionResourceTest {
 
         int speakerId = 12;
 
-        // TODO: students have create this mock
         Mockito.when(
             speakerService.getById(Mockito.anyInt())
         ).thenReturn(
