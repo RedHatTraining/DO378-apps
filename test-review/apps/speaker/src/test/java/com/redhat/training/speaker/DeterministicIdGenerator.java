@@ -6,8 +6,6 @@ import io.quarkus.test.Mock;
 
 import com.redhat.training.speaker.idgenerator.IdGenerator;
 
-@Mock
-@Singleton
 public class DeterministicIdGenerator implements IdGenerator {
 
     private UUID nextUUID = new UUID( 0, 0 );

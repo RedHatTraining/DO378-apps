@@ -38,8 +38,12 @@ public class SpeakerResourceTest {
 
     @Test
     public void testListEmptySpeakers() {
-
-        //ToDo
+        given()
+            .when()
+            .get( "/speaker" )
+            .then()
+            .statusCode( 200 )
+            .body( "size()", is( 0 ) );
     }
 
 }
