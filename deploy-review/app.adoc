@@ -1,0 +1,18 @@
+:gls_prefix:
+
+// Do not modify section headers, as they are used by flamel and the translation process.
+= pass:a,n[{gls_res_outcomes}]
+
+You should be able to deploy Quarkus Conference application, by using different techniques provided by the Red{nbsp}Hat Build of Quarkus.
+
+== Present App FLow
+
+* Logging in to the `Openshift Container Platform` and start using the project created for you.
+* Deploy the `Speaker microservice` using the `Quarkus openshift extension`.
+* Deploy the `Schedule Microservice` using the `Container Image deployment wizard` from the OpenShift Container Platform console.
+
+== Proposed App Flow
+
+* Logging in to the `Openshift Container Platform` and start using the project created for you.
+* Deploy the `Session microservice` on the cluster using the `Quarkus openshift extension`.
+* Using the `Speaker microservice` with `Service Discovery on Openshift` with `Smallrye Stork`.
