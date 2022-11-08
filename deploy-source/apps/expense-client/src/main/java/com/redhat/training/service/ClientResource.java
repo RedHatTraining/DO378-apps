@@ -3,7 +3,9 @@ package com.redhat.training.service;
 
 import com.redhat.training.client.ExpenseServiceClient;
 import com.redhat.training.model.Expense;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Set;
@@ -13,7 +15,8 @@ import java.util.Set;
 @Produces(MediaType.APPLICATION_JSON)
 public class ClientResource {
 
-
+    @Inject
+    @RestClient
     ExpenseServiceClient service;
 
     @GET

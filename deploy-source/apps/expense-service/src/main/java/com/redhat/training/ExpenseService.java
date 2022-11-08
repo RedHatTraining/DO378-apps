@@ -1,14 +1,22 @@
 package com.redhat.training;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
 
+@ApplicationScoped
 public class ExpenseService {
     private Set<Expense> expenses = Collections.newSetFromMap(Collections.synchronizedMap(new HashMap<>()));
 
+    @PostConstruct
+    void init() {
+        expenses.add(new Expense("Quarkus for Spring Developers", Expense.PaymentMethod.DEBIT_CARD, "10.00"));
+        expenses.add(new Expense("OpenShift for Developers, Second Edition", Expense.PaymentMethod.DEBIT_CARD, "15.00"));
+    }
 
     public Set<Expense> list() {
         return expenses;
