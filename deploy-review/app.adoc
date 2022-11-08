@@ -15,4 +15,4 @@ You should be able to deploy Quarkus Conference application, by using different 
 
 * Logging in to the `Openshift Container Platform` and start using the project created for you.
 * Deploy the `Session microservice` on the cluster using the `Quarkus openshift extension`.
-* Using the `Speaker microservice` with `Service Discovery on Openshift` with `Smallrye Stork`.
+* Using the `Speaker microservice` with `Service Binding Operator` on Openshift`.
