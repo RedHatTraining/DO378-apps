@@ -5,18 +5,23 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
-public class Expense extends PanacheEntity {
+public class Expense extends PanacheEntityBase {
 
     enum PaymentMethod {
         CASH, CREDIT_CARD, DEBIT_CARD,
     }
 
+    @Id
     public UUID uuid;
     public String name;
 
