@@ -17,7 +17,7 @@ items:
           deployment: do378-expense
       spec:
         containers:
-        - image: quay.io/jramcast/do378-expense
+        - image: registry.ocp4.example.com:8443/developer/do378-expense
           name: do378-expense
           ports:
           - containerPort: 8080
