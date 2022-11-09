@@ -49,10 +49,6 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-kubernetes-service-binding</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jdbc-postgresql</artifactId>
     </dependency>
     <dependency>
@@ -166,25 +162,6 @@
     </plugins>
   </build>
   <profiles>
-    <profile>
-      <id>service-binding</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <skip>false</skip>
-              <systemPropertyVariables>
-                <quarkus.kubernetes-service-binding.root>
-                  ${project.basedir}/src/test/resources/k8s-sb
-                </quarkus.kubernetes-service-binding.root>
-                <quarkus.kubernetes-service-binding.enabled>true</quarkus.kubernetes-service-binding.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
     <profile>
       <id>native</id>
       <activation>
