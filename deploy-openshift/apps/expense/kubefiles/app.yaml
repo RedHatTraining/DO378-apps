@@ -21,6 +21,9 @@ items:
           name: do378-expense
           ports:
           - containerPort: 8080
+          envFrom:
+          - configMapRef:
+              name: ''
 - apiVersion: v1
   kind: Service
   metadata:
