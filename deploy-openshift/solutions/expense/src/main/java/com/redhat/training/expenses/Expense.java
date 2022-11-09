@@ -47,7 +47,7 @@ public class Expense extends PanacheEntityBase {
     }
 
     public static void update( final Expense expense ) {
-        Optional<Expense> previous = Expense.findByIdOptional( expense.id );
+        Optional<Expense> previous = Expense.findByIdOptional( expense.uuid );
 
         previous.ifPresentOrElse( ( update ) -> {
             update.uuid = expense.uuid;

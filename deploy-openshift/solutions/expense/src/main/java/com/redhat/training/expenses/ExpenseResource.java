@@ -67,7 +67,7 @@ public class ExpenseResource {
     @PUT
     @Transactional
     public void update( final Expense expense ) {
-        if ( expense.id != null )
+        if ( expense.uuid != null )
             Expense.update( expense );
         else
             throw new NotFoundException( "Expense id not provided." );
