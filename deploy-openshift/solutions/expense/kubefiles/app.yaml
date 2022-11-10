@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: do378-expense
+    name: do378-expense
+  spec:
+    selector:
+      matchLabels:
+        deployment: do378-expense
+    template:
+      metadata:
+        labels:
+          deployment: do378-expense
+      spec:
+        containers:
+        - image: registry.ocp4.example.com:8443/developer/do378-expense
+          name: do378-expense
+          ports:
+          - containerPort: 8080
+          envFrom:
+          - configMapRef:
+              name: expenses-config
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: do378-expense
+    name: do378-expense
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deployment: do378-expense
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    name: do378-expense
+    labels:
+      app: do378-expense
+  spec:
+    to:
+      kind: Service
+      name: do378-expense
+    port:
+      targetPort: 8080
+
+
