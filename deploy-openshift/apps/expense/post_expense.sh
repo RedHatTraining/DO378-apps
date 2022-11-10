@@ -21,4 +21,4 @@ EXPENSE='{
 
 echo "Posting expense to $URL"
 echo ""
-curl -s "$URL" -H "Content-Type: application/json" -d "$EXPENSE"
+curl "$URL" -H "Content-Type: application/json" -d "$EXPENSE"
