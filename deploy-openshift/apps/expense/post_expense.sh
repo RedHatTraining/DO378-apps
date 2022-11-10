@@ -9,8 +9,8 @@ if [ $# -le 1 ]
     exit 1
 fi
 
-HOST=$1
-AMOUNT=$2
+HOST="${1}"
+AMOUNT="${2}"
 URL="http://${HOST}/expense"
 
 EXPENSE='{
