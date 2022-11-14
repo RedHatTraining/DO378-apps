@@ -35,11 +35,13 @@ public class SessionStore {
     @Transactional
     public Session save( Session session ) {
         session.persist();
+
         return session;
     }
 
     private SessionWithSpeaker toSessionWithSpeaker( Session session ) {
         var speaker = speakerService.getById( session.speakerId );
+
         return session.withSpeaker( speaker );
     }
 

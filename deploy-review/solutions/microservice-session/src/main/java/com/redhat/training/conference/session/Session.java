@@ -12,6 +12,7 @@ public class Session extends PanacheEntity {
     public int speakerId;
 
     public SessionWithSpeaker withSpeaker( final Speaker speaker ) {
+
         return new SessionWithSpeaker( id, schedule, speaker );
     }
 

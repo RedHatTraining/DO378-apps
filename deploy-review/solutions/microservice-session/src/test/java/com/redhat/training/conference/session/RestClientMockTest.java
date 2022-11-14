@@ -52,6 +52,7 @@ public class RestClientMockTest {
     private Session sessionWithSpeakerId(int speakerId) {
         Session session = new Session();
         session.speakerId = speakerId;
+
         return session;
     }
 }
