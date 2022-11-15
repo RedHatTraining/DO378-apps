@@ -1,6 +1,5 @@
 package com.redhat.training.conference;
 
-
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,12 +12,6 @@ import javax.persistence.Id;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
-/**
- * Representation of the entity Schedule
- * 
- * @author jzuriaga
- *
- */
 @Entity
 public class Schedule extends PanacheEntityBase {
 

@@ -10,6 +10,10 @@ import javax.ws.rs.NotFoundException;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import com.redhat.training.conference.speaker.SpeakerService;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+import java.net.URI;
+
 @ApplicationScoped
 public class SessionStore {
 
@@ -33,7 +37,7 @@ public class SessionStore {
     }
 
     @Transactional
-    public Session save( Session session ) {
+    public Session save( Session session,@Context UriInfo uriInfo ) {
         session.persist();
 
         return session;
