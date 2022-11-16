@@ -1,5 +1,6 @@
 package com.redhat.training.conference.session;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,9 +11,7 @@ import javax.ws.rs.NotFoundException;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import com.redhat.training.conference.speaker.SpeakerService;
 
-import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.net.URI;
 
 @ApplicationScoped
 public class SessionStore {
@@ -37,16 +36,22 @@ public class SessionStore {
     }
 
     @Transactional
-    public Session save( Session session,@Context UriInfo uriInfo ) {
-        session.persist();
+    public Response save( Session newSession,@Context UriInfo uriInfo ) {
+        newSession.persist();
 
-        return session;
+        return Response.created(generateUriForSession(newSession, uriInfo))
+        .header("id", newSession.id)
+        .build();
     }
 
     private SessionWithSpeaker toSessionWithSpeaker( Session session ) {
         var speaker = speakerService.getById( session.speakerId );
 
         return session.withSpeaker( speaker );
+    }
+
+    private URI generateUriForSession(Session session, UriInfo uriInfo) {
+        return uriInfo.getAbsolutePathBuilder().path("/{id}").build(session.id);
     }
 
 }

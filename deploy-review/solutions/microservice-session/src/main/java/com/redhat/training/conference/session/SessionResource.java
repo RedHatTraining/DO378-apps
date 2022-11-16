@@ -7,7 +7,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import javax.inject.Inject;
 import javax.enterprise.context.ApplicationScoped;
 
@@ -62,8 +65,8 @@ public class SessionResource {
             },
             description = "Entity successfully created"
     )
-    public Session createSession( final Session session ) {
+    public Response createSession( final Session session, @Context UriInfo uriInfo ) {
 
-        return sessionStore.save( session );
+        return sessionStore.save( session,uriInfo );
     }
 }
