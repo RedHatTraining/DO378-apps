@@ -1,0 +1,107 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8"/>
+    <title>Expenses Client</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/wingcss/0.1.8/wing.min.css"/>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script type="text/javascript">
+      var app = angular.module("ExpenseClient", []);
+
+      app.controller("ExpenseClientController", function ($scope, $http) {
+        $scope.expenses = [];
+
+        $scope.form = {
+          name: "",
+          description: ""
+        };
+
+        //Now load the data from server
+        _refreshPageData();
+
+        //HTTP POST methods for add expenses
+        $scope.add = function () {
+          var data = {
+              "name": $scope.form.name,
+              "amount": $scope.form.amount,
+              "paymentMethod": $scope.form.paymentMethod
+          };
+
+          $http({
+            method: "POST",
+            url: '/expenses',
+            data: angular.toJson(data),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(_success, _error);
+        };
+
+        /* Private Methods */
+        function _refreshPageData() {
+          $http({
+            method: 'GET',
+            url: '/expenses'
+          }).then(function successCallback(response) {
+            $scope.expenses = response.data;
+          }, function errorCallback(response) {
+            console.log(response.statusText);
+          });
+        }
+
+        function _success(response) {
+          _refreshPageData();
+          _clearForm();
+        }
+
+        function _error(response) {
+          alert(response.data.message || response.statusText);
+        }
+
+        //Clear the form
+        function _clearForm() {
+          $scope.form.name = "";
+          $scope.form.description = "";
+        }
+      });
+    </script>
+</head>
+<body ng-app="ExpenseClient" ng-controller="ExpenseClientController">
+
+<div class="container">
+    <h1>Expenses Client</h1>
+
+    <h3>Add an expense</h3>
+    <form ng-submit="add()">
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="Name" ng-model="form.name" required size="60"/></div>
+        </div>
+        <div class="row">
+            <div class="col-6"><input type="text" placeholder="Amount" ng-model="form.amount" required size="60"/></div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <select required ng-model="form.paymentMethod">
+                    <option value="">--Please choose an option--</option>
+                    <option value="CASH">Cash</option>
+                    <option value="CREDIT_CARD">Credit Card</option>
+                    <option value="DEBIT_CARD">Debit Card</option>
+                </select>
+            </div>
+        </div>
+        <input type="submit" value="Save"/>
+    </form>
+
+    <h3>Expenses</h3>
+    <div class="row">
+        <div class="col-4">Name</div>
+        <div class="col-8">Amount</div>
+    </div>
+    <div class="row" ng-repeat="expense in expenses">
+        <div class="col-4">{{ expense.name }}</div>
+        <div class="col-8">{{ expense.amount }}</div>
+    </div>
+</div>
+
+</body>
+</html>
