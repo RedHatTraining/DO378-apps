@@ -1,16 +1,19 @@
 package com.redhat.training.conference.session;
 
-import org.junit.jupiter.api.*;
-import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.junit.jupiter.api.Test;
+import com.redhat.training.conference.speaker.SpeakerServiceClient;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import javax.inject.Inject;
-import com.redhat.training.conference.speaker.SpeakerService;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -19,7 +22,7 @@ public class SessionResourceTest {
     @RestClient
     @Inject
     @InjectMock
-    SpeakerService speakerService;
+    SpeakerServiceClient speakerService;
 
     @Test
     @Order(1)
@@ -53,5 +56,4 @@ public class SessionResourceTest {
 
         return session;
     }
-
 }

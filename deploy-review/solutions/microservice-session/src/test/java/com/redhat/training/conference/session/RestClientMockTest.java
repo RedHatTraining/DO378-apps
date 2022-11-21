@@ -1,20 +1,18 @@
 package com.redhat.training.conference.session;
 
 import com.redhat.training.conference.speaker.Speaker;
-import com.redhat.training.conference.speaker.SpeakerService;
-
+import com.redhat.training.conference.speaker.SpeakerServiceClient;
+import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.mockito.InjectMock;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import javax.inject.Inject;
+
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.equalTo;
-
-import javax.inject.Inject;
-
-import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
 
 @QuarkusTest
 public class RestClientMockTest {
@@ -22,7 +20,7 @@ public class RestClientMockTest {
     @Inject
     @RestClient
     @InjectMock
-    SpeakerService speakerService;
+    SpeakerServiceClient speakerService;
 
     @Test
     public void testGetSessionWithSpeaker () {

@@ -1,7 +1,7 @@
 package com.redhat.training.conference.session;
 
-import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.panache.mock.PanacheMock;
+import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -19,9 +19,6 @@ import org.eclipse.microprofile.openapi.annotations.headers.Header;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
-/**
- * SessionResource
- */
 @Path( "sessions" )
 @ApplicationScoped
 @Produces( MediaType.APPLICATION_JSON )
@@ -29,22 +26,20 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 public class SessionResource {
 
     @Inject
-    SessionStore sessionStore;
+    SessionStoreService sessionStoreService;
 
     @GET
     @Operation(summary = "Retrieves all the sessions")
     @APIResponse(responseCode = "200")
     public Collection<SessionWithSpeaker> getAllSessions() throws Exception {
-
-        return sessionStore.getAll();
+        return sessionStoreService.getAll();
     }
 
     @GET
-    @Operation(summary = "Retrieves the session by id")
-    @Path( "/{sessionId}" )
-    public SessionWithSpeaker getSession( @PathParam( "sessionId" ) final Long sessionId ) {
-
-        return sessionStore.getById( sessionId );
+    @Operation(summary = "Retrieves the session by ID")
+    @Path("/{sessionId}")
+    public SessionWithSpeaker getSession(@PathParam( "sessionId" ) final Long sessionId) {
+        return sessionStoreService.getById(sessionId);
     }
 
     @POST
@@ -65,8 +60,7 @@ public class SessionResource {
             },
             description = "Entity successfully created"
     )
-    public Response createSession( final Session session, @Context UriInfo uriInfo ) {
-
-        return sessionStore.save( session,uriInfo );
+    public Response createSession(final Session session, @Context UriInfo uriInfo) {
+        return sessionStoreService.save(session, uriInfo);
     }
 }
