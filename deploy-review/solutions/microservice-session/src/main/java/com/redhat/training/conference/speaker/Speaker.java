@@ -8,7 +8,10 @@ public class Speaker {
 
     public String organization;
 
-    public Speaker( int id, String name, String organization ) {
+    public Speaker() {
+    }
+
+    public Speaker(int id, String name, String organization) {
         this.id = id;
         this.name = name;
         this.organization = organization;
