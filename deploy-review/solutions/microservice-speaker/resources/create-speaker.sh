@@ -5,11 +5,5 @@ curl -w "\nResponse Code: %{response_code}\n\n" \
 --header 'Content-Type: application/json' \
 --data-raw '{
   "name": "Pablo",
-  "organization": "Red Hat",
-  "talks":[
-    {
-      "title": "Lorem ipsum dolor sit amet",
-      "duration": 15
-    }
-  ]
+  "organization": "Red Hat"
 }'
