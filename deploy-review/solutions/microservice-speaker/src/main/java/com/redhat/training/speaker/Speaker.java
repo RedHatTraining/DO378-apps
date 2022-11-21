@@ -11,7 +11,4 @@ import java.util.List;
 public class Speaker extends PanacheEntity {
     public String name;
     public String organization;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    public List<Talk> talks;
 }

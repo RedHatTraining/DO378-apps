@@ -142,6 +142,30 @@ public class SpeakerResourceTest {
 
     @Test
     @Order(4)
+    public void getASpeaker() {
+        given()
+        .when()
+            .get("/speakers/1")
+        .then()
+            .statusCode(200)
+        .body(
+            "id", is(1),
+            "name", is("Pablo")
+        );
+    }
+
+    @Test
+    @Order(4)
+    public void getAnUnknownSpeakerReturns404() {
+        given()
+        .when()
+            .get("/speakers/123456")
+        .then()
+            .statusCode(404);
+    }
+
+    @Test
+    @Order(5)
     public void deleteNonExistingSpeakerReturns404() {
         given()
         .when()
@@ -151,7 +175,7 @@ public class SpeakerResourceTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void deleteExistingSpeakerReturns204AndRemovesItFromPersistenceLayer() {
         given()
         .when()

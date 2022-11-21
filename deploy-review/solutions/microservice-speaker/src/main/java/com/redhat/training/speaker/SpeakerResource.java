@@ -58,6 +58,19 @@ public class SpeakerResource {
             .build();
     }
 
+    @GET
+    @Path("/{id}")
+    @Transactional
+    public Speaker getSpeaker(@PathParam("id") Long id) {
+        Speaker speaker = Speaker.findById(id);
+
+        if (speaker == null) {
+            throw new NotFoundException();
+        }
+
+        return speaker;
+    }
+
     @DELETE
     @Path("/{id}")
     @Transactional
