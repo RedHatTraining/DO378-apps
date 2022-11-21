@@ -47,7 +47,7 @@ public class SessionStoreService {
     }
 
     private SessionWithSpeaker toSessionWithSpeaker(Session session) {
-        return session.withSpeaker(speakerService.getById(session.speakerId));
+        return session.withSpeaker(speakerService.getSpeaker(session.speakerId));
     }
 
     private URI generateUriForSession(Session session, UriInfo uriInfo) {

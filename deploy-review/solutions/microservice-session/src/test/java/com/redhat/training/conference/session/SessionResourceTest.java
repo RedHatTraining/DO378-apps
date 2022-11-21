@@ -1,5 +1,6 @@
 package com.redhat.training.conference.session;
 
+import com.redhat.training.conference.speaker.Speaker;
 import com.redhat.training.conference.speaker.SpeakerServiceClient;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
@@ -8,19 +9,18 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-
-import javax.inject.Inject;
+import org.mockito.Mockito;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SessionResourceTest {
 
+    private final String sample = "{\"sessionTitle\":\"Deploying at the Edge\",\"speakerId\": 1}";
+
     @RestClient
-    @Inject
     @InjectMock
     SpeakerServiceClient speakerService;
 
@@ -37,23 +37,45 @@ public class SessionResourceTest {
 
     @Test
     @Order(2)
-    public void testCreateSession () {
+    public void creatingASessionReturns201WithHeaders() {
         given()
+            .body(sample)
             .contentType("application/json")
-            .and()
-            .body(sessionWithSpeakerId(12))
         .when()
             .post("/sessions")
         .then()
             .statusCode(201)
-            .contentType("application/json")
-            .body("speakerId", equalTo(12));
+            .header("location", startsWith("http://"))
+            .header("id", notNullValue());
     }
 
-    private Session sessionWithSpeakerId(int speakerId) {
-        Session session = new Session();
-        session.speakerId = speakerId;
+    @Test
+    @Order(3)
+    public void gettingAllSessionsIncludesSpeakerInformation() {
+        Mockito.when(
+                speakerService.getSpeaker(Mockito.anyLong())
+        ).thenReturn(new Speaker(1, "Speaker Name", "Organization Name"));
 
-        return session;
+        given()
+        .when()
+            .get("/sessions")
+        .then()
+            .statusCode(200)
+            .body("speaker", notNullValue());
+    }
+
+    @Test
+    @Order(3)
+    public void gettingASessionReturnsASpeaker() {
+        Mockito.when(
+                speakerService.getSpeaker(Mockito.anyLong())
+        ).thenReturn(new Speaker(1, "Speaker Name", "Organization Name"));
+
+        given()
+        .when()
+            .get("/sessions/1")
+        .then()
+            .statusCode(200)
+            .body("speaker", notNullValue());
     }
 }

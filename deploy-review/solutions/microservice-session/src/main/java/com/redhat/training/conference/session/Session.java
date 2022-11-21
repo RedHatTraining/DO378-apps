@@ -8,11 +8,11 @@ import javax.persistence.Entity;
 @Entity
 public class Session extends PanacheEntity {
 
-    public int schedule;
+    public String sessionTitle;
 
-    public int speakerId;
+    public long speakerId;
 
     public SessionWithSpeaker withSpeaker(final Speaker speaker) {
-        return new SessionWithSpeaker(id, schedule, speaker);
+        return new SessionWithSpeaker(id, sessionTitle, speaker);
     }
 }

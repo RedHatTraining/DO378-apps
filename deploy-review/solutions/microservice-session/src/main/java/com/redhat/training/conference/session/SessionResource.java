@@ -19,10 +19,10 @@ import org.eclipse.microprofile.openapi.annotations.headers.Header;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 
-@Path( "sessions" )
+@Path( "/sessions" )
 @ApplicationScoped
-@Produces( MediaType.APPLICATION_JSON )
-@Consumes( MediaType.APPLICATION_JSON )
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class SessionResource {
 
     @Inject
@@ -37,9 +37,9 @@ public class SessionResource {
 
     @GET
     @Operation(summary = "Retrieves the session by ID")
-    @Path("/{sessionId}")
-    public SessionWithSpeaker getSession(@PathParam( "sessionId" ) final Long sessionId) {
-        return sessionStoreService.getById(sessionId);
+    @Path("/{id}")
+    public SessionWithSpeaker getSession(@PathParam( "id" ) final Long id) {
+        return sessionStoreService.getById(id);
     }
 
     @POST
