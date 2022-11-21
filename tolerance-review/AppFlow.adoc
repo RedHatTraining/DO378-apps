@@ -1,0 +1,18 @@
+:gls_prefix:
+
+// Do not modify section headers, as they are used by flamel and the translation process.
+= pass:a,n[{gls_res_outcomes}]
+
+You should be able to apply different fault tolerance policies to Quarkus applications given identified potential faults.
+
+== Present App Flow
+
+The present lab makes use of Session, Speaker and Schedule services.
+
+* `Aliveness` and `Readiness` checks are implemented.
+* Prepare the Session service to use `fault tolerance` features.
+* Create a `fallback` and enable the fault tolerance policy.
+* Create a fallback method for returning `non-enriched` speaker information.
+* Adding a `fake delay` to the endpoint method used by other external client.
+* Implementing `retry policy` on methods during unavailability.
+* Protect the methods from `concurrent requests`.
