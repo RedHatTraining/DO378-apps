@@ -1,4 +1,4 @@
-package com.redhat.training.services;
+package com.redhat.training.sysinfo;
 
 import javax.enterprise.context.ApplicationScoped;
 

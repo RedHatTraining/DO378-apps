@@ -1,4 +1,4 @@
-package com.redhat.training.services;
+package com.redhat.training.status;
 
 import io.quarkus.logging.Log;
 import javax.enterprise.context.ApplicationScoped;
@@ -6,9 +6,11 @@ import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.faulttolerance.exceptions.TimeoutException;
 
-
+/**
+ * Simulate a microservice that reads the status of a cloud instance
+ */
 @ApplicationScoped
-public class WeatherService {
+public class StatusService {
 
     private int callCount = 0;
 
@@ -19,7 +21,7 @@ public class WeatherService {
 
         delayPossibly();
 
-        return "Sunny";
+        return "Running";
     }
 
     private void delayPossibly() {

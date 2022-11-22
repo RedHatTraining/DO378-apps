@@ -1,4 +1,4 @@
-package com.redhat.training.services;
+package com.redhat.training.cpu;
 
 import java.util.List;
 

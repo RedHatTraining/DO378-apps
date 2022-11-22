@@ -1,4 +1,4 @@
-package com.redhat.training.services;
+package com.redhat.training.cpu;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -8,6 +8,9 @@ import javax.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 
 
+/**
+ * Simulate a microservice that reads CPU utilization data from a cloud instance
+ */
 @ApplicationScoped
 public class CpuStatsService {
 

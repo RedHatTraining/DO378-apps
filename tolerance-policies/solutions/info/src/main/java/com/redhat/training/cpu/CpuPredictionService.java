@@ -1,4 +1,4 @@
-package com.redhat.training.services;
+package com.redhat.training.cpu;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -7,7 +7,7 @@ import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import io.quarkus.logging.Log;
 
 @ApplicationScoped
-public class LoadPredictionService {
+public class CpuPredictionService {
 
     private int callCount = 0;
 
