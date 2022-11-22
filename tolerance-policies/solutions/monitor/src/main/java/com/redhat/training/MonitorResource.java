@@ -16,7 +16,8 @@ import com.redhat.training.cpu.CpuPredictionService;
 import com.redhat.training.sysinfo.Info;
 import com.redhat.training.sysinfo.InfoService;
 
-@Path( "/monitor" )
+
+@Path( "/" )
 @Produces( MediaType.APPLICATION_JSON )
 public class MonitorResource {
 
@@ -31,6 +32,12 @@ public class MonitorResource {
 
     @Inject
     CpuPredictionService cpuPredictionService;
+
+    @GET
+    @Path( "/hello" )
+    public String hello() {
+        return "Cloud instance monitoring app";
+    }
 
     @GET
     @Path( "/info" )
