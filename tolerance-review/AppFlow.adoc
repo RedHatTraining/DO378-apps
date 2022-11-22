@@ -11,8 +11,28 @@ The present lab makes use of Session, Speaker and Schedule services.
 
 * `Aliveness` and `Readiness` checks are implemented.
 * Prepare the Session service to use `fault tolerance` features.
-* Create a `fallback` and enable the fault tolerance policy.
+* Apply `fallback` policies to an exisitng method and enable the fault tolerance policy.
 * Create a fallback method for returning `non-enriched` speaker information.
 * Adding a `fake delay` to the endpoint method used by other external client.
 * Implementing `retry policy` on methods during unavailability.
 * Protect the methods from `concurrent requests`.
+
+== Proposed App Flow
+
+The proposed lab makes use of Session, Speaker and Schedule services.
+
+* `Aliveness` and `Readiness` checks are implemented.
+* Prepare the Session service to use `fault tolerance` features.
+* Apply `fallback` policies to an exisitng method and enable the fault tolerance policy.
+* Create a fallback method for returning `non-enriched` speaker information.
+* Adding a `fake delay` to the endpoint method used by other external client.
+* Implementing `retry policy` on methods during unavailability.
+* Implement `Circuit Breaker` resiliency.
+
+== Links
+
+https://role.rhu.redhat.com/rol-rhu/app/courses/do378-1.11/pages/ch05s05
+
+https://github.com/RedHatTraining/DO378/tree/main/classroom/materials/solutions/tolerance-review
+
+https://es.quarkus.io/version/2.7/guides/smallrye-fault-tolerance#adding-resiliency-circuit-breaker
