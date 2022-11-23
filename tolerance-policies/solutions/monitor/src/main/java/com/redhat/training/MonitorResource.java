@@ -25,7 +25,7 @@ public class MonitorResource {
     InfoService infoService;
 
     @Inject
-    StatusService weatherService;
+    StatusService statusService;
 
     @Inject
     CpuStatsService cpuStatsService;
@@ -46,9 +46,9 @@ public class MonitorResource {
     }
 
     @GET
-    @Path( "/weather" )
+    @Path( "/status" )
     public String getWeatherConditions() {
-        return weatherService.getConditions();
+        return statusService.getStatus();
     }
 
     @GET

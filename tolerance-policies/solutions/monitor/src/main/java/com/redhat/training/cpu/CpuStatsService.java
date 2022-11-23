@@ -7,7 +7,6 @@ import io.quarkus.logging.Log;
 import javax.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 
-
 /**
  * Simulate a microservice that reads CPU utilization data from a cloud instance
  */
@@ -20,31 +19,14 @@ public class CpuStatsService {
     @Fallback( fallbackMethod = "getCpuStatsWithMissingValues" )
     public CpuStats getCpuStats() {
         series = getCpuUsageTimeSeries();
-        var mean = calculateAverage(series);
-        var standardDeviation = calculateStandardDeviation(series);
+        var mean = calculateMean( series );
+        var standardDeviation = calculateStandardDeviation( series );
 
-        return new CpuStats(series, mean, standardDeviation);
+        return new CpuStats( series, mean, standardDeviation );
     }
 
     public CpuStats getCpuStatsWithMissingValues() {
-        return new CpuStats(series, 0.0, 0.0 );
-    }
-
-    private Double calculateAverage( List<Double> series ) {
-        var sum = series.stream().reduce( Double::sum ).get();
-        return sum / series.size();
-    }
-
-    private Double calculateStandardDeviation( List<Double> series ) {
-        var average = calculateAverage( series );
-
-        var deviations = series
-                .stream()
-                .map( x -> Math.pow( x - average, 2 ) )
-                .reduce( Double::sum )
-                .get();
-
-        return Math.sqrt( deviations / series.size() );
+        return new CpuStats( series, 0.0, 0.0 );
     }
 
     private List<Double> getCpuUsageTimeSeries() {
@@ -65,12 +47,30 @@ public class CpuStatsService {
     }
 
     private void simulateMissingValues( List<Double> series ) {
-        if (callCount % 3 == 0) {
+        if ( callCount % 3 == 0 ) {
             series.set( 1, null );
             series.set( 3, null );
             series.set( 5, null );
 
-            Log.warnf("Cpu usage data in request #%d contains null values", callCount);
+            Log.warnf( "Cpu usage data in request #%d contains null values", callCount );
         }
     }
+
+    private Double calculateMean( List<Double> series ) {
+        var sum = series.stream().reduce( Double::sum ).get();
+        return sum / series.size();
+    }
+
+    private Double calculateStandardDeviation( List<Double> series ) {
+        var average = calculateMean( series );
+
+        var deviations = series
+                .stream()
+                .map( x -> Math.pow( x - average, 2 ) )
+                .reduce( Double::sum )
+                .get();
+
+        return Math.sqrt( deviations / series.size() );
+    }
+
 }

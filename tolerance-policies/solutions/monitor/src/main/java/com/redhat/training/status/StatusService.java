@@ -16,7 +16,7 @@ public class StatusService {
 
     @Timeout( 200 )
     @Retry( maxRetries = 5, retryOn = TimeoutException.class )
-    public String getConditions() {
+    public String getStatus() {
         callCount++;
 
         delayPossibly();
@@ -32,11 +32,11 @@ public class StatusService {
             try {
                 Thread.sleep( 5000 );
             } catch( InterruptedException e ) {
-                Log.warnf( "Request #%d has been interrupted after %d seconds", callCount, System.currentTimeMillis() - start);
+                Log.warnf( "Request #%d has been interrupted after %d milliseconds", callCount, System.currentTimeMillis() - start);
                 return;
             }
         }
 
-        Log.info( String.format( "Request #%d completed in %d seconds", callCount, System.currentTimeMillis() - start) );
+        Log.info( String.format( "Request #%d completed in %d milliseconds", callCount, System.currentTimeMillis() - start) );
     }
 }
