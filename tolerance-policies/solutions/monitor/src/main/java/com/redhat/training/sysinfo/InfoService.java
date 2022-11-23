@@ -5,7 +5,7 @@ import javax.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.faulttolerance.Retry;
 
 /**
- * Simulate a microservice that reads sytem info from a cloud instance
+ * Simulate a microservice that reads system info from a cloud instance
  */
 @ApplicationScoped
 public class InfoService {
