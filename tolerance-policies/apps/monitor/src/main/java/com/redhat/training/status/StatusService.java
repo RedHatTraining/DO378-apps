@@ -26,7 +26,8 @@ public class StatusService {
     private void delayPossibly() {
         long start = System.currentTimeMillis();
 
-        if ( callCount % 5 > 0 ) {
+        // Delay 4 out of 5 requests
+        if ( callCount % 5 != 0 ) {
             Log.warn( "Request #" + callCount + " is taking too long..." );
             try {
                 Thread.sleep( 5000 );
