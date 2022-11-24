@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: microservice-session
+    name: microservice-session
+  spec:
+    selector:
+      matchLabels:
+        deployment: microservice-session
+    template:
+      metadata:
+        labels:
+          deployment: microservice-session
+      spec:
+        containers:
+        - image: registry.ocp4.example.com:8443/developer/do378-deploy-review-session
+          name: microservice-session
+          ports:
+          - containerPort: 8080
+          env:
+          - name: SPEAKER_SVC
+            value: "http://microservice-speaker:80"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: microservice-session
+    name: microservice-session
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deployment: microservice-session
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    name: microservice-session
+    labels:
+      app: microservice-session
+  spec:
+    to:
+      kind: Service
+      name: microservice-session
+    port:
+      targetPort: 8080
