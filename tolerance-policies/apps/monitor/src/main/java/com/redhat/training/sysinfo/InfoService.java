@@ -21,11 +21,11 @@ public class InfoService {
     }
 
     private void crashPossibly() {
-        if ( callCount % 5 > 0 ) {
-            Log.error( "Request #" + callCount + " has failed" );
-            throw new RuntimeException( "InfoService failed due to unexpected error" );
-        } else {
+        if ( callCount % 5 == 0 ) {
             Log.info( "Request #" + callCount + " has succeeded" );
+        } else {
+           Log.error( "Request #" + callCount + " has failed" );
+           throw new RuntimeException( "InfoService failed due to unexpected error" );
         }
     }
 
