@@ -21,6 +21,7 @@ public class InfoService {
     }
 
     private void crashPossibly() {
+        // Only succeed in 1 out of 5 requests
         if ( callCount % 5 == 0 ) {
             Log.info( "Request #" + callCount + " has succeeded" );
         } else {
