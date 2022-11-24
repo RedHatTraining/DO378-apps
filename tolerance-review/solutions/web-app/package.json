@@ -1,0 +1,73 @@
+{
+    "name": "web-app",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@patternfly/react-core": "^4.47.0",
+        "@patternfly/react-icons": "^4.7.4",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "react-scripts": "3.4.3",
+        "typescript": "~3.7.2",
+        "serve": "^11.3.2",
+        "wretch": "^1.7.2"
+    },
+    "scripts": {
+        "start": "serve -s build -l tcp://0.0.0.0:8080",
+        "dev": "react-scripts start",
+        "build": "react-scripts build",
+        "json-server": "json-server --watch db.js --routes routes.json --port 3004",
+        "test": "react-scripts test",
+        "test:coverage": "npm test -- --coverage",
+        "lint": "eslint --ext ts,tsx src",
+        "prettier": "prettier --write .",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.3.2",
+        "@testing-library/user-event": "^7.1.2",
+        "@types/jest": "^26.0.13",
+        "@types/node": "^12.0.0",
+        "@types/react": "^16.9.0",
+        "@types/react-dom": "^16.9.0",
+        "@types/react-router-dom": "^5.1.5",
+        "date-fns": "^2.16.1",
+        "jest-fetch-mock": "^3.0.3",
+        "json-server": "^0.16.1",
+        "prettier": "^2.1.1",
+        "react-router-dom": "^5.2.0",
+        "react-test-renderer": "^16.13.1"
+    },
+    "jest": {
+        "collectCoverageFrom": [
+            "src/**/*.{js,jsx,ts,tsx}",
+            "!src/serviceWorker.ts",
+            "!src/setupTests.ts",
+            "!src/react-app-env.d.ts"
+        ],
+        "coverageThreshold": {
+            "global": {
+                "branches": 80,
+                "functions": 80,
+                "lines": 80,
+                "statements": 80
+            }
+        }
+    }
+}
