@@ -6,17 +6,23 @@ import static com.redhat.training.conference.session.SessionFakeFactory.composeS
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.startsWith;
+
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 @QuarkusTest
+@TestMethodOrder(OrderAnnotation.class)
 public class SessionResourceTest {
 
     private static final String SESSION_ID = "s-1-1";
     private static final String OTHER_SESSION_ID = "s-1-2";
 
     @Test
+    @Order(1)
     public void testGetAllSessionsEndpoint () {
         given().when()
                 .get("/sessions")
@@ -26,6 +32,7 @@ public class SessionResourceTest {
     }
 
     @Test
+    @Order(2)
     public void testCreateSession () {
         Session session = composeSession();
         given().when()
@@ -39,6 +46,7 @@ public class SessionResourceTest {
     }
 
     @Test
+    @Order(3)
     public void testRetrieveSession () {
         given().when()
                 .get("/sessions/" + SESSION_ID)
@@ -49,6 +57,7 @@ public class SessionResourceTest {
     }
 
     @Test
+    @Order(3)
     public void testUpdateSession () {
         final int ANOTHER_SCHEDULE = 3;
         Session session = new Session();
@@ -66,6 +75,7 @@ public class SessionResourceTest {
     }
 
     @Test
+    @Order(3)
     public void testDeleteSession () {
         given().when()
                 .delete("/sessions/" + OTHER_SESSION_ID)
