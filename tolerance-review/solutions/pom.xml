@@ -22,7 +22,7 @@
     <quarkus-plugin.version>${quarkus.platform.version}</quarkus-plugin.version>
     <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>com.redhat.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>2.7.6.Final-redhat-00009</quarkus.platform.version>
+    <quarkus.platform.version>2.7.6.Final-redhat-00006</quarkus.platform.version>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
   </properties>
   <dependencyManagement>
