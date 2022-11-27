@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
-import javax.json.bind.annotation.JsonbTransient;
-
 @Entity
 public class Speaker {
 
@@ -30,13 +28,12 @@ public class Speaker {
 
     @ManyToMany(mappedBy="speakers", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Transient
-    @JsonbTransient
     public Set<Session> sessions = new HashSet<>();
 
     public static Speaker from (String speakerName) {
         Speaker speaker = new Speaker();
-        speaker.name=speakerName;
-        speaker.uuid=UUID.randomUUID().toString();
+        speaker.name = speakerName;
+        speaker.uuid = UUID.randomUUID().toString();
         return speaker;
     }
 

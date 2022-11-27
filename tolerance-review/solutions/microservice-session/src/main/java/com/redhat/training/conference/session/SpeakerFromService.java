@@ -1,6 +1,5 @@
 package com.redhat.training.conference.session;
 
-import javax.json.bind.annotation.JsonbCreator;
 
 public class SpeakerFromService {
     String uuid;
@@ -11,10 +10,5 @@ public class SpeakerFromService {
         this.uuid = uuid;
         this.nameFirst = nameFirst;
         this.nameLast = nameLast;
-    }
-
-    @JsonbCreator
-    public static SpeakerFromService of(String uuid, String nameFirst, String nameLast) {
-        return new SpeakerFromService(uuid, nameFirst, nameLast);
     }
 }
