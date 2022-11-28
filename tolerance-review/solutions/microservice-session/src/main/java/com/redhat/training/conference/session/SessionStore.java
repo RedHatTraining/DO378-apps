@@ -93,7 +93,7 @@ public class SessionStore {
     public Optional<Session> findByIdWithEnrichedSpeakers(String sessionId) {
         Optional<Session> result = repository.find("id", sessionId).stream().findFirst();
 
-        // Fake delay!
+        // Simulate delay
         try {
             Thread.sleep(1000);
         } catch (Exception e) {}
