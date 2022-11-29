@@ -6,7 +6,6 @@ import org.eclipse.microprofile.health.Liveness;
 
 import javax.enterprise.context.ApplicationScoped;
 
-@Liveness
 @ApplicationScoped
 public class LivenessCheck {
 

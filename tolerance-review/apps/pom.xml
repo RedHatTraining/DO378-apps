@@ -8,8 +8,8 @@
   <packaging>pom</packaging>
   <name>quarkus-conference</name>
   <modules>
-    <module>microservice-session</module>
-    <module>microservice-speaker</module>
+    <module>session</module>
+    <module>speaker</module>
   </modules>
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>

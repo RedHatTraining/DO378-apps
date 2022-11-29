@@ -5,23 +5,15 @@ import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.faulttolerance.exceptions.TimeoutException;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Timeout;
 import org.eclipse.microprofile.faulttolerance.Retry;
-import org.eclipse.microprofile.faulttolerance.Bulkhead;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -74,7 +66,6 @@ public class SessionResource {
     @Path("/{sessionId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Bulkhead(1)
     public Response updateSession(@PathParam("sessionId") final String sessionId, final Session session) {
         final Optional<Session> updated = sessionStore.updateById(sessionId, session);
         return updated.map(s -> Response.ok(s).build()).orElseThrow(NotFoundException::new);
@@ -91,10 +82,18 @@ public class SessionResource {
     @Path("/{sessionId}/speakers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response sessionSpeakers(@PathParam("sessionId") final String sessionId) {
-
-        final Optional<Session> session = sessionStore.findById(sessionId);
-
+        Optional<Session> session;
+        try {
+            session = findSessionSpeakers(sessionId);
+        } catch (TimeoutException | ProcessingException e) {
+            logger.warn("Falling back to no enrichment");
+            session = sessionStore.findByIdWithoutEnrichment(sessionId);
+        }
         return session.map(s -> s.speakers).map(l -> Response.ok(l).build()).orElseThrow(NotFoundException::new);
+    }
+
+    public Optional<Session> findSessionSpeakers(String sessionId) {
+        return sessionStore.findById(sessionId);
     }
 
     @PUT
@@ -102,7 +101,7 @@ public class SessionResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addSessionSpeaker(@PathParam("sessionId") final String sessionId,
             @PathParam("speakerName") final String speakerName) {
-        final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);
+        final Optional<Session> result = sessionStore.findByIdWithoutEnrichmentMaybeFail(sessionId);
 
         if (result.isPresent()) {
             final Session session = result.get();
