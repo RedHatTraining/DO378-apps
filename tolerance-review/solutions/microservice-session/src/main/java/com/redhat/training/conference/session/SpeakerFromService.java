@@ -24,7 +24,9 @@ public class SpeakerFromService {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SpeakerFromService that = (SpeakerFromService) o;
-        return Objects.equals(uuid, that.uuid) && Objects.equals(nameFirst, that.nameFirst) && Objects.equals(nameLast, that.nameLast);
+        return Objects.equals(uuid, that.uuid) &&
+                Objects.equals(nameFirst, that.nameFirst) &&
+                Objects.equals(nameLast, that.nameLast);
     }
 
     @Override

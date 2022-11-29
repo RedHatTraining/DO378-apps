@@ -7,7 +7,7 @@
     <artifactId>quarkus-conference</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>microservice-session</artifactId>
+  <artifactId>session</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <properties>
     <quarkus.port>9191</quarkus.port>

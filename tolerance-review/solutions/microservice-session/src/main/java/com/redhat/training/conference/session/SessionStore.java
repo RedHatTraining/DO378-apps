@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -31,6 +32,8 @@ public class SessionStore {
     @Inject
     @RestClient
     SpeakerService speakerService;
+
+    public int counter = 1;
 
     public SessionStore() {
     }
@@ -70,7 +73,6 @@ public class SessionStore {
 
         sessionOld.ifPresent(ses -> {
             ses.schedule = newSession.schedule;
-            //TODO: Update the speakers
             repository.persist(ses);
         });
 
@@ -88,6 +90,17 @@ public class SessionStore {
 
     public Optional<Session> findByIdWithoutEnrichment(String sessionId) {
         return repository.find("id", sessionId).stream().findFirst();
+    }
+
+    public Optional<Session> findByIdWithoutEnrichmentMaybeFail(String sessionId) {
+        if(counter % 5 == 0) {
+            logger.info("Success");
+            return repository.find("id", sessionId).stream().findFirst();
+        } else {
+            logger.warn("Fail, please retry");
+            this.counter += 1;
+            throw new InternalServerErrorException();
+        }
     }
 
     public Optional<Session> findByIdWithEnrichedSpeakers(String sessionId) {
@@ -137,12 +150,7 @@ public class SessionStore {
 	}
 
     public Speaker getOrCreateSpeakerByName(final String speakerName) {
-        // Feature Toggle
-        if (sessionIntegration) {
-            return getSpeakerByNameFromService(speakerName).orElseThrow(() -> new NotFoundException());
-        } else {
-            return getSpeakerByNameLocally(speakerName).orElse(Speaker.from(speakerName));
-        }
+        return getSpeakerByNameLocally(speakerName).orElse(Speaker.from(speakerName));
     }
 
     private Optional<Speaker> getSpeakerByNameLocally(final String speakerName) {
