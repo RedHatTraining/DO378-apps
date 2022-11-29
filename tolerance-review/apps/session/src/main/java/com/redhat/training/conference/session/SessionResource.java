@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,6 +24,8 @@ import org.slf4j.Logger;
  */
 @Path("sessions")
 @ApplicationScoped
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class SessionResource {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -41,21 +44,17 @@ public class SessionResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     public Collection<Session> allSessions() throws Exception {
         return sessionStore.findAll();
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Session createSession(final Session session) {
         return sessionStore.save(session);
     }
 
     @GET
     @Path("/{sessionId}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveSession(@PathParam("sessionId") final String sessionId) {
         final Optional<Session> result = sessionStore.findById(sessionId);
 
@@ -64,8 +63,6 @@ public class SessionResource {
 
     @PUT
     @Path("/{sessionId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response updateSession(@PathParam("sessionId") final String sessionId, final Session session) {
         final Optional<Session> updated = sessionStore.updateById(sessionId, session);
         return updated.map(s -> Response.ok(s).build()).orElseThrow(NotFoundException::new);
@@ -80,7 +77,6 @@ public class SessionResource {
 
     @GET
     @Path("/{sessionId}/speakers")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response sessionSpeakers(@PathParam("sessionId") final String sessionId) {
         Optional<Session> session;
         try {
@@ -98,7 +94,6 @@ public class SessionResource {
 
     @PUT
     @Path("/{sessionId}/speakers/{speakerName}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response addSessionSpeaker(@PathParam("sessionId") final String sessionId,
             @PathParam("speakerName") final String speakerName) {
         final Optional<Session> result = sessionStore.findByIdWithoutEnrichmentMaybeFail(sessionId);
@@ -114,7 +109,6 @@ public class SessionResource {
 
     @DELETE
     @Path("/{sessionId}/speakers/{speakerName}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response removeSessionSpeaker(@PathParam("sessionId") final String sessionId,
             @PathParam("speakerName") final String speakerName) {
         final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);

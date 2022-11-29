@@ -9,11 +9,11 @@ public class SpeakerFromService {
     String nameFirst;
     String nameLast;
 
-    SpeakerFromService() {
+    public SpeakerFromService() {
         this.uuid = UUID.randomUUID().toString();
     }
 
-    SpeakerFromService(String uuid, String nameFirst, String nameLast) {
+    public SpeakerFromService(String uuid, String nameFirst, String nameLast) {
         this.uuid = uuid;
         this.nameFirst = nameFirst;
         this.nameLast = nameLast;

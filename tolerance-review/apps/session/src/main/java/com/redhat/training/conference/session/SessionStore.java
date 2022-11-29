@@ -106,12 +106,15 @@ public class SessionStore {
     public Optional<Session> findByIdWithEnrichedSpeakers(String sessionId) {
         Optional<Session> result = repository.find("id", sessionId).stream().findFirst();
 
+        List<SpeakerFromService> allSpeakers = null;
+
         // Simulate delay
         try {
-            Thread.sleep(1000);
+            Thread.sleep(10000);
+            allSpeakers = speakerService.listAll();
         } catch (Exception e) {}
 
-        List<SpeakerFromService> allSpeakers = speakerService.listAll();
+
         Session session = result.get();
         for (var speaker : session.speakers) {
             enrichSpeaker(allSpeakers, speaker);
