@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.*
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -31,12 +31,12 @@ public class SessionResource {
     SessionStore sessionStore;
 
     public Collection<Session> allSessionsFallback() throws Exception {
-      logger.warn("Fallback sessions");
+      logger.warn("Fallback for GET /sessions");
       return null;
     }
 
     public Response retrieveSessionFallback(final String sessionId) {
-      logger.warn("Fallback session");
+      logger.warn("Fallback for GET /sessions/"+sessionId);
       return null;
     }
 

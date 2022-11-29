@@ -41,6 +41,4 @@ public class Session {
         speakers.remove(speaker);
         speaker.removeSession(this);
     }
-
-  
 }

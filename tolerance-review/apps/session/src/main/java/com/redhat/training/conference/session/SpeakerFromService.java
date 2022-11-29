@@ -19,6 +19,30 @@ public class SpeakerFromService {
         this.nameLast = nameLast;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getNameFirst() {
+        return nameFirst;
+    }
+
+    public void setNameFirst(String nameFirst) {
+        this.nameFirst = nameFirst;
+    }
+
+    public String getNameLast() {
+        return nameLast;
+    }
+
+    public void setNameLast(String nameLast) {
+        this.nameLast = nameLast;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -34,4 +58,12 @@ public class SpeakerFromService {
         return Objects.hash(uuid, nameFirst, nameLast);
     }
 
+    @Override
+    public String toString() {
+        return "SpeakerFromService{" +
+                "uuid='" + uuid + '\'' +
+                ", nameFirst='" + nameFirst + '\'' +
+                ", nameLast='" + nameLast + '\'' +
+                '}';
+    }
 }

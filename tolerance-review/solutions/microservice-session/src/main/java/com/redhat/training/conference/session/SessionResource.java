@@ -31,12 +31,12 @@ public class SessionResource {
     SessionStore sessionStore;
 
     public Collection<Session> allSessionsFallback() throws Exception {
-      logger.warn("Fallback sessions");
+      logger.warn("Fallback for GET /sessions");
       return sessionStore.findAllWithoutEnrichment();
     }
 
     public Response retrieveSessionFallback(final String sessionId) {
-      logger.warn("Fallback session");
+      logger.warn("Fallback for GET /sessions/"+sessionId);
       return sessionStore.findByIdWithoutEnrichment(sessionId)
         .map(s -> Response.ok(s).build())
         .orElseThrow(NotFoundException::new);

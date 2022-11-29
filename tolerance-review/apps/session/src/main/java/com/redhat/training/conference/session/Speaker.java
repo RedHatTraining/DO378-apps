@@ -1,5 +1,7 @@
 package com.redhat.training.conference.session;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.UUID;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +30,7 @@ public class Speaker {
 
     @ManyToMany(mappedBy="speakers", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Transient
+    @JsonIgnore
     public Set<Session> sessions = new HashSet<>();
 
     public static Speaker from (String speakerName) {
