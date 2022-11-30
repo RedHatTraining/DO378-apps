@@ -4,6 +4,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 import io.quarkus.test.junit.mockito.InjectMock;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -23,6 +24,7 @@ public class SessionResourceTest {
     SpeakerService speakerService;
 
     @Test
+    @Order(1)
     public void testLivenessProbe() {
         given()
                 .contentType("application/json")
@@ -34,6 +36,7 @@ public class SessionResourceTest {
     }
 
     @Test
+    @Order(1)
     public void testReadinessProbe() {
         given()
                 .contentType("application/json")
@@ -41,10 +44,11 @@ public class SessionResourceTest {
                 .get("/q/health/ready")
                 .then()
                 .statusCode(200)
-                .body("checks[0].name", equalToIgnoringCase("Service is ready"));
+                .body("checks[*].name", containsStringIgnoringCase("Service is ready"));
     }
 
     @Test
+    @Order(1)
     public void testAllSessionsFallback() {
         given()
             .contentType("application/json")
@@ -57,6 +61,7 @@ public class SessionResourceTest {
     }
 
     @Test
+    @Order(1)
     public void testSessionCircuitBreaker() {
 
         Mockito
@@ -99,6 +104,7 @@ public class SessionResourceTest {
     }
 
     @Test
+    @Order(1)
     public void testSessionSpeakerFallback() {
 
         Mockito
@@ -123,6 +129,7 @@ public class SessionResourceTest {
     }
 
     @Test
+    @Order(2)
     public void testAddSpeakerToSession() {
         given()
                 .contentType("application/json")
@@ -131,8 +138,7 @@ public class SessionResourceTest {
                 .then()
                 .statusCode(200)
                 .contentType("application/json")
-                .body("speakers.name[0]", equalTo("Emmanuel"))
-                .body("speakers.name[1]", equalTo("Clement"));
+                .body("speakers.name", containsInAnyOrder("Emmanuel", "Clement"));
     }
 
 
