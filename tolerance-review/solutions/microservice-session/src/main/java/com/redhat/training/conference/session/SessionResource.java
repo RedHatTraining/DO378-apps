@@ -100,8 +100,8 @@ public class SessionResource {
 
     @PUT
     @Path("/{sessionId}/speakers/{speakerName}")
-    @Retry(maxRetries=60, delay=1_000, retryOn=InternalServerErrorException.class)
     @Transactional
+    @Retry(maxRetries=60, delay=1_000, retryOn=InternalServerErrorException.class)
     public Response addSessionSpeaker(@PathParam("sessionId") final String sessionId,
             @PathParam("speakerName") final String speakerName) {
         final Optional<Session> result = sessionStore.findByIdWithoutEnrichmentMaybeFail(sessionId);

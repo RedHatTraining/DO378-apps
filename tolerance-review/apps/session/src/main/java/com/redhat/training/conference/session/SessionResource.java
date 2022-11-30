@@ -94,6 +94,7 @@ public class SessionResource {
 
     @PUT
     @Path("/{sessionId}/speakers/{speakerName}")
+    @Transactional
     public Response addSessionSpeaker(@PathParam("sessionId") final String sessionId,
             @PathParam("speakerName") final String speakerName) {
         final Optional<Session> result = sessionStore.findByIdWithoutEnrichmentMaybeFail(sessionId);
@@ -109,6 +110,7 @@ public class SessionResource {
 
     @DELETE
     @Path("/{sessionId}/speakers/{speakerName}")
+    @Transactional
     public Response removeSessionSpeaker(@PathParam("sessionId") final String sessionId,
             @PathParam("speakerName") final String speakerName) {
         final Optional<Session> result = sessionStore.findByIdWithoutEnrichment(sessionId);

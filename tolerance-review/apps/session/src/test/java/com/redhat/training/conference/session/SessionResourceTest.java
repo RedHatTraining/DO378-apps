@@ -23,6 +23,28 @@ public class SessionResourceTest {
     SpeakerService speakerService;
 
     @Test
+    public void testLivenessProbe() {
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/q/health/live")
+                .then()
+                .statusCode(200)
+                .body("checks[0].name", equalToIgnoringCase("Service is alive"));
+    }
+
+    @Test
+    public void testReadinessProbe() {
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/q/health/ready")
+                .then()
+                .statusCode(200)
+                .body("checks[0].name", equalToIgnoringCase("Service is ready"));
+    }
+
+    @Test
     public void testAllSessionsFallback() {
         given()
             .contentType("application/json")
@@ -31,7 +53,7 @@ public class SessionResourceTest {
             .then()
             .statusCode(200)
             .contentType("application/json")
-            .body("speakers.name[0]", equalTo("Emmanuel"));
+            .body("speakers[0].name[0]", equalTo("Emmanuel"));
     }
 
     @Test
