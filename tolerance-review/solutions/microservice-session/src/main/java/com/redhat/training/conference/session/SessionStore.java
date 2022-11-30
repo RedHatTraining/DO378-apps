@@ -26,9 +26,6 @@ public class SessionStore {
     @Inject
     public SpeakerRepository speakerRepository;
 
-    @ConfigProperty(name = "features.session-integration", defaultValue = "false")
-    boolean sessionIntegration;
-
     @Inject
     @RestClient
     SpeakerService speakerService;
@@ -39,12 +36,7 @@ public class SessionStore {
     }
 
     public Collection<Session> findAll() {
-        // Feature toggle
-        if (sessionIntegration){
-            return findAllWithEnrichment();
-        } else {
-            return findAllWithoutEnrichment();
-        }
+        return findAllWithEnrichment();
     }
 
     public Collection<Session> findAllWithEnrichment(){
@@ -80,12 +72,7 @@ public class SessionStore {
     }
 
     public Optional<Session> findById(String sessionId) {
-        // Feature toggle
-        if (sessionIntegration) {
-            return findByIdWithEnrichedSpeakers(sessionId);
-        } else {
-            return findByIdWithoutEnrichment(sessionId);
-        }
+        return findByIdWithEnrichedSpeakers(sessionId);
     }
 
     public Optional<Session> findByIdWithoutEnrichment(String sessionId) {

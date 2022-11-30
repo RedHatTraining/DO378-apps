@@ -44,7 +44,9 @@ public class SessionResourceTest {
                 .get("/q/health/ready")
                 .then()
                 .statusCode(200)
-                .body("checks[*].name", containsStringIgnoringCase("Service is ready"));
+                .body("checks.name", containsInAnyOrder(
+                        "Service is ready",
+                               "Database connections health check"));
     }
 
     @Test
