@@ -52,6 +52,13 @@ public class SessionResourceTest {
     @Test
     @Order(1)
     public void testAllSessionsFallback() {
+
+        Mockito
+                .when(
+                        speakerService.listAll()
+                )
+                .thenThrow(InternalServerErrorException.class);
+
         given()
             .contentType("application/json")
             .when()
