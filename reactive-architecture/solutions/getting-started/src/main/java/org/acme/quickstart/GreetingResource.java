@@ -32,11 +32,28 @@ public class GreetingResource {
 
     @GET
     @Path("/person")
-    public Person person() {
+    public Uni<Person> person() {
         logInfo();
 
         // return new Person("yo");
         return service.get();
+    }
+
+    @GET
+    @Blocking
+    @Path("/blocks")
+    public Uni<Person> bloks() {
+        logInfo();
+
+        try {
+            Thread.sleep(10000);
+        } catch( InterruptedException e ) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        // return new Person("yo");
+        return Uni.createFrom().item(new Person("asdf"));
     }
 
     private void logInfo() {

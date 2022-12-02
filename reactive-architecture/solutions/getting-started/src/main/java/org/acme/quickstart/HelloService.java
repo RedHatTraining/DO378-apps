@@ -15,5 +15,5 @@ import javax.ws.rs.Path;
 public interface HelloService {
 
     @GET
-    Person get();
+    Uni<Person> get();
 }
