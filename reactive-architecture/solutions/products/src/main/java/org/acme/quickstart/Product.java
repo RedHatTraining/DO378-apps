@@ -1,11 +1,11 @@
 package org.acme.quickstart;
 
-public class Person {
+public class Product {
     public String name;
 
-    public Person() {}
+    public Product() {}
 
-    public Person( String name ) {
+    public Product( String name ) {
         this.name = name;
     }
 }

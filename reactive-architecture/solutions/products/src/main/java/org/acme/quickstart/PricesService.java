@@ -8,12 +8,14 @@ import io.smallrye.mutiny.Uni;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 
 
 @Path("/")
 @RegisterRestClient
-public interface HelloService {
+public interface PricesService {
 
     @GET
-    Uni<Person> get();
+    @Path("/{productId}")
+    Uni<Product> get(@PathParam("productId") final Long productId);
 }
