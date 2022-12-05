@@ -1,4 +1,4 @@
-package org.acme.quickstart;
+package com.redhat.training;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.acme.quickstart;
+package com.redhat.training;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
