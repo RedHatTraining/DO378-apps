@@ -9,53 +9,35 @@ import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import io.quarkus.logging.Log;
 import io.smallrye.common.annotation.Blocking;
 import io.smallrye.common.annotation.NonBlocking;
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.impl.VertxThread;
 
-@Path("/products")
-@Produces(MediaType.APPLICATION_JSON)
+@Path( "/products" )
+@Produces( MediaType.APPLICATION_JSON )
 public class ProductsResource {
 
     @Inject
     @RestClient
-    PricesService service;
+    PricesService pricesService;
 
     @GET
-    @Path("/{productId}")
-    public Uni<Product> getProductPriceHistory(@PathParam("productId") final Long productId) {
-        logInfo();
-
-        // return new Person("yo");
-        return service.get(productId);
+    @Path( "/{productId}/priceHistory" )
+    public Uni<ProductPriceHistory> getProductPriceHistory( @PathParam( "productId" ) final Long productId ) {
+        return pricesService.getProductPriceHistory( productId );
     }
 
     @GET
     @Blocking
-    @Path("/blocks")
-    public Uni<Product> bloks() {
-        logInfo();
-
+    @Path( "/blocking" )
+    public Uni<String> blocking() {
         try {
-            Thread.sleep(10000);
+            Thread.sleep( 30000 );
         } catch( InterruptedException e ) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        // return new Person("yo");
-        return Uni.createFrom().item(new Product("asdf"));
+        return  Uni.createFrom().item("I am a blocking operation");
     }
 
-    private void logInfo() {
-        ProcessHandle processHandle = ProcessHandle.current();
-
-        var pid = processHandle.pid();
-        // var command = processHandle.info().commandLine().get();
-        var threadName = VertxThread.currentThread().getName();
-
-        Log.info("PID " + pid +  " . Thread: " + threadName);
-    }
 }
