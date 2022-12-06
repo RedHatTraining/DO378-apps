@@ -1,1 +1,12 @@
-Hi Reactive!!
+:gls_prefix:
+
+// Do not modify section headers, as they are used by flamel and the translation process.
+= pass:a,n[{gls_res_outcomes}]
+
+You should be able to create Quarkus Conference application, by using Reactive Architecture and Principles.
+
+== Proposed App Flow
+
+* Create `session mS` a `Reactive` application using Quarkus.
+* Create an `asynchronous REST` endpoint by using RESTeasy Reactive (Attaching an image for the same).
+* Apply `event driven` principles on Quarkus application with `Reactive Messaging`.
