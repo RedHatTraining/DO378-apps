@@ -20,7 +20,7 @@ public class CrashResource {
     public String setCrash() {
         applicationState.down();
 
-        return "Service not alive";
+        return "Service not alive\n";
     }
 
     public boolean isAlive() {
