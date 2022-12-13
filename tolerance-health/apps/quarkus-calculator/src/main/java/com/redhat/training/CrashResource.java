@@ -1,25 +1,29 @@
 package com.redhat.training;
 
+import com.redhat.training.service.StateService;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.enterprise.context.ApplicationScoped;
 
 @Path("/crash")
 @ApplicationScoped
-public class LivenessResource {
-    private boolean alive = true;
+public class CrashResource {
+    @Inject
+    StateService applicationState;
     
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String setCrash() {
-        alive = false;
+        applicationState.down();
 
         return "Service not alive";
     }
 
     public boolean isAlive() {
-        return alive;
+        return applicationState.isAlive();
     }
 }
