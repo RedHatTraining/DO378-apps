@@ -19,7 +19,7 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class BankAccountsResource {
 
-    @Channel("new-bank-accounts")
+    @Channel("new-bank-accounts-out")
     Emitter<BankAccountWasCreated> emitter;
 
     @GET

@@ -2,32 +2,37 @@ package com.redhat.training.reactive;
 
 import com.redhat.training.event.BankAccountWasCreated;
 import com.redhat.training.model.BankAccount;
-import io.quarkus.hibernate.reactive.panache.Panache;
+import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
-import org.eclipse.microprofile.reactive.messaging.Message;
-import org.eclipse.microprofile.reactive.messaging.Outgoing;
+import org.hibernate.reactive.mutiny.Mutiny;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.control.ActivateRequestContext;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class AccountTypeProcessor {
     private static final Logger LOGGER = Logger.getLogger(AccountTypeProcessor.class);
 
-    @Incoming("new-bank-account")
-    public void processNewBankAccountEvents(Message<BankAccountWasCreated> message) {
-        BankAccountWasCreated event = message.getPayload();
+    @Inject
+    Mutiny.Session session;
+
+    @Incoming("new-bank-accounts-in")
+    @ActivateRequestContext
+    public Uni<Void> processNewBankAccountEvents(BankAccountWasCreated event) {
         String assignedAccountType = event.balance >= 100000 ? "premium" : "regular";
 
         logEvent(event, assignedAccountType);
 
-        Panache.withTransaction(
-                () -> BankAccount
-                        .<BankAccount> findById(event.id)
-                        .onItem()
-                        .ifNotNull()
-                        .invoke(entity -> entity.type = assignedAccountType)
-        );
+        return session.withTransaction(
+            t -> BankAccount.<BankAccount>findById(event.id)
+                .onItem()
+                .ifNotNull()
+                .invoke(
+                    entity -> entity.type = assignedAccountType
+                ).replaceWithVoid()
+        ).onTermination().call(() -> session.close());
     }
 
     private void logEvent(BankAccountWasCreated event, String assignedType) {

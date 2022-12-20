@@ -2,8 +2,8 @@ package com.redhat.training.reactive;
 
 import com.redhat.training.event.BankAccountWasCreated;
 import com.redhat.training.event.FraudScoreWasCalculated;
-import com.redhat.training.event.HighRiskAccountDetected;
-import com.redhat.training.event.LowRiskAccountDetected;
+import com.redhat.training.event.HighRiskAccountWasDetected;
+import com.redhat.training.event.LowRiskAccountWasDetected;
 import org.eclipse.microprofile.reactive.messaging.*;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -11,14 +11,14 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class FraudProcessor {
 
-    @Channel("low-risk")
-    Emitter<LowRiskAccountDetected> lowRiskEmitter;
+    @Channel("low-risk-alerts-out")
+    Emitter<LowRiskAccountWasDetected> lowRiskEmitter;
 
-    @Channel("high-risk")
-    Emitter<HighRiskAccountDetected> highRiskEmitter;
+    @Channel("high-risk-alerts-out")
+    Emitter<HighRiskAccountWasDetected> highRiskEmitter;
 
-    @Incoming("new-bank-account-in")
-    @Outgoing("fraud-scores")
+    @Incoming("new-bank-accounts-in")
+    @Outgoing("in-memory-fraud-scores")
     public Message<FraudScoreWasCalculated> calculateScore(BankAccountWasCreated event) {
         return Message.of(
                 new FraudScoreWasCalculated(
@@ -28,14 +28,14 @@ public class FraudProcessor {
         );
     }
 
-    @Incoming("fraud-scores")
+    @Incoming("in-memory-fraud-scores")
     public void sendEventNotifications(Message<FraudScoreWasCalculated> message) {
         FraudScoreWasCalculated event = message.getPayload();
 
         if (event.score > 50) {
-            highRiskEmitter.send(new HighRiskAccountDetected(event.bankAccountId));
+            highRiskEmitter.send(new HighRiskAccountWasDetected(event.bankAccountId));
         } else if (event.score > 20) {
-            lowRiskEmitter.send(new LowRiskAccountDetected(event.bankAccountId));
+            lowRiskEmitter.send(new LowRiskAccountWasDetected(event.bankAccountId));
         } else {
             message.ack();
         }

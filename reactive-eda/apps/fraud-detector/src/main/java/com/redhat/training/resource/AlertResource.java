@@ -1,13 +1,12 @@
 package com.redhat.training.resource;
 
-import com.redhat.training.event.HighRiskAccountDetected;
-import com.redhat.training.event.LowRiskAccountDetected;
+import com.redhat.training.event.HighRiskAccountWasDetected;
+import com.redhat.training.event.LowRiskAccountWasDetected;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import org.eclipse.microprofile.reactive.messaging.Acknowledgment;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
-import org.jboss.logging.Logger;
 import org.reactivestreams.Publisher;
 
 import javax.inject.Inject;
@@ -19,29 +18,27 @@ import javax.ws.rs.core.MediaType;
 @Path("alerts")
 public class AlertResource {
 
-    private static final Logger LOGGER = Logger.getLogger(AlertResource.class.getName());
-
     @Inject @Channel("in-memory-low-risk-alerts")
-    Publisher<LowRiskAccountDetected> lowRiskAlerts;
+    Publisher<LowRiskAccountWasDetected> lowRiskAlerts;
 
     @Inject @Channel("in-memory-high-risk-alerts")
-    Publisher<HighRiskAccountDetected> highRiskAlerts;
+    Publisher<HighRiskAccountWasDetected> highRiskAlerts;
 
     // Event processors ------------------------------------------------------------------------------------------------
 
-    @Incoming("high-risk-alert-read")
+    @Incoming("high-risk-alerts-in")
     @Outgoing("in-memory-high-risk-alerts")
     @Broadcast
     @Acknowledgment(Acknowledgment.Strategy.PRE_PROCESSING)
-    public HighRiskAccountDetected processHighRiskEvent(HighRiskAccountDetected event) {
+    public HighRiskAccountWasDetected processHighRiskEvent(HighRiskAccountWasDetected event) {
         return event;
     }
 
-    @Incoming("low-risk-alert-read")
+    @Incoming("low-risk-alerts-in")
     @Outgoing("in-memory-low-risk-alerts")
     @Broadcast
     @Acknowledgment(Acknowledgment.Strategy.PRE_PROCESSING)
-    public LowRiskAccountDetected processLowRiskEvent(LowRiskAccountDetected event) {
+    public LowRiskAccountWasDetected processLowRiskEvent(LowRiskAccountWasDetected event) {
         return event;
     }
 
@@ -50,14 +47,14 @@ public class AlertResource {
     @GET
     @Path("risk/low")
     @Produces(MediaType.SERVER_SENT_EVENTS)
-    public Publisher<LowRiskAccountDetected> getLowRiskAlerts() {
+    public Publisher<LowRiskAccountWasDetected> getLowRiskAlerts() {
         return lowRiskAlerts;
     }
 
     @GET
     @Path("risk/high")
     @Produces(MediaType.SERVER_SENT_EVENTS)
-    public Publisher<HighRiskAccountDetected> getHighRiskAlerts() {
+    public Publisher<HighRiskAccountWasDetected> getHighRiskAlerts() {
         return highRiskAlerts;
     }
 }
