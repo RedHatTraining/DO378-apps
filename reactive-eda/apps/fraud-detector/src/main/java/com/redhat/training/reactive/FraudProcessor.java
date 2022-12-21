@@ -7,6 +7,7 @@ import com.redhat.training.event.LowRiskAccountWasDetected;
 import org.eclipse.microprofile.reactive.messaging.*;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped
 public class FraudProcessor {
@@ -29,16 +30,16 @@ public class FraudProcessor {
     }
 
     @Incoming("in-memory-fraud-scores")
-    public void sendEventNotifications(Message<FraudScoreWasCalculated> message) {
+    public CompletionStage<Void> sendEventNotifications(Message<FraudScoreWasCalculated> message) {
         FraudScoreWasCalculated event = message.getPayload();
 
         if (event.score > 50) {
             highRiskEmitter.send(new HighRiskAccountWasDetected(event.bankAccountId));
         } else if (event.score > 20) {
             lowRiskEmitter.send(new LowRiskAccountWasDetected(event.bankAccountId));
-        } else {
-            message.ack();
         }
+
+        return message.ack();
     }
 
     private Integer calculateFraudScore(Long amount) {
