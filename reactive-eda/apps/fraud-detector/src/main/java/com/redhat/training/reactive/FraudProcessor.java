@@ -4,6 +4,7 @@ import com.redhat.training.event.BankAccountWasCreated;
 import com.redhat.training.event.FraudScoreWasCalculated;
 import com.redhat.training.event.HighRiskAccountWasDetected;
 import com.redhat.training.event.LowRiskAccountWasDetected;
+import io.smallrye.reactive.messaging.annotations.Merge;
 import org.eclipse.microprofile.reactive.messaging.*;
 import org.jboss.logging.Logger;
 
@@ -32,6 +33,7 @@ public class FraudProcessor {
     }
 
     @Incoming("in-memory-fraud-scores")
+    @Merge
     public CompletionStage<Void> sendEventNotifications(Message<FraudScoreWasCalculated> message) {
         FraudScoreWasCalculated event = message.getPayload();
 
