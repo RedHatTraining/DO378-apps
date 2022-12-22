@@ -34,10 +34,14 @@ public class BankAccountsResource {
                 .onItem()
                 .transform(
                     inserted -> {
-                        emitter.send(new BankAccountWasCreated(inserted.id, inserted.balance));
+                        sendBankAccountEvent(inserted.id, inserted.balance);
 
                         return Response.created(URI.create("/accounts/" + inserted.id)).build();
                     }
                 );
+    }
+
+    public void sendBankAccountEvent(Long id, Long balance) {
+        emitter.send(new BankAccountWasCreated(id, balance));
     }
 }

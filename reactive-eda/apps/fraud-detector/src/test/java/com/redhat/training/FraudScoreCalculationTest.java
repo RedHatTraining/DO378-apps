@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
 class FraudScoreCalculationTest {
-
     @Inject
     FraudProcessor application;
 

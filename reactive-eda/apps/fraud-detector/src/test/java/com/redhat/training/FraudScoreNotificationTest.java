@@ -3,20 +3,15 @@ package com.redhat.training;
 import com.redhat.training.event.FraudScoreWasCalculated;
 import com.redhat.training.event.HighRiskAccountWasDetected;
 import com.redhat.training.event.LowRiskAccountWasDetected;
-import com.redhat.training.reactive.FraudProcessor;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.reactive.messaging.providers.connectors.InMemoryConnector;
 import io.smallrye.reactive.messaging.providers.connectors.InMemorySink;
 import io.smallrye.reactive.messaging.providers.connectors.InMemorySource;
-import org.eclipse.microprofile.reactive.messaging.Message;
-import org.eclipse.microprofile.reactive.messaging.spi.Connector;
 import org.junit.jupiter.api.*;
 
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
-import java.util.Map;
-
 
 @QuarkusTest
 @QuarkusTestResource(KafkaTestResourceLifecycleManager.class)
@@ -24,9 +19,7 @@ import java.util.Map;
 class FraudScoreNotificationTest {
     @Inject
     @Any
-//    @Connector(value = "smallrye-in-memory")
     InMemoryConnector connector;
-
 
     @Test
     @Order(1)
@@ -65,6 +58,4 @@ class FraudScoreNotificationTest {
 
         Assertions.assertEquals(1, highRiskAlertsOut.received().size());
     }
-
-
 }

@@ -21,7 +21,7 @@ public class AccountTypeProcessor {
     @Incoming("new-bank-accounts-in")
     @ActivateRequestContext
     public Uni<Void> processNewBankAccountEvents(BankAccountWasCreated event) {
-        String assignedAccountType = event.balance >= 100000 ? "premium" : "regular";
+        String assignedAccountType = calculateAccountType(event.balance);
 
         logEvent(event, assignedAccountType);
 
@@ -33,6 +33,10 @@ public class AccountTypeProcessor {
                     entity -> entity.type = assignedAccountType
                 ).replaceWithVoid()
         ).onTermination().call(() -> session.close());
+    }
+
+    public String calculateAccountType(Long balance) {
+        return balance >= 100000 ? "premium" : "regular";
     }
 
     private void logEvent(BankAccountWasCreated event, String assignedType) {
