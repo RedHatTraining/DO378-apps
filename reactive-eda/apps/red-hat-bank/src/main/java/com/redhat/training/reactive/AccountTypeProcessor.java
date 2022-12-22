@@ -18,25 +18,7 @@ public class AccountTypeProcessor {
     @Inject
     Mutiny.Session session;
 
-    @Incoming("new-bank-accounts-in")
-    @ActivateRequestContext
-    public Uni<Void> processNewBankAccountEvents(BankAccountWasCreated event) {
-        String assignedAccountType = calculateAccountType(event.balance);
-
-        logEvent(event, assignedAccountType);
-
-        return session.withTransaction(
-            t -> BankAccount.<BankAccount>findById(event.id)
-                .onItem()
-                .ifNotNull()
-                .invoke(
-                    entity -> entity.type = assignedAccountType
-                ).replaceWithVoid()
-        ).onTermination().call(() -> session.close());
-    }
-
     public String calculateAccountType(Long balance) {
-        return balance >= 100000 ? "premium" : "regular";
     }
 
     private void logEvent(BankAccountWasCreated event, String assignedType) {
