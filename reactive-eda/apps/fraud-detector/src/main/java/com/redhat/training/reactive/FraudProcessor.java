@@ -15,49 +15,14 @@ import java.util.concurrent.CompletionStage;
 public class FraudProcessor {
     private static final Logger LOGGER = Logger.getLogger(FraudProcessor.class);
 
-    @Channel("low-risk-alerts-out")
-    Emitter<LowRiskAccountWasDetected> lowRiskEmitter;
-
-    @Channel("high-risk-alerts-out")
-    Emitter<HighRiskAccountWasDetected> highRiskEmitter;
-
-    @Incoming("new-bank-accounts-in")
-    @Outgoing("in-memory-fraud-scores")
-    public FraudScoreWasCalculated calculateScore(BankAccountWasCreated event) {
-        logBankAccountWasCreatedEvent(event);
-
-        return new FraudScoreWasCalculated(
-                event.id,
-                calculateFraudScore(event.balance)
-        );
-    }
-
-    @Incoming("in-memory-fraud-scores")
-    @Merge
-    public CompletionStage<Void> sendEventNotifications(Message<FraudScoreWasCalculated> message) {
-        FraudScoreWasCalculated event = message.getPayload();
-
-        logFraudScoreWasCalculatedEvent(event);
-
-        if (event.score > 50) {
-            logEmitEvent("HighRiskAccountWasDetected", event.bankAccountId);
-            highRiskEmitter.send(new HighRiskAccountWasDetected(event.bankAccountId));
-        } else if (event.score > 20) {
-            logEmitEvent("LowRiskAccountWasDetected", event.bankAccountId);
-            lowRiskEmitter.send(new LowRiskAccountWasDetected(event.bankAccountId));
-        }
-
-        return message.ack();
-    }
-
     private Integer calculateFraudScore(Long amount) {
         if (amount > 25000) {
             return 75;
         } else if (amount > 3000) {
             return 25;
-        } else {
-            return -1;
         }
+
+        return -1;
     }
 
     private void logBankAccountWasCreatedEvent(BankAccountWasCreated event) {

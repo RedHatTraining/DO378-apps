@@ -34,7 +34,9 @@ public class FraudProcessor {
 
     @Incoming("in-memory-fraud-scores")
     @Merge
-    public CompletionStage<Void> sendEventNotifications(Message<FraudScoreWasCalculated> message) {
+    public CompletionStage<Void> sendEventNotifications(
+            Message<FraudScoreWasCalculated> message
+    ) {
         FraudScoreWasCalculated event = message.getPayload();
 
         logFraudScoreWasCalculatedEvent(event);
@@ -55,9 +57,9 @@ public class FraudProcessor {
             return 75;
         } else if (amount > 3000) {
             return 25;
-        } else {
-            return -1;
         }
+
+        return -1;
     }
 
     private void logBankAccountWasCreatedEvent(BankAccountWasCreated event) {
