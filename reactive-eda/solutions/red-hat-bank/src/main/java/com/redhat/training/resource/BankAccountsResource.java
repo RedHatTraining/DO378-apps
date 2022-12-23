@@ -36,7 +36,9 @@ public class BankAccountsResource {
                     inserted -> {
                         sendBankAccountEvent(inserted.id, inserted.balance);
 
-                        return Response.created(URI.create("/accounts/" + inserted.id)).build();
+                        return Response.created(
+                                URI.create("/accounts/" + inserted.id)
+                        ).build();
                     }
                 );
     }

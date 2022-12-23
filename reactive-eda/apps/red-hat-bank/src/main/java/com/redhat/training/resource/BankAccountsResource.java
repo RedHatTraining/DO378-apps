@@ -30,7 +30,9 @@ public class BankAccountsResource {
                 .onItem()
                 .transform(
                     inserted -> {
-                        return Response.created(URI.create("/accounts/" + inserted.id)).build();
+                        return Response.created(
+                                URI.create("/accounts/" + inserted.id)
+                        ).build();
                     }
                 );
     }
