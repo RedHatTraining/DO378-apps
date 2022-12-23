@@ -1,7 +1,6 @@
 package com.redhat.training.reactive;
 
 import com.redhat.training.event.BankAccountWasCreated;
-import com.redhat.training.event.FraudScoreWasCalculated;
 import com.redhat.training.event.HighRiskAccountWasDetected;
 import com.redhat.training.event.LowRiskAccountWasDetected;
 import io.smallrye.reactive.messaging.annotations.Merge;
@@ -33,11 +32,11 @@ public class FraudProcessor {
         );
     }
 
-    private void logFraudScoreWasCalculatedEvent(FraudScoreWasCalculated event) {
+    private void logFraudScore(Long bankAccountId, Integer score) {
         LOGGER.infov(
-                "Processing FraudScoreWasCalculated - ID: {0} Score: {1}",
-                event.bankAccountId,
-                event.score
+                "Fraud score was calculated - ID: {0} Score: {1}",
+                bankAccountId,
+                score
         );
     }
 

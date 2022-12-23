@@ -1,7 +1,6 @@
 package com.redhat.training.reactive;
 
 import com.redhat.training.event.BankAccountWasCreated;
-import com.redhat.training.event.FraudScoreWasCalculated;
 import com.redhat.training.event.HighRiskAccountWasDetected;
 import com.redhat.training.event.LowRiskAccountWasDetected;
 import io.smallrye.reactive.messaging.annotations.Merge;
@@ -22,31 +21,23 @@ public class FraudProcessor {
     Emitter<HighRiskAccountWasDetected> highRiskEmitter;
 
     @Incoming("new-bank-accounts-in")
-    @Outgoing("in-memory-fraud-scores")
-    public FraudScoreWasCalculated calculateScore(BankAccountWasCreated event) {
+    public CompletionStage<Void> sendEventNotifications(
+            Message<BankAccountWasCreated> message
+    ) {
+        BankAccountWasCreated event = message.getPayload();
+
         logBankAccountWasCreatedEvent(event);
 
-        return new FraudScoreWasCalculated(
-                event.id,
-                calculateFraudScore(event.balance)
-        );
-    }
+        Integer fraudScore = calculateFraudScore(event.balance);
 
-    @Incoming("in-memory-fraud-scores")
-    @Merge
-    public CompletionStage<Void> sendEventNotifications(
-            Message<FraudScoreWasCalculated> message
-    ) {
-        FraudScoreWasCalculated event = message.getPayload();
+        logFraudScore(event.id, fraudScore);
 
-        logFraudScoreWasCalculatedEvent(event);
-
-        if (event.score > 50) {
-            logEmitEvent("HighRiskAccountWasDetected", event.bankAccountId);
-            highRiskEmitter.send(new HighRiskAccountWasDetected(event.bankAccountId));
-        } else if (event.score > 20) {
-            logEmitEvent("LowRiskAccountWasDetected", event.bankAccountId);
-            lowRiskEmitter.send(new LowRiskAccountWasDetected(event.bankAccountId));
+        if (fraudScore > 50) {
+            logEmitEvent("HighRiskAccountWasDetected", event.id);
+            highRiskEmitter.send(new HighRiskAccountWasDetected(event.id));
+        } else if (fraudScore > 20) {
+            logEmitEvent("LowRiskAccountWasDetected", event.id);
+            lowRiskEmitter.send(new LowRiskAccountWasDetected(event.id));
         }
 
         return message.ack();
@@ -70,11 +61,11 @@ public class FraudProcessor {
         );
     }
 
-    private void logFraudScoreWasCalculatedEvent(FraudScoreWasCalculated event) {
+    private void logFraudScore(Long bankAccountId, Integer score) {
         LOGGER.infov(
-                "Processing FraudScoreWasCalculated - ID: {0} Score: {1}",
-                event.bankAccountId,
-                event.score
+                "Fraud score was calculated - ID: {0} Score: {1}",
+                bankAccountId,
+                score
         );
     }
 

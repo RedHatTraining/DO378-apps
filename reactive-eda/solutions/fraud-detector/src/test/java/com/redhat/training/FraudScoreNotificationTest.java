@@ -1,6 +1,6 @@
 package com.redhat.training;
 
-import com.redhat.training.event.FraudScoreWasCalculated;
+import com.redhat.training.event.BankAccountWasCreated;
 import com.redhat.training.event.HighRiskAccountWasDetected;
 import com.redhat.training.event.LowRiskAccountWasDetected;
 import io.quarkus.test.common.QuarkusTestResource;
@@ -24,12 +24,12 @@ class FraudScoreNotificationTest {
     @Test
     @Order(1)
     void testNotificationForNoneRiskAlerts() {
-        InMemorySource<FraudScoreWasCalculated> fraudScoresIn = connector.source("in-memory-fraud-scores");
+        InMemorySource<BankAccountWasCreated> newAccountsIn = connector.source("new-bank-accounts-in");
         InMemorySink<LowRiskAccountWasDetected> lowRiskAlertsOut = connector.sink("low-risk-alerts-out");
         InMemorySink<HighRiskAccountWasDetected> highRiskAlertsOut = connector.sink("high-risk-alerts-out");
 
-        FraudScoreWasCalculated fraudScoreEvent = new FraudScoreWasCalculated(30L, -1);
-        fraudScoresIn.send(fraudScoreEvent);
+        BankAccountWasCreated triggerEvent = new BankAccountWasCreated(100L, 100L);
+        newAccountsIn.send(triggerEvent);
 
         Assertions.assertEquals(0, lowRiskAlertsOut.received().size());
         Assertions.assertEquals(0, highRiskAlertsOut.received().size());
@@ -38,11 +38,11 @@ class FraudScoreNotificationTest {
     @Test
     @Order(2)
     void testNotificationForLowRiskAlerts() {
-        InMemorySource<FraudScoreWasCalculated> fraudScoresIn = connector.source("in-memory-fraud-scores");
+        InMemorySource<BankAccountWasCreated> newAccountsIn = connector.source("new-bank-accounts-in");
         InMemorySink<LowRiskAccountWasDetected> lowRiskAlertsOut = connector.sink("low-risk-alerts-out");
 
-        FraudScoreWasCalculated fraudScoreEvent = new FraudScoreWasCalculated(10L, 25);
-        fraudScoresIn.send(fraudScoreEvent);
+        BankAccountWasCreated triggerEvent = new BankAccountWasCreated(200L, 5000L);
+        newAccountsIn.send(triggerEvent);
 
         Assertions.assertEquals(1, lowRiskAlertsOut.received().size());
     }
@@ -50,11 +50,11 @@ class FraudScoreNotificationTest {
     @Test
     @Order(3)
     void testNotificationForHighRiskAlerts() {
-        InMemorySource<FraudScoreWasCalculated> fraudScoresIn = connector.source("in-memory-fraud-scores");
+        InMemorySource<BankAccountWasCreated> newAccountsIn = connector.source("new-bank-accounts-in");
         InMemorySink<HighRiskAccountWasDetected> highRiskAlertsOut = connector.sink("high-risk-alerts-out");
 
-        FraudScoreWasCalculated fraudScoreEvent = new FraudScoreWasCalculated(20L, 75);
-        fraudScoresIn.send(fraudScoreEvent);
+        BankAccountWasCreated triggerEvent = new BankAccountWasCreated(200L, 200000L);
+        newAccountsIn.send(triggerEvent);
 
         Assertions.assertEquals(1, highRiskAlertsOut.received().size());
     }
