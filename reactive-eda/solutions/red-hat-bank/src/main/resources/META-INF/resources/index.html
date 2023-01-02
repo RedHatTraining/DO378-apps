@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Red Hat Bank - Intranet (v1.0)</title>
+    <link rel="stylesheet" href="/css/wing.css"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+        .card .row input[type=number] {
+            width: 90%;
+        }
+    </style>
+    <script type="text/javascript">
+        var app = angular.module("BankAccountManagement", []);
+
+        app.controller("BankAccountManagementController", function ($scope, $http) {
+
+            $scope.bankAccounts = [];
+
+            $scope.form = {
+                id: -1,
+                balance: ""
+            };
+
+            _refreshPageData();
+
+            $scope.create = function () {
+                var data = {};
+                data.balance = $scope.form.balance;
+
+                $http({
+                    method: 'POST',
+                    url: '/accounts',
+                    data: angular.toJson(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(_success, _error);
+            };
+
+            function _refreshPageData() {
+                $http({
+                    method: 'GET',
+                    url: '/accounts'
+                }).then(function successCallback(response) {
+                    $scope.bankAccounts = response.data;
+                }, function errorCallback(response) {
+                    console.log(response.statusText);
+                });
+            }
+
+        function _success(response) {
+          _refreshPageData();
+          _clearForm()
+        }
+
+        function _error(response) {
+          alert(response.data.error || response.statusText);
+        }
+
+        function validateBankAccount(bankAccount) {
+            if (!bankAccount.id) {
+                alert("You must specify a bank account identifier")
+                throw Error()
+            }
+
+            if (!bankAccount.amount) {
+                alert("You must specify an amount")
+                throw Error()
+            }
+        }
+
+        function _clearForm() {
+            $scope.form.id = -1;
+            $scope.form.balance = "";
+        }
+      });
+    </script>
+</head>
+<body ng-app="BankAccountManagement" ng-controller="BankAccountManagementController">
+
+    <div class="container">
+        <h1>Red Hat Training Bank - Intranet</h1>
+
+        <h3>Create a Bank Account</h3>
+        <form ng-submit="create()">
+            <div class="row">
+                <div class="col-6">
+                    <input type="number" min="1" placeholder="Initial Balance" ng-model="form.balance" />
+                </div>
+                <div class="col-5">
+                    <input type="submit" value="Create"/>
+                </div>
+            </div>
+        </form>
+
+        <h3>Customer Bank Accounts</h3>
+        <div class="cards">
+            <div class="card" ng-repeat="account in bankAccounts">
+                <h5 class="card-header">Account #{{ account.id }}</h5>
+                <p class="card-body">
+                    Current Balance: {{ account.balance }} <br>
+                    Type: {{ account.type }}
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
