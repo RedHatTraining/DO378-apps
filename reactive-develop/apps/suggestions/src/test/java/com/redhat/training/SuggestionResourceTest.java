@@ -23,4 +23,17 @@ public class SuggestionResourceTest {
     @Test
     public void testCreateEndpoint() {
     }
+
+    private Suggestion createSuggestion( long clientId, long itemId ) {
+        Suggestion newSuggestion = new Suggestion( clientId, itemId );
+
+        return given().body( newSuggestion )
+            .when()
+                .contentType( ContentType.JSON )
+                .post()
+            .then()
+                .statusCode( 200 )
+                .extract()
+                .as( Suggestion.class );
+    }
 }
