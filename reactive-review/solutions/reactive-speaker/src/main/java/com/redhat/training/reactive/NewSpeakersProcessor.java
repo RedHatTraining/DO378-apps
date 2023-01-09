@@ -33,10 +33,14 @@ public class NewSpeakersProcessor {
 
         if (event.affiliation == Affiliation.RED_HAT) {
             logEmitEvent("EmployeeSignedUp", event.affiliation);
-            employeeEmitter.send(new EmployeeSignedUp(event.id, event.fullName, event.email));
+            employeeEmitter.send(
+                    new EmployeeSignedUp(event.id, event.fullName, event.email)
+            );
         } else if (event.affiliation == Affiliation.GNOME_FOUNDATION) {
             logEmitEvent("UpstreamMemberSignedUp", event.affiliation);
-            upstreamEmitter.send(new UpstreamMemberSignedUp(event.id, event.fullName, event.email));
+            upstreamEmitter.send(
+                    new UpstreamMemberSignedUp(event.id, event.fullName, event.email)
+            );
         }
 
         return message.ack();
