@@ -35,7 +35,7 @@ public class NewSpeakersProcessor {
             logEmitEvent("EmployeeSignedUp", event.affiliation);
             employeeEmitter.send(new EmployeeSignedUp(event.id, event.fullName, event.email));
         } else if (event.affiliation == Affiliation.GNOME_FOUNDATION) {
-            logEmitEvent("LowRiskAccountWasDetected", event.affiliation);
+            logEmitEvent("UpstreamMemberSignedUp", event.affiliation);
             upstreamEmitter.send(new UpstreamMemberSignedUp(event.id, event.fullName, event.email));
         }
 
@@ -52,7 +52,7 @@ public class NewSpeakersProcessor {
 
     private void logProcessEvent(Long eventID) {
         LOGGER.infov(
-                "Processing SpeakerWasCreated event: ID {1}",
+                "Processing SpeakerWasCreated event: ID {0}",
                 eventID
         );
     }

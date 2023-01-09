@@ -4,6 +4,7 @@ import com.redhat.training.model.Affiliation;
 
 public class SpeakerWasCreated {
     public Long id;
+
     public String fullName;
 
     public Affiliation affiliation;

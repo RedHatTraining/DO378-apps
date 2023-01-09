@@ -1,9 +1,11 @@
 package com.redhat.training.event;
 
 public class UpstreamMemberSignedUp {
-    Long speakerId;
-    String fullName;
-    String email;
+    public Long speakerId;
+
+    public String fullName;
+
+    public String email;
     public UpstreamMemberSignedUp() {}
 
     public UpstreamMemberSignedUp(Long speakerId, String fullName, String email) {

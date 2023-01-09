@@ -23,18 +23,6 @@ public class SpeakerResource {
     @Channel("new-speakers-out")
     Emitter<SpeakerWasCreated> emitter;
 
-/*    public Message<Double> notifyRatioOfIncidents() {
-            Uni<Long> high = Speaker.count("status", "HIGH");
-            Uni<Long> total = Speaker.count();
-
-
-        return Message.of(
-                high.await().indefinitely().doubleValue()
-                        /
-                        total.await().indefinitely().doubleValue()
-        );
-    }*/
-
     @POST
     public Uni<Response> create(Speaker newSpeaker) {
         return Panache

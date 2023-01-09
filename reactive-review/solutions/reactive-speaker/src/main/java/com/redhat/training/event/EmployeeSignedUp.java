@@ -1,9 +1,12 @@
 package com.redhat.training.event;
 
 public class EmployeeSignedUp {
-    Long speakerId;
-    String fullName;
-    String email;
+    public Long speakerId;
+
+    public String fullName;
+
+    public String email;
+
     public EmployeeSignedUp() {}
 
     public EmployeeSignedUp(Long speakerId, String fullName, String email) {
