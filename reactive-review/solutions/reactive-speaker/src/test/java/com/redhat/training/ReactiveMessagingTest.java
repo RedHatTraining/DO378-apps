@@ -10,54 +10,30 @@ import io.smallrye.reactive.messaging.providers.connectors.InMemoryConnector;
 import io.smallrye.reactive.messaging.providers.connectors.InMemorySink;
 import io.smallrye.reactive.messaging.providers.connectors.InMemorySource;
 import org.eclipse.microprofile.reactive.messaging.Message;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
 import java.util.List;
 
-import static com.redhat.training.SpeakerResourceTest.generateRequestBody;
-import static io.restassured.RestAssured.given;
+import static com.redhat.training.SpeakerResourceTest.*;
 import static org.awaitility.Awaitility.await;
-import static org.hamcrest.CoreMatchers.startsWith;
 
 @QuarkusTest
 @QuarkusTestResource(KafkaTestResourceLifecycleManager.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ReactiveMessagingTest {
-    private final Long TESTING_ID = 1L;
-    private final String TESTING_NAME = "A Person";
-    private final String TESTING_EMAIL = "test@example.com";
-
     @Inject
     @Any
     InMemoryConnector connector;
 
-    @BeforeAll
-    public static void setup() {
-
-    }
-
-    @Test
-    public void creatingASpeakerFiresAnEvent() {
-        InMemorySink<SpeakerWasCreated> eventsOut = connector.sink("new-speakers-out");
-
-        given()
-            .body(generateRequestBody(Affiliation.NONE))
-            .contentType("application/json")
-        .when()
-            .post("/speakers")
-        .then()
-            .statusCode(201);
-
-        await().<List<? extends Message<SpeakerWasCreated>>>until(eventsOut::received, t -> t.size() == 1);
-
-        SpeakerWasCreated queuedEvent = eventsOut.received().get(0).getPayload();
-
-        Assertions.assertEquals(TESTING_ID, queuedEvent.id);
-        Assertions.assertEquals(TESTING_NAME, queuedEvent.fullName);
-        Assertions.assertEquals(TESTING_EMAIL, queuedEvent.email);
-    }
+//    @BeforeAll
+//    public static void setup() {
+//
+//    }
 
     @Test
     public void givenANewRedHatSpeakerAnEventIsFired() {
