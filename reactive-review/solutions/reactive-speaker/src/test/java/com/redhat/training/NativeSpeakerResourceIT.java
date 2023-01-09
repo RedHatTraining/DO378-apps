@@ -1,4 +1,4 @@
-package com.redhat.training.conference.speaker;
+package com.redhat.training;
 
 import io.quarkus.test.junit.NativeImageTest;
 
