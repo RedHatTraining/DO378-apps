@@ -30,11 +30,6 @@ class ReactiveMessagingTest {
     @Any
     InMemoryConnector connector;
 
-//    @BeforeAll
-//    public static void setup() {
-//
-//    }
-
     @Test
     public void givenANewRedHatSpeakerAnEventIsFired() {
         InMemorySource<SpeakerWasCreated> eventsIn = connector.source("new-speakers-in");
