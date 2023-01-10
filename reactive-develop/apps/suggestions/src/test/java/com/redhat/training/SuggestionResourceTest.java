@@ -22,6 +22,41 @@ public class SuggestionResourceTest {
 
     @Test
     public void testCreateEndpoint() {
+        Suggestion returnedSuggestion = createSuggestion( 1L, 103L );
+
+        assertThat( returnedSuggestion.id ).isNotNull();
+    }
+
+    @Test
+    public void testGetEndpoint() {
+        Suggestion inserted = createSuggestion( 2L, 104L );
+
+        Suggestion retrieved = given()
+        .when()
+            .get( inserted.id.toString() )
+        .then()
+            .statusCode( 200 )
+            .extract()
+                .as( Suggestion.class );
+        
+        assertThat(retrieved.clientId).isEqualTo( 2L );
+    }
+
+    @Test
+    public void testListEndpoint() {
+        createSuggestion( 3L, 105L );
+        createSuggestion( 4L, 106L );
+        createSuggestion( 5L, 107L );
+
+        List<Suggestion> suggestions = given()
+        .when()
+            .get()
+        .then()
+            .statusCode(200)
+            .extract()
+            .body().jsonPath().getList( ".", Suggestion.class );
+
+        assertThat( suggestions ).size().isEqualTo( 3 );
     }
 
     private Suggestion createSuggestion( long clientId, long itemId ) {
