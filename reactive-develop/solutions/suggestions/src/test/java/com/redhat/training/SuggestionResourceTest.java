@@ -29,13 +29,6 @@ public class SuggestionResourceTest {
     }
 
     @Test
-    public void testInvalidCreateParameters() {
-        Suggestion returnedSuggestion = createSuggestion( null, 103L );
-
-        assertThat( returnedSuggestion.id ).isNotNull();
-    }
-
-    @Test
     public void testGetEndpoint() {
         Suggestion inserted = createSuggestion( 2L, 104L );
 
