@@ -20,7 +20,7 @@ public class JwtGeneratorTest {
 
     @Test
     public void userJwtBelongsToUserGroup() throws ParseException {
-        var token = JwtGenerator.generateJwtForUser("testUser");
+        var token = JwtGenerator.generateJwtForRegularUser("testUser");
 
         JsonWebToken jwt = jwtParser.parse(token);
 

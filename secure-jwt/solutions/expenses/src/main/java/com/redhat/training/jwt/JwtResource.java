@@ -1,7 +1,7 @@
 package com.redhat.training.jwt;
 
 import static com.redhat.training.jwt.JwtGenerator.generateJwtForAdmin;
-import static com.redhat.training.jwt.JwtGenerator.generateJwtForUser;
+import static com.redhat.training.jwt.JwtGenerator.generateJwtForRegularUser;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.GET;
@@ -20,7 +20,7 @@ public class JwtResource {
            return generateJwtForAdmin(username);
         }
 
-        return generateJwtForUser(username);
+        return generateJwtForRegularUser(username);
     }
 
 }

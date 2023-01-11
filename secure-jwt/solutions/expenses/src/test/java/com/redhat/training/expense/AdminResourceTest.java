@@ -29,7 +29,7 @@ public class AdminResourceTest {
     @Test
     public void adminsCanListAllExpenses() {
 
-        // User "joel" has two expenses
+        // User "admin" is an adminstrator
         var bearerToken = "Bearer " + getJwt("admin");
 
         given()

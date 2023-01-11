@@ -1,4 +1,4 @@
-# expense-restful-service project
+# expenses project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

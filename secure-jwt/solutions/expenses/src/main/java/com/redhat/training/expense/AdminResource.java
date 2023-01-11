@@ -13,12 +13,13 @@ import java.util.List;
 public class AdminResource {
 
     @Inject
-    ExpensesService expenseService;
+    ExpensesService expenses;
 
     @GET
     @Path("/expenses")
+    @RolesAllowed({ "ADMIN" })
     public List<Expense> listAllExpenses() {
-        return expenseService.list();
+        return expenses.list();
     }
 
 
