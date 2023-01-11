@@ -24,7 +24,7 @@ public class JwtGeneratorTest {
 
         JsonWebToken jwt = jwtParser.parse(token);
 
-        assertTrue(jwt.getGroups().contains("USER"), "JWT groups do not contain USER");
+        assertTrue(jwt.getGroups().contains("USER"), "JWT groups for regular user do not contain USER");
     }
 
     @Test
@@ -33,7 +33,7 @@ public class JwtGeneratorTest {
 
         JsonWebToken jwt = jwtParser.parse(token);
 
-        assertTrue(jwt.getGroups().contains("USER"), "JWT groups do not contain USER");
+        assertTrue(jwt.getGroups().contains("USER"), "JWT groups for admin do not contain USER");
     }
 
     @Test
@@ -42,6 +42,6 @@ public class JwtGeneratorTest {
 
         JsonWebToken jwt = jwtParser.parse(token);
 
-        assertTrue(jwt.getGroups().contains("ADMIN"), "JWT groups do not contain USER");
+        assertTrue(jwt.getGroups().contains("ADMIN"), "JWT groups for admin do not contain ADMIN");
     }
 }

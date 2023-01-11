@@ -27,8 +27,20 @@ public class AdminResourceTest {
     }
 
     @Test
-    public void adminsCanListAllExpenses() {
+    public void regularUsersCannotListExpenses() {
+        // User "joel" is a regular user
+        var bearerToken = "Bearer " + getJwt("joel");
 
+        given()
+            .headers("Authorization", bearerToken )
+        .when()
+            .get(expensesEndpoint)
+        .then()
+            .statusCode(403);
+    }
+
+    @Test
+    public void adminsCanListAllExpenses() {
         // User "admin" is an adminstrator
         var bearerToken = "Bearer " + getJwt("admin");
 
