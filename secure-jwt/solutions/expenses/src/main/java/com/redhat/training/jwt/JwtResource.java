@@ -8,19 +8,19 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-@Path("/jwt")
+@Path( "/jwt" )
 @ApplicationScoped
 public class JwtResource {
 
     @GET
-    @Path("/{username}")
-    public String getJwt(@PathParam("username") String username) {
+    @Path( "/{username}" )
+    public String getJwt( @PathParam( "username" ) String username ) {
 
-        if (username.equalsIgnoreCase("admin")) {
-           return generateJwtForAdmin(username);
+        if ( username.equalsIgnoreCase( "admin" ) ) {
+            return generateJwtForAdmin( username );
         }
 
-        return generateJwtForRegularUser(username);
+        return generateJwtForRegularUser( username );
     }
 
 }

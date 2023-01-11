@@ -1,6 +1,5 @@
 package com.redhat.training.expense;
 
-
 import java.util.UUID;
 import java.time.LocalDateTime;
 

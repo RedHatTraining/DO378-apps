@@ -24,8 +24,8 @@ public class ExpensesService {
 
     List<Expense> listByOwner( String username ) {
         return expenses
-            .stream()
-            .filter( expense -> expense.username.equalsIgnoreCase( username ) )
-            .collect( Collectors.toList() );
+                .stream()
+                .filter( expense -> expense.username.equalsIgnoreCase( username ) )
+                .collect( Collectors.toList() );
     }
 }

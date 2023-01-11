@@ -16,8 +16,8 @@ public class UserResource {
     ExpensesService expenses;
 
     @GET
-    @RolesAllowed( { "USER" } )
     @Path( "/expenses" )
+    @RolesAllowed({ "USER" })
     public List<Expense> listUserExpenses( SecurityContext context ) {
         var authenticatedUser = context.getUserPrincipal();
 
