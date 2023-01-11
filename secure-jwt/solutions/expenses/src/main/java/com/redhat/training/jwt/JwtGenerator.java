@@ -12,14 +12,14 @@ public class JwtGenerator {
     public static String generateJwtForRegularUser( String username ) {
         return Jwt.issuer( ISSUER )
                 .upn( username )
-                .groups(new HashSet<>(Arrays.asList("USER")))
+                .groups( new HashSet<>( Arrays.asList( "USER" ) ) )
                 .sign();
     }
 
     public static String generateJwtForAdmin( String username ) {
         return Jwt.issuer( ISSUER )
                 .upn( username )
-                .groups(new HashSet<>(Arrays.asList("USER", "ADMIN")))
+                .groups( new HashSet<>( Arrays.asList( "USER", "ADMIN" ) ) )
                 .sign();
     }
 }
