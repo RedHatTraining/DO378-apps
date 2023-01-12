@@ -13,9 +13,9 @@ public class ExpensesService {
 
     ExpensesService() {
         expenses = new ArrayList<>();
-        expenses.add( new Expense( "Expense 1", 43.5, "patricia" ) );
-        expenses.add( new Expense( "Expense 1", 10.0, "joel" ) );
-        expenses.add( new Expense( "Expense 1", 24.2, "joel" ) );
+        expenses.add( new Expense( "Expense 1", 43.5, "patricia@example.com" ) );
+        expenses.add( new Expense( "Expense 1", 10.0, "joel@example.com" ) );
+        expenses.add( new Expense( "Expense 1", 24.2, "joel@example.com" ) );
     }
 
     List<Expense> list() {

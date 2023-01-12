@@ -8,7 +8,7 @@ import javax.ws.rs.Path;
 import java.util.List;
 
 @Path( "/admin" )
-@RolesAllowed({ "ADMIN" })
+@RolesAllowed( { "ADMIN" } )
 public class AdminResource {
 
     @Inject

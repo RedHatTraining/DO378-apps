@@ -10,7 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.SecurityContext;
 
 @Path( "/user" )
-@RolesAllowed({ "USER" })
+@RolesAllowed( { "USER" } )
 public class UserResource {
 
     @Inject

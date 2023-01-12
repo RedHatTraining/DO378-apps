@@ -1,5 +1,6 @@
 package com.redhat.training.jwt;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,37 +22,64 @@ public class JwtGeneratorTest {
 
     @Test
     public void userJwtBelongsToUserGroup() throws ParseException {
-        var token = JwtGenerator.generateJwtForRegularUser("testUser");
+        var token = JwtGenerator.generateJwtForRegularUser( "testUser" );
 
-        JsonWebToken jwt = jwtParser.parse(token);
+        JsonWebToken jwt = jwtParser.parse( token );
 
-        assertTrue(jwt.getGroups().contains("USER"), "JWT groups for regular user do not contain USER");
+        assertTrue( jwt.getGroups().contains( "USER" ), "JWT groups for regular user do not contain USER" );
+    }
+
+    @Test
+    public void userJwtContainsSubjectClaim() throws ParseException {
+        var token = JwtGenerator.generateJwtForRegularUser( "testUser" );
+
+        JsonWebToken jwt = jwtParser.parse( token );
+
+        assertEquals( "testUser", jwt.getClaim( "sub" ), "JWT 'sub' claim not set as expected" );
+    }
+
+    @Test
+    public void userJwtContainsUpnClaim() throws ParseException {
+        var token = JwtGenerator.generateJwtForRegularUser( "testUser" );
+
+        JsonWebToken jwt = jwtParser.parse( token );
+
+        assertEquals( "testUser@example.com", jwt.getClaim( "upn" ), "JWT 'upn' claim not set as expected" );
+    }
+
+    @Test
+    public void userJwtContainsIssuerClaim() throws ParseException {
+        var token = JwtGenerator.generateJwtForRegularUser( "testUser" );
+
+        JsonWebToken jwt = jwtParser.parse( token );
+
+        assertEquals( "https://example.com/redhattraining", jwt.getClaim( "iss" ), "JWT 'iss' claim not set as expected" );
     }
 
     @Test
     public void userJwtContainsLocaleClaim() throws ParseException {
-        var token = JwtGenerator.generateJwtForRegularUser("testUser");
+        var token = JwtGenerator.generateJwtForRegularUser( "testUser" );
 
-        JsonWebToken jwt = jwtParser.parse(token);
+        JsonWebToken jwt = jwtParser.parse( token );
 
-        assertNotNull(jwt.getClaim("locale"));
+        assertNotNull( jwt.getClaim( "locale" ), "JWT 'locale' claim not set as expected" );
     }
 
     @Test
     public void adminJwtBelongsToUserGroup() throws ParseException {
-        var token = JwtGenerator.generateJwtForAdmin("testUser");
+        var token = JwtGenerator.generateJwtForAdmin( "testUser" );
 
-        JsonWebToken jwt = jwtParser.parse(token);
+        JsonWebToken jwt = jwtParser.parse( token );
 
-        assertTrue(jwt.getGroups().contains("USER"), "JWT groups for admin do not contain USER");
+        assertTrue( jwt.getGroups().contains( "USER" ), "JWT groups for admin do not contain USER" );
     }
 
     @Test
     public void adminJwtBelongsToAdminGroup() throws ParseException {
-        var token = JwtGenerator.generateJwtForAdmin("testUser");
+        var token = JwtGenerator.generateJwtForAdmin( "testUser" );
 
-        JsonWebToken jwt = jwtParser.parse(token);
+        JsonWebToken jwt = jwtParser.parse( token );
 
-        assertTrue(jwt.getGroups().contains("ADMIN"), "JWT groups for admin do not contain ADMIN");
+        assertTrue( jwt.getGroups().contains( "ADMIN" ), "JWT groups for admin do not contain ADMIN" );
     }
 }
