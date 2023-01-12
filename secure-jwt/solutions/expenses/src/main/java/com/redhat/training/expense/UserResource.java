@@ -10,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.SecurityContext;
 
 @Path( "/user" )
+@RolesAllowed({ "USER" })
 public class UserResource {
 
     @Inject
@@ -17,7 +18,6 @@ public class UserResource {
 
     @GET
     @Path( "/expenses" )
-    @RolesAllowed({ "USER" })
     public List<Expense> listUserExpenses( SecurityContext context ) {
         var authenticatedUser = context.getUserPrincipal();
 

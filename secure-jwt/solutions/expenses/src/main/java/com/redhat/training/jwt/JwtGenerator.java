@@ -13,6 +13,7 @@ public class JwtGenerator {
         return Jwt.issuer( ISSUER )
                 .upn( username )
                 .groups( new HashSet<>( Arrays.asList( "USER" ) ) )
+                .claim("locale", "en_US")
                 .sign();
     }
 

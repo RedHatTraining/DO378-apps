@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import java.util.List;
 
 @Path( "/admin" )
+@RolesAllowed({ "ADMIN" })
 public class AdminResource {
 
     @Inject
@@ -15,7 +16,6 @@ public class AdminResource {
 
     @GET
     @Path( "/expenses" )
-    @RolesAllowed({ "ADMIN" })
     public List<Expense> listAllExpenses() {
         return expenses.list();
     }

@@ -1,5 +1,6 @@
 package com.redhat.training.jwt;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.inject.Inject;
@@ -25,6 +26,15 @@ public class JwtGeneratorTest {
         JsonWebToken jwt = jwtParser.parse(token);
 
         assertTrue(jwt.getGroups().contains("USER"), "JWT groups for regular user do not contain USER");
+    }
+
+    @Test
+    public void userJwtContainsLocaleClaim() throws ParseException {
+        var token = JwtGenerator.generateJwtForRegularUser("testUser");
+
+        JsonWebToken jwt = jwtParser.parse(token);
+
+        assertNotNull(jwt.getClaim("locale"));
     }
 
     @Test
