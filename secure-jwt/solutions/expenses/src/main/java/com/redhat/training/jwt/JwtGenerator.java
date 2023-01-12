@@ -12,9 +12,9 @@ public class JwtGenerator {
     public static String generateJwtForRegularUser( String username ) {
         return Jwt.issuer( ISSUER )
                 .upn( username + "@example.com" )
-                .subject( username )
-                .claim( "locale", "en_US" )
-                .audience( "expenses.example.com" )
+                .subject(username)
+                .audience("expenses.example.com")
+                .claim("locale", "en_US")
                 .groups( new HashSet<>( Arrays.asList( "USER" ) ) )
                 .sign();
     }
