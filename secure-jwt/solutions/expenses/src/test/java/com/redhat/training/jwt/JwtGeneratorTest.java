@@ -66,6 +66,15 @@ public class JwtGeneratorTest {
     }
 
     @Test
+    public void userJwtContainsAudienceClaim() throws ParseException {
+        var token = JwtGenerator.generateJwtForRegularUser( "testUser" );
+
+        JsonWebToken jwt = jwtParser.parse( token );
+
+        assertNotNull( jwt.getClaim( "aud" ), "JWT 'aud' claim not set as expected" );
+    }
+
+    @Test
     public void adminJwtBelongsToUserGroup() throws ParseException {
         var token = JwtGenerator.generateJwtForAdmin( "testUser" );
 

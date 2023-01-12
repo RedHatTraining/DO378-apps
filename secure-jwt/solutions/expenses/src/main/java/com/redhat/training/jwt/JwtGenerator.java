@@ -14,6 +14,7 @@ public class JwtGenerator {
                 .upn( username + "@example.com" )
                 .subject( username )
                 .claim( "locale", "en_US" )
+                .audience( "expenses.example.com" )
                 .groups( new HashSet<>( Arrays.asList( "USER" ) ) )
                 .sign();
     }
