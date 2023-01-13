@@ -32,10 +32,10 @@ public class Expense extends PanacheEntity {
     public PaymentMethod paymentMethod;
     public BigDecimal amount;
 
+    // TODO: Add many-to-one relationship between expense and associate
     @JsonbTransient
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "associate_id", insertable = false, updatable = false)
-    // TODO: Add many-to-one relationship between expense and associate
     public Associate associate;
 
     // TODO: Annotate the associateId with @Column
