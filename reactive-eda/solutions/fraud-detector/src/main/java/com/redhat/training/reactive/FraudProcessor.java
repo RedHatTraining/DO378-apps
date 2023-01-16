@@ -34,10 +34,14 @@ public class FraudProcessor {
 
         if (fraudScore > 50) {
             logEmitEvent("HighRiskAccountWasDetected", event.id);
-            highRiskEmitter.send(new HighRiskAccountWasDetected(event.id));
+            highRiskEmitter.send(
+                new HighRiskAccountWasDetected(event.id)
+            );
         } else if (fraudScore > 20) {
             logEmitEvent("LowRiskAccountWasDetected", event.id);
-            lowRiskEmitter.send(new LowRiskAccountWasDetected(event.id));
+            lowRiskEmitter.send(
+                new LowRiskAccountWasDetected(event.id)
+            );
         }
 
         return message.ack();
