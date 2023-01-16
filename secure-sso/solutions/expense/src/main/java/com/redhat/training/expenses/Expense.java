@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
+import org.hibernate.annotations.Type;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
@@ -19,6 +21,7 @@ public class Expense extends PanacheEntityBase {
     }
 
     @Id
+    @Type(type="uuid-char")
     public UUID uuid;
     public String name;
 
