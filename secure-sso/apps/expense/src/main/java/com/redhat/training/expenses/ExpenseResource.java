@@ -35,14 +35,14 @@ public class ExpenseResource {
     SecurityIdentity identity;
 
     @GET
-    @RolesAllowed("read")
+    @RolesAllowed( "read" )
     public List<Expense> list() {
         return Expense.listAll();
     }
 
     @POST
     @Transactional
-    @RolesAllowed("modify")
+    @RolesAllowed( "modify" )
     public Expense create( final Expense expense ) {
         Expense newExpense = Expense.of( expense.name, expense.paymentMethod, expense.amount.toString() );
 
@@ -62,7 +62,7 @@ public class ExpenseResource {
     @DELETE
     @Path( "{uuid}" )
     @Transactional
-    @RolesAllowed("delete")
+    @RolesAllowed( "delete" )
     public List<Expense> delete( @PathParam( "uuid" ) final UUID uuid ) {
         long numExpensesDeleted = Expense.delete( "uuid", uuid );
 
@@ -75,7 +75,7 @@ public class ExpenseResource {
 
     @PUT
     @Transactional
-    @RolesAllowed("modify")
+    @RolesAllowed( "modify" )
     public void update( final Expense expense ) {
         if ( expense.uuid != null )
             Expense.update( expense );
