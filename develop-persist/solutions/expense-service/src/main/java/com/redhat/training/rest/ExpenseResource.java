@@ -36,6 +36,7 @@ public class ExpenseResource {
             @DefaultValue("1") @QueryParam("pageNum") int pageNum) {
         PanacheQuery<Expense> expenseQuery = Expense.findAll(
                 Sort.by("amount").and("associateId"));
+
         return expenseQuery.page(Page.of(pageNum - 1, pageSize)).list();
     }
 
