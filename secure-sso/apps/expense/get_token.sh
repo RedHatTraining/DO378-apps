@@ -23,7 +23,7 @@ export TOKEN=$(curl --insecure -s -X POST "$SERVER" \
  | jq --raw-output '.access_token'
  )
 
-if [ "$TOKEN" == "null" ]; then
+if [[ "$TOKEN" == "null" ]] || [[ "$TOKEN" == ""  ]]; then
     echo 1>&2 "Token was not retrieved! Review input parameters."
 else
     echo 1>&2 "Token succesfuly retrieved."
