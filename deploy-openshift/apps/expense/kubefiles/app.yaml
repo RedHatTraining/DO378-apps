@@ -17,8 +17,8 @@ items:
           deployment: do378-expense
       spec:
         containers:
-        - image: ''
-          name: do378-expense
+        - name: do378-expense
+          image: ''
           ports:
           - containerPort: 8080
           envFrom:
