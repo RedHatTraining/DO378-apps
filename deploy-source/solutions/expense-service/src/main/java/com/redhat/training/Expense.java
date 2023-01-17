@@ -4,15 +4,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import org.hibernate.annotations.Type;
-
 public class Expense {
 
     enum PaymentMethod {
         CASH, CREDIT_CARD, DEBIT_CARD,
     }
 
-    @Type(type="uuid-char")
     private UUID uuid;
     private String name;
     private LocalDateTime creationDate;
