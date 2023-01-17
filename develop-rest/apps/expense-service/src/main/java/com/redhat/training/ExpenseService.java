@@ -1,5 +1,7 @@
 package com.redhat.training;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
