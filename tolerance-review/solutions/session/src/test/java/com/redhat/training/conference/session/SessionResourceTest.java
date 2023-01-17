@@ -2,6 +2,7 @@ package com.redhat.training.conference.session;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import io.quarkus.test.junit.mockito.InjectMock;
 import org.junit.jupiter.api.Order;
@@ -21,6 +22,7 @@ import java.util.List;
 public class SessionResourceTest {
 
     @InjectMock
+    @RestClient
     SpeakerService speakerService;
 
     @Test
