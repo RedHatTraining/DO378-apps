@@ -4,12 +4,13 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbDateFormat;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.ws.rs.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 public class Expense extends PanacheEntity {
@@ -18,7 +19,7 @@ public class Expense extends PanacheEntity {
         CASH, CREDIT_CARD, DEBIT_CARD,
     }
 
-    @Column(columnDefinition="uuid")
+    @Type(type="uuid-char")
     public UUID uuid;
 
     public String name;
