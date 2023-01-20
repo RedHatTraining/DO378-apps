@@ -1,0 +1,12 @@
+html, body, #root {
+  height: 100%;
+  --pf-c-dropdown__toggle--before--BorderWidth: 0
+}
+
+.logo {
+  width: 7em;
+}
+
+.pf-c-dropdown {
+  --pf-c-dropdown__toggle--before--BorderWidth: 0
+}
