@@ -31,10 +31,6 @@ public class ExpensesResource {
 
     @GET
     public List<Expense> getAll() {
-
-        Log.error( "Expense does not exist" );
-        Log.info( "Listing expenses" );
-        Log.debug( "Calling expenses service" );
         return expenses.list();
     }
 
