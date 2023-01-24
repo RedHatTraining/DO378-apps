@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.redhat-training</groupId>
+    <artifactId>RHBQ</artifactId>
+    <version>2.13</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>comprehensive-review/solutions/parks</module>
+        <module>deploy-binding/solutions/expenses-service</module>
+        <module>deploy-openshift/solutions/expense</module>
+        <module>deploy-review/solutions/microservice-session</module>
+        <module>deploy-review/solutions/microservice-speaker</module>
+        <module>deploy-source/solutions/expense-client</module>
+        <module>deploy-source/solutions/expense-service</module>
+        <module>develop-config/solutions/expense-validator</module>
+        <module>develop-native/solutions/expense-function</module>
+        <module>develop-persist/solutions/expense-service</module>
+        <module>develop-rest/solutions/expense-client</module>
+        <module>develop-rest/solutions/expense-service</module>
+        <module>develop-review/solutions/microservice-speaker</module>
+        <module>monitor-metrics/solutions/expense-service</module>
+        <module>reactive-architecture/solutions/products</module>
+        <module>reactive-develop/solutions/suggestions</module>
+        <module>reactive-eda/solutions/fraud-detector</module>
+        <module>reactive-eda/solutions/red-hat-bank</module>
+        <module>reactive-review/solutions/reactive-speaker</module>
+        <module>secure-jwt/solutions/expenses</module>
+        <module>secure-sso/solutions/expense</module>
+        <module>test-devservices/solutions/expense-service</module>
+        <module>test-mock/solutions/expenses-service</module>
+        <module>test-review/solutions/schedule</module>
+        <module>test-review/solutions/session</module>
+        <module>test-review/solutions/schedule</module>
+        <module>test-unit/solutions/expense-restful-service</module>
+        <module>tolerance-health/solutions/quarkus-calculator</module>
+        <module>tolerance-policies/solutions/monitor</module>
+        <module>tolerance-review/solutions/session</module>
+        <module>tolerance-review/solutions/speaker</module>
+    </modules>
+</project>
