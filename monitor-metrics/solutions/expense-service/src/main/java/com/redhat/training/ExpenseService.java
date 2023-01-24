@@ -3,7 +3,6 @@ package com.redhat.training;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @ApplicationScoped
 public class ExpenseService {

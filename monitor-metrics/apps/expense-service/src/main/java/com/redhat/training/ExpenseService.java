@@ -2,10 +2,7 @@ package com.redhat.training;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @ApplicationScoped
 public class ExpenseService {
@@ -18,11 +15,16 @@ public class ExpenseService {
     }
 
     public Set<Expense> list() {
+        simulateMaxDelayInSeconds(1);
+
         return expenses;
     }
 
     public Expense create(Expense expense) {
+        simulateMaxDelayInSeconds(5);
+
         expenses.add(expense);
+
         return expense;
     }
 
@@ -37,5 +39,15 @@ public class ExpenseService {
 
     public boolean exists(UUID uuid) {
         return expenses.stream().anyMatch(exp -> exp.getUuid().equals(uuid));
+    }
+
+    private void simulateMaxDelayInSeconds(int maxDelay) {
+        int seconds = new Random().nextInt(maxDelay +1);
+
+        try {
+            Thread.sleep(seconds * 1000L);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }
