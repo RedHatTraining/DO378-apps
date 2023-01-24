@@ -21,6 +21,10 @@ public class ExpenseResource {
     @Inject
     public ExpenseService expenseService;
 
+    @PostConstruct
+    public void initMeters() {
+    }
+
     @GET
     public Set<Expense> list() {
         return expenseService.list();
