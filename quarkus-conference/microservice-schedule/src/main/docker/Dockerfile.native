@@ -14,7 +14,7 @@
 # docker run -i --rm -p 8080:8080 quarkus/microservice-schedule
 #
 ###
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.1
+FROM registry.ocp4.example.com:8443/ubi8/ubi-minimal:8.1
 WORKDIR /work/
 COPY target/*-runner /work/application
 

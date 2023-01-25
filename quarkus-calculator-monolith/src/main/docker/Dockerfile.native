@@ -14,7 +14,7 @@
 # docker run -i --rm -p 8080:8080 quarkus/quarkus-solver
 #
 ###
-FROM registry.access.redhat.com/ubi8/ubi-minimal
+FROM registry.ocp4.example.com:8443/ubi8/ubi-minimal
 WORKDIR /work/
 ENV JAEGER_SERVICE_NAME=solver\
   JAEGER_ENDPOINT=http://jaeger-collector.istio-system.svc:14268/api/traces\
