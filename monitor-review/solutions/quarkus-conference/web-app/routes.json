@@ -1,0 +1,8 @@
+{
+    "/schedule/all": "/schedules",
+    "/schedule/:id": "/schedules/:id",
+    "/speaker/sorted?sort=*": "/speakers",
+    "/speaker/:id": "/speakers/:id",
+    "/averageRatingBySession?sessionId=*": "/ratings/1",
+    "/vote/*": "/ratings"
+}
