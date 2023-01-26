@@ -11,6 +11,7 @@ mvn quarkus:add-extension -Dextension="quarkus-smallrye-opentracing"
 cd ..
 
 echo "Adding tracing extension to the 'multiplier' project "
+cd ~/DO378/monitor-trace/multiplier
 mvn quarkus:add-extension -Dextension="quarkus-smallrye-opentracing"
 cd ..
 
