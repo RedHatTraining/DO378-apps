@@ -1,5 +1,5 @@
 {
-  "name": "conference-dashboard",
+  "name": "speaker-dashboard",
   "version": "0.0.2",
   "description": "A simple Keycloak-enabled dashboard for the speaker microservice.",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "ci-checks": "npm run type-check && npm run lint && npm run test:coverage",
     "build:bundle-profile": "webpack --config webpack.prod.js --profile --json > stats.json",
     "bundle-profile:analyze": "npm run build:bundle-profile && webpack-bundle-analyzer ./stats.json",
-    "clean": "rimraf dist"
+    "clean": "rm -rf dist"
   },
   "devDependencies": {
     "@patternfly/react-icons": "^4.11.17",

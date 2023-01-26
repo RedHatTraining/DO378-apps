@@ -1,0 +1,16 @@
+FROM registry.access.redhat.com/ubi9/nodejs-16
+
+USER 1001
+
+# Cache dependencies
+COPY --chown=1001:root tsconfig.json webpack.common.js webpack.prod.js stylePaths.js ./
+COPY --chown=1001:root package.json package-lock.json ./  
+RUN npm install 
+
+COPY --chown=1001:root src  ./src
+
+RUN npm run build
+
+EXPOSE 8080
+
+CMD npm start
