@@ -17,7 +17,7 @@ public class ConfigTest {
     private final String OIDC_CONFIG_CLIENT_ID = props.getValue("quarkus.oidc.client-id", String.class);
     private final String OIDC_CLIENT_ID = "backend-service";
 
-    private final String OIDC_CONFIG_CLIENT_PW = props.getValue("quarkus.oidc.client-secret", String.class);
+    private final String OIDC_CONFIG_CLIENT_PW = props.getValue("quarkus.oidc.credentials.secret", String.class);
     private final String OIDC_CLIENT_PW = "secret";
 
 
