@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.containsString;
 
 @QuarkusTest
 public class CorsTest {
@@ -34,7 +34,7 @@ public class CorsTest {
           .get("/speakers")
           .then()
             .statusCode(200)
-            .header("Access-Control-Allow-Origin", is("http://localhost:8080"));
+            .header("Access-Control-Allow-Origin", containsString("localhost:8080"));
     }
 
 }

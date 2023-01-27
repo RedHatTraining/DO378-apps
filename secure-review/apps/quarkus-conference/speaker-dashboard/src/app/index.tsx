@@ -12,7 +12,7 @@ const App: React.FunctionComponent = () => (
       authClient={keycloak}
       initOptions={{ onLoad: "login-required" }}>
             <AppLayout>
-                  <Dashboard></Dashboard>
+                  <Dashboard/>
             </AppLayout>
     </ReactKeycloakProvider>
   </React.StrictMode>
