@@ -1,4 +1,4 @@
-FROM registry.redhat.io/openjdk/openjdk-11-rhel8
+FROM registry.ocp4.example.com:8443/openjdk/openjdk-11-rhel8
 
 ENV DERBY_VERSION=10.15.2.0
 ENV DERBY_HOME=/derby
