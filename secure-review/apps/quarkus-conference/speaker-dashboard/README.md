@@ -1,21 +1,14 @@
-# Parks Dashboard
+# Speaker Dashboard
 
-This is a React front-end app for the Quarkus COnference application of the DO378 secure review.
+This is a React front-end application for the `speaker` microservice of the Quarkus Conference application used in the DO378 secure review lab.
 
-Because students might not have Node.js installed, we need to provide them with the _built_ web application (the `dist` directory).
-
-Run `npm run build` before pushing changes to generate the `dist` folder.
-This folder is included in the repository.
-
-When performing the lab, students can serve the application by running `python serve.py` (no Node.js needed).
+This application integrates with a Keycloak server.
+See the [Keycloak Config](./src/app/services/keycloak.js) for more information about SSO configuration.
 
 ## Development scripts
 ```sh
 # Install development/build dependencies
 npm install
-
-# Start the development server (pointing to the Quarkus backend)
-npm run dev
 
 # Run the linter
 npm run lint
