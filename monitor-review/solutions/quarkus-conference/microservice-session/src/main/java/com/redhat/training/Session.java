@@ -8,13 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.validation.constraints.NotBlank;
+
 
 @Entity
-public class Session{
+public class Session {
 
     @Id
-    @NotBlank
     public String id;
 
     public int schedule;

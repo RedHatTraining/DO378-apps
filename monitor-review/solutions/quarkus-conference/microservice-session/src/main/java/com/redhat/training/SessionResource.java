@@ -9,22 +9,15 @@ import javax.transaction.Transactional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.ProcessingException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
-import org.eclipse.microprofile.faulttolerance.Fallback;
-import org.eclipse.microprofile.faulttolerance.Retry;
-import org.eclipse.microprofile.faulttolerance.Timeout;
-import org.eclipse.microprofile.faulttolerance.exceptions.TimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,13 +32,7 @@ public class SessionResource {
     @Inject
     SessionStore sessionStore;
 
-    public Collection<Session> allSessionsFallback() throws Exception {
-        logger.warn("Fallback for GET /sessions");
-        return sessionStore.findAllWithoutEnrichment();
-    }
-
     @GET
-    @Fallback(fallbackMethod="allSessionsFallback")
     public Collection<Session> allSessions() throws Exception {
         return sessionStore.findAll();
     }
@@ -64,8 +51,6 @@ public class SessionResource {
 
     @GET
     @Path("/{sessionId}")
-    @Fallback(fallbackMethod="retrieveSessionFallback")
-    @CircuitBreaker(requestVolumeThreshold = 2, failureRatio = 1, delay = 30_000)
     public Response retrieveSession(@PathParam("sessionId") final String sessionId) {
         final Optional<Session> result = sessionStore.findById(sessionId);
 
@@ -92,14 +77,13 @@ public class SessionResource {
         Optional<Session> session;
         try {
             session = findSessionSpeakers(sessionId);
-        } catch (TimeoutException | ProcessingException e) {
+        } catch (Exception e) {
             logger.warn("Falling back to no enrichment");
             session = sessionStore.findByIdWithoutEnrichment(sessionId);
         }
         return session.map(s -> s.speakers).map(l -> Response.ok(l).build()).orElseThrow(NotFoundException::new);
     }
 
-    @Timeout(1000)
     public Optional<Session> findSessionSpeakers(String sessionId) {
         return sessionStore.findById(sessionId);
     }
@@ -107,7 +91,6 @@ public class SessionResource {
     @PUT
     @Path("/{sessionId}/speakers/{speakerName}")
     @Transactional
-    @Retry(maxRetries=60, delay=1_000, retryOn=InternalServerErrorException.class)
     public Response addSessionSpeaker(@PathParam("sessionId") final String sessionId,
             @PathParam("speakerName") final String speakerName) {
         final Optional<Session> result = sessionStore.findByIdWithoutEnrichmentMaybeFail(sessionId);
