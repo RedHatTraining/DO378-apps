@@ -47,7 +47,7 @@ export function CreateUserModal({setShowAlert, getSpeakers}): JSX.Element {
                         fieldId="modal-with-form-form-first-name">
                         <TextInput
                             isRequired
-                            type="email"
+                            type="text"
                             id="modal-with-form-form-first-name"
                             name="modal-with-form-form-first-name"
                             value={firstName}
@@ -59,7 +59,7 @@ export function CreateUserModal({setShowAlert, getSpeakers}): JSX.Element {
                         fieldId="modal-with-form-form-last-name">
                         <TextInput
                             isRequired
-                            type="email"
+                            type="text"
                             id="modal-with-form-form-last-name"
                             name="modal-with-form-form-last-name"
                             value={lastName}
