@@ -8,5 +8,5 @@ podman run --rm --name jaeger \
 -p 5778:5778 \
 -p 16686:16686 \
 -p 14268:14268 \
-quay.io/redhattraining/do378-jaeger-allinone:1.41
+registry.ocp4.example.com:8443/redhattraining/do378-jaeger-allinone:1.21.0
 
