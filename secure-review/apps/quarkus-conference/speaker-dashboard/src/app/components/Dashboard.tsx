@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-    PageSection, Title, PageSectionVariants, Card,
-    CardBody, Gallery,
+    PageSection, Title, PageSectionVariants, Gallery,
     GalleryItem, Text, TextVariants, Skeleton, Alert, AlertActionCloseButton
 } from "@patternfly/react-core";
 import * as SpeakersService from "../services/SpeakersService";
