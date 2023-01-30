@@ -1,5 +1,5 @@
 import React from "react";
-import { render, wait } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { SpeakersPage } from "./SpeakersPage";
 import * as speakerService from "../Services/SpeakerService";
 import mockData from "../../db";
@@ -14,15 +14,15 @@ describe("SpeakersPage", () => {
     });
 
     test("renders a title", async () => {
-        const { getByText } = render(<SpeakersPage />);
+        const view = render(<SpeakersPage />);
 
-        await wait(() => expect(getByText(/Speakers/i)).toBeInTheDocument());
+        expect(await view.findByText(/Speakers/i)).toBeInTheDocument();
     });
 
     test("fetches list of speakers", async () => {
-        const { getByText } = render(<SpeakersPage />);
+        const view = render(<SpeakersPage />);
 
-        await wait(() => expect(getByText(/Jon/i)).toBeInTheDocument());
-        await wait(() => expect(getByText(/Lisbeth/i)).toBeInTheDocument());
+        expect(await view.findByText(/Jon/i)).toBeInTheDocument();
+        expect(await view.findByText(/Lisbeth/i)).toBeInTheDocument();
     });
 });

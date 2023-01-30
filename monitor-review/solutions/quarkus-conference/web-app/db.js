@@ -43,7 +43,7 @@ module.exports = () => ({
     ],
     speakers: [
         {
-            id: "s1",
+            id: 1,
             uuid: "s1",
             nameFirst: "Jon",
             nameLast: "Snow",
@@ -54,7 +54,7 @@ module.exports = () => ({
             twitterHandle: "@RedHat",
         },
         {
-            id: "s2",
+            id: 2,
             uuid: "s2",
             nameFirst: "Lisbeth",
             nameLast: "Salander",

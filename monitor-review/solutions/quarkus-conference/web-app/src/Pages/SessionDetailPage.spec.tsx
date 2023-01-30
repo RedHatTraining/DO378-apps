@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitForElement } from "@testing-library/react";
+import { findByText, render, screen } from "@testing-library/react";
 import { SessionDetailPage } from "./SessionDetailPage";
 import * as sessionService from "../Services/SessionService";
 import * as voteService from "../Services/VoteService";
@@ -27,7 +27,7 @@ describe("SessionDetailPage", () => {
     test("renders the loader while loading data", async () => {
         (sessionService.get as jest.Mock).mockResolvedValue(null);
 
-        const { getByRole } = render(
+        render(
             <MemoryRouter>
                 <Route>
                     <SessionDetailPage match={urlParams} />
@@ -35,17 +35,17 @@ describe("SessionDetailPage", () => {
             </MemoryRouter>
         );
 
-        await waitForElement(() => getByRole("progressbar"));
+        expect(await screen.findByRole("progressbar")).toBeTruthy();
     });
 
-    test("fetches and renders the session details ", async () => {
+    test("fetches and renders the session details", async () => {
         (sessionService.get as jest.Mock).mockResolvedValue({
             id: "s1",
             schedule: 1500,
             speakers: [{ id: 1, name: "Jon" }],
         });
 
-        const { getByText } = render(
+        render(
             <MemoryRouter>
                 <Route>
                     <SessionDetailPage match={urlParams} />
@@ -53,9 +53,9 @@ describe("SessionDetailPage", () => {
             </MemoryRouter>
         );
 
-        await waitForElement(() => getByText(/s1/i));
-        await waitForElement(() => getByText(/1500/i));
-        await waitForElement(() => getByText(/Jon/i));
+        expect(await screen.findByText(/s1/i)).toBeTruthy();
+        expect(await screen.findByText(/1500/i)).toBeTruthy();
+        expect(await screen.findByText(/Jon/i)).toBeTruthy();
     });
 
     test("fetches and renders session average rating", async () => {
@@ -63,7 +63,7 @@ describe("SessionDetailPage", () => {
             3.14159
         );
 
-        const { getByText } = render(
+        render(
             <MemoryRouter>
                 <Route>
                     <SessionDetailPage match={urlParams} />
@@ -71,7 +71,7 @@ describe("SessionDetailPage", () => {
             </MemoryRouter>
         );
 
-        await waitForElement(() => getByText(/3.14159/));
+        expect(await screen.findByText(/3.14159/)).toBeTruthy();
     });
 
     test.todo("renders vote button");

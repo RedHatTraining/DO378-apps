@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitForElement } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import * as scheduleService from "../Services/ScheduleService";
 import mockData from "../../db";
 import { SchedulesPage } from "./SchedulesPage";
@@ -15,7 +15,7 @@ describe("SessionsPage", () => {
     });
 
     test("renders a title", async () => {
-        const { getByText } = render(
+        const view = render(
             <MemoryRouter>
                 <Route>
                     <SchedulesPage />
@@ -23,11 +23,11 @@ describe("SessionsPage", () => {
             </MemoryRouter>
         );
 
-        await waitForElement(() => getByText(/Schedule/i));
+        expect(await view.findByText(/Schedule/i)).toBeTruthy();
     });
 
     test("fetches list of sessions", async () => {
-        const { getByText } = render(
+        const view = render(
             <MemoryRouter>
                 <Route>
                     <SchedulesPage />
@@ -35,7 +35,7 @@ describe("SessionsPage", () => {
             </MemoryRouter>
         );
 
-        await waitForElement(() => getByText(/1500/i));
-        await waitForElement(() => getByText(/1600/i));
+        expect(await view.findByText(/1500/i)).toBeTruthy();
+        expect(await view.findByText(/1600/i)).toBeTruthy();
     });
 });

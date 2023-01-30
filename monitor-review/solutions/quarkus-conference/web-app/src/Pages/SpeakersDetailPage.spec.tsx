@@ -1,5 +1,5 @@
 import React from "react";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor, screen, findByText } from "@testing-library/react";
 import { SpeakerDetailPage } from "./SpeakerDetailPage";
 import * as speakerService from "../Services/SpeakerService";
 
@@ -13,9 +13,9 @@ describe("SpeakerDetailPage", () => {
     test("renders the loader while loading data", async () => {
         (speakerService.findByUuid as jest.Mock).mockResolvedValue(null);
 
-        const { getByRole } = render(<SpeakerDetailPage match={urlParams} />);
+        render(<SpeakerDetailPage match={urlParams} />);
 
-        await wait(() => expect(getByRole("progressbar")).toBeInTheDocument());
+        await expect(await screen.findByRole("progressbar")).toBeInTheDocument();
     });
 
     test("fetches and renders the speaker details ", async () => {
@@ -33,13 +33,11 @@ describe("SpeakerDetailPage", () => {
             <SpeakerDetailPage match={urlParams} />
         );
 
-        await wait(() => expect(getByText(/Jon/i)).toBeInTheDocument());
-        await wait(() => expect(getByText(/Snow/i)).toBeInTheDocument());
-        await wait(() => expect(getByText(/Org1/i)).toBeInTheDocument());
-        await wait(() => expect(getByText(/Test bio/i)).toBeInTheDocument());
-        await wait(() =>
-            expect(getByText(/@twitterAccount/i)).toBeInTheDocument()
-        );
-        await wait(() => expect(getByAltText(/Jon/i).src).toMatch(/test.png/));
+        expect(await screen.findByText(/Jon/i)).toBeInTheDocument();
+        expect(await screen.findByText(/Snow/i)).toBeInTheDocument();
+        expect(await screen.findByText(/Org1/i)).toBeInTheDocument();
+        expect(await screen.findByText(/Test bio/i)).toBeInTheDocument();
+        expect(await screen.findByText(/@twitterAccount/i)).toBeInTheDocument();
+        expect((await screen.findAllByAltText(/Jon/i))[0].getAttribute("src")).toMatch(/test.png/);
     });
 });

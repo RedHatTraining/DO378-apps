@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitForElement } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { SessionsPage } from "./SessionsPage";
 import * as sessionService from "../Services/SessionService";
 import mockData from "../../db";
@@ -14,15 +14,15 @@ describe("SessionsPage", () => {
     });
 
     test("renders a title", async () => {
-        const { getByText } = render(<SessionsPage />);
+        render(<SessionsPage />);
 
-        await waitForElement(() => getByText(/Sessions/i));
+        expect(await screen.findByText(/Sessions/i)).toBeTruthy();
     });
 
     test("fetches list of sessions", async () => {
-        const { getByText } = render(<SessionsPage />);
+        render(<SessionsPage />);
 
-        await waitForElement(() => getByText(/se1/i));
-        await waitForElement(() => getByText(/se2/i));
+        expect(await screen.findByText(/se1/i)).toBeTruthy();
+        expect(await screen.findByText(/se2/i)).toBeTruthy();
     });
 });
