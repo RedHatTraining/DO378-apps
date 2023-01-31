@@ -4,7 +4,6 @@ import { showAlert } from "../Components/UserAlert";
 export enum ServiceName {
     SESSION_SERVICE = "session-service",
     SPEAKER_SERVICE = "speaker-service",
-    SCHEDULE_SERVICE = "schedule-service",
     VOTE_SERVICE = "vote-service",
 }
 
@@ -12,8 +11,6 @@ export enum ServiceName {
 const serviceUrlMap: { [key in ServiceName]: string } = {
     [ServiceName.SESSION_SERVICE]: process.env.REACT_APP_SESSION_SERVICE ?? "http://localhost:8081",
     [ServiceName.SPEAKER_SERVICE]: process.env.REACT_APP_SPEAKER_SERVICE ?? "http://localhost:8082",
-    [ServiceName.SCHEDULE_SERVICE]:
-        process.env.REACT_APP_SCHEDULE_SERVICE ?? "localhost:8083",
     [ServiceName.VOTE_SERVICE]: process.env.REACT_APP_VOTE_SERVICE ?? "",
 };
 
