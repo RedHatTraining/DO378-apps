@@ -12,7 +12,7 @@ public class SpeakerFromService {
         this.uuid = UUID.randomUUID().toString();
     }
 
-    public SpeakerFromService(String uuid, String nameFirst, String nameLast) {
+    public SpeakerFromService( String uuid, String nameFirst, String nameLast ) {
         this.uuid = uuid;
         this.nameFirst = nameFirst;
         this.nameLast = nameLast;
@@ -22,7 +22,7 @@ public class SpeakerFromService {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid( String uuid ) {
         this.uuid = uuid;
     }
 
@@ -30,7 +30,7 @@ public class SpeakerFromService {
         return nameFirst;
     }
 
-    public void setNameFirst(String nameFirst) {
+    public void setNameFirst( String nameFirst ) {
         this.nameFirst = nameFirst;
     }
 
@@ -38,27 +38,29 @@ public class SpeakerFromService {
         return nameLast;
     }
 
-    public void setNameLast(String nameLast) {
+    public void setNameLast( String nameLast ) {
         this.nameLast = nameLast;
     }
 
-    public static SpeakerFromService of(String uuid, String nameFirst, String nameLast) {
-        return new SpeakerFromService(uuid, nameFirst, nameLast);
+    public static SpeakerFromService of( String uuid, String nameFirst, String nameLast ) {
+        return new SpeakerFromService( uuid, nameFirst, nameLast );
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals( Object o ) {
+        if ( this == o )
+            return true;
+        if ( o == null || getClass() != o.getClass() )
+            return false;
         SpeakerFromService that = (SpeakerFromService) o;
-        return Objects.equals(uuid, that.uuid) &&
-                Objects.equals(nameFirst, that.nameFirst) &&
-                Objects.equals(nameLast, that.nameLast);
+        return Objects.equals( uuid, that.uuid ) &&
+                Objects.equals( nameFirst, that.nameFirst ) &&
+                Objects.equals( nameLast, that.nameLast );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, nameFirst, nameLast);
+        return Objects.hash( uuid, nameFirst, nameLast );
     }
 
     @Override

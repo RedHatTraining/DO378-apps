@@ -13,12 +13,12 @@ import javax.ws.rs.core.MediaType;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-@Path("/speaker")
+@Path( "/speaker" )
 @RegisterRestClient
 @ApplicationScoped
 public interface SpeakerService {
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces( MediaType.APPLICATION_JSON )
     public List<SpeakerFromService> listAll();
 
     @GET
@@ -26,6 +26,6 @@ public interface SpeakerService {
     public Speaker getById( @PathParam( "id" ) int id );
 
     @GET
-    @Path("/search")
-    public Collection<SpeakerFromService> search(@QueryParam("query") String query, @QueryParam("sort") String sort);
+    @Path( "/search" )
+    public Collection<SpeakerFromService> search( @QueryParam( "query" ) String query, @QueryParam( "sort" ) String sort );
 }

@@ -1,5 +1,6 @@
 package com.redhat.training;
 
+import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
@@ -13,9 +14,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import io.quarkus.logging.Log;
-import io.quarkus.panache.common.Sort;
-
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,23 +23,18 @@ import java.util.UUID;
 @Consumes( MediaType.APPLICATION_JSON )
 public class SpeakerResource {
 
+    @Inject
+    SpeakerFinder finder;
+
     @GET
     public Collection<Speaker> listAll() {
-        return Speaker.getAll();
-    }
-
-    public Collection<Speaker> findAll( Sort sort ) {
-        return Speaker.findAll( sort ).list();
+        return finder.all();
     }
 
     @GET
     @Path( "/sorted" )
     public Collection<Speaker> listAllSorted( @QueryParam( "sort" ) String sortField ) {
-        return findAll( sortBy( sortField ) );
-    }
-
-    private Sort sortBy( String sortField ) {
-        return Optional.ofNullable( sortField ).map( Sort::by ).orElse( Sort.by( "nameLast" ) );
+        return finder.allSorted( sortField );
     }
 
     @GET

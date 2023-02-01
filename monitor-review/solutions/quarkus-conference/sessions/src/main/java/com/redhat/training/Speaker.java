@@ -1,6 +1,5 @@
 package com.redhat.training;
 
-
 public class Speaker {
 
     public String name;

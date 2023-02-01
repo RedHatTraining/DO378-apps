@@ -15,6 +15,8 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.micrometer.core.annotation.Counted;
+
 @Path( "sessions" )
 @ApplicationScoped
 @Consumes( MediaType.APPLICATION_JSON )
@@ -25,6 +27,7 @@ public class SessionResource {
     SessionStore sessionStore;
 
     @GET
+    @Counted( value = "callsToGetSessions" )
     public Collection<Session> getAllSessions() throws Exception {
         return sessionStore.findAll();
     }
