@@ -12,12 +12,6 @@ export function Navigation() {
                     <Link to="/">Home</Link>
                 </NavItem>
                 <NavItem
-                    id="schedules"
-                    isActive={pathname.endsWith("/schedules")}
-                >
-                    <Link to="/schedules">Schedules</Link>
-                </NavItem>
-                <NavItem
                     id="sessions"
                     isActive={pathname.endsWith("/sessions")}
                 >

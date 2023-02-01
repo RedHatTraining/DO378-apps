@@ -9,7 +9,6 @@
   <name>quarkus-conference</name>
   <modules>
     <module>microservice-session</module>
-    <module>microservice-schedule</module>
     <module>microservice-speaker</module>
   </modules>
   <properties>
