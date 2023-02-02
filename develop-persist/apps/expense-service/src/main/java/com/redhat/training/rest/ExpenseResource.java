@@ -51,7 +51,6 @@ public class ExpenseResource {
     // TODO: Make the method transactional
     public void delete(@PathParam("uuid") final UUID uuid) {
         // TODO: Use the "delete()" method of the entity and list the expenses
-        return null;
     }
 
     @PUT
