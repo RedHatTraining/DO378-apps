@@ -56,15 +56,13 @@ public class ExpenseResource {
     @Path("{uuid}")
     // TODO: Make the method transactional
     @Transactional
-    public List<Expense> delete(@PathParam("uuid") final UUID uuid) {
+    public void delete(@PathParam("uuid") final UUID uuid) {
         // TODO: Use the "delete()" method of the entity and list the expenses
         long numExpensesDeleted = Expense.delete("uuid", uuid);
 
         if (numExpensesDeleted == 0) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-
-        return Expense.listAll();
     }
 
     @PUT
