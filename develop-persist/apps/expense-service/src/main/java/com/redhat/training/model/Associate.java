@@ -4,6 +4,13 @@ import java.util.List;
 import java.util.ArrayList;
 
 import javax.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 // TODO: Add @Entity annotation and extend PanacheEntity
 public class Associate {

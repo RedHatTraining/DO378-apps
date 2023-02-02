@@ -3,9 +3,22 @@ package com.redhat.training.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.Optional;
 
 import javax.json.bind.annotation.JsonbCreator;
 import javax.json.bind.annotation.JsonbDateFormat;
+import javax.json.bind.annotation.JsonbTransient;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import org.hibernate.annotations.Type;
 
 // TODO: Add @Entity annotation and extend PanacheEntity
 public class Expense {
@@ -14,6 +27,8 @@ public class Expense {
         CASH, CREDIT_CARD, DEBIT_CARD,
     }
 
+    @Type(type = "uuid-char")
+    @NotNull
     public UUID uuid;
     public String name;
 

@@ -13,8 +13,12 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import org.hibernate.annotations.Type;
 
 // TODO: Add @Entity annotation and extend PanacheEntity
 @Entity
@@ -24,6 +28,8 @@ public class Expense extends PanacheEntity {
         CASH, CREDIT_CARD, DEBIT_CARD,
     }
 
+    @Type(type = "uuid-char")
+    @NotNull
     public UUID uuid;
     public String name;
 
@@ -66,12 +72,9 @@ public class Expense extends PanacheEntity {
     public static Expense of(String name, PaymentMethod paymentMethod, String amount, Long associateId) {
 
         // TODO: Update regarding the new relationship
-        Optional<Associate> associateOpt = Associate.findByIdOptional(associateId);
-        if (associateOpt.isPresent()) {
-            return new Expense(name, paymentMethod, amount, associateOpt.get());
-        } else {
-            throw new RuntimeException();
-        }
+        return Associate.<Associate>findByIdOptional(associateId)
+            .map(associate -> new Expense(name, paymentMethod, amount, associate))
+            .orElseThrow(RuntimeException::new);
     }
 
     // TODO: Add update() method
@@ -85,7 +88,7 @@ public class Expense extends PanacheEntity {
             updatedExpense.paymentMethod = expense.paymentMethod;
             updatedExpense.persist();
         }, () -> {
-            throw new RuntimeException();
+            throw new WebApplicationException( Response.Status.NOT_FOUND );
         });
     }
 
