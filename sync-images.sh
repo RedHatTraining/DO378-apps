@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Based on: https://www.redhat.com/sysadmin/moving-openstack-containers
+
 images=('quay.io/keycloak/keycloak:20.0')
 images+=('quay.io/prometheus/prometheus:v2.41.0')
 images+=('quay.io/quarkus/quarkus-micro-image:1.0')
@@ -35,6 +37,23 @@ crunchy_registry='registry.developers.crunchydata.com'
 
 internal_registry='registry.ocp4.example.com:8443'
 
+retry() {
+    local -r -i max_attempts="$1"; shift
+    local -r cmd="$@"
+    local -i attempt_num=1
+    until $cmd
+    do
+        if ((attempt_num==max_attempts))
+        then
+            echo "Attempt $attempt_num failed and there are no more attempts left!"
+            return 1
+        else
+            echo "Attempt $attempt_num failed! Trying again in $attempt_num seconds..."
+            sleep $((attempt_num++))
+        fi
+    done
+}
+
 for image in "${images[@]}"; do
   new_image="${image/${quay_registry}/${internal_registry}}"
   new_image="${new_image/${rh_registry}/${internal_registry}}"
@@ -44,5 +63,8 @@ for image in "${images[@]}"; do
 
   echo "${image} -> ${new_image}"
 
-  skopeo copy "docker://${image}" "docker://${new_image}" --remove-signatures
+  $copy="skopeo copy docker://${image} docker://${new_image} --remove-signatures"
+  retry 5 $copy
+
+  skopeo
 done
