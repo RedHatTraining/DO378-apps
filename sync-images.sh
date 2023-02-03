@@ -63,7 +63,7 @@ for image in "${images[@]}"; do
 
   echo "${image} -> ${new_image}"
 
-  $copy="skopeo copy docker://${image} docker://${new_image} --remove-signatures"
+  copy="skopeo copy docker://${image} docker://${new_image} --remove-signatures"
   retry 5 $copy
 
   skopeo
