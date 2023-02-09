@@ -16,6 +16,10 @@ items:
         labels:
           deployment: do378-expense
       spec:
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          runAsNonRoot: true
         containers:
         - name: do378-expense
           image: ''
@@ -24,6 +28,11 @@ items:
           envFrom:
           - configMapRef:
               name: ''
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
 - apiVersion: v1
   kind: Service
   metadata:
