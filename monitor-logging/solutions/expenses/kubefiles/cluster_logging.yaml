@@ -20,16 +20,16 @@ spec:
       redundancyPolicy: ZeroRedundancy
       resources:
         limits:
-          memory: 2Gi
+          memory: 4Gi
         requests:
-          memory: 2Gi
+          memory: 4Gi
     retentionPolicy:
       application:
         maxAge: 1d
       audit:
-        maxAge: 7d
+        maxAge: 1d
       infra:
-        maxAge: 7d
+        maxAge: 1d
     type: elasticsearch
   managementState: Managed
   visualization:
