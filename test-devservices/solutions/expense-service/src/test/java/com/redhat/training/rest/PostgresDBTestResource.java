@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import io.quarkus.test.common.QuarkusTestResourceConfigurableLifecycleManager;
 
 public class PostgresDBTestResource implements QuarkusTestResourceConfigurableLifecycleManager<WithPostgresDB> {
 
-    public static final PostgreSQLContainer<?> DATABASE = new PostgreSQLContainer<>( "postgres:15" );
+    public static final DockerImageName imageName = DockerImageName
+            .parse( "registry.ocp4.example.com:8443/redhattraining/do378-postgres:14.1" )
+            .asCompatibleSubstituteFor( "postgres" );
+    public static final PostgreSQLContainer<?> DATABASE = new PostgreSQLContainer<>( imageName );
 
     private String name;
     private String username;
