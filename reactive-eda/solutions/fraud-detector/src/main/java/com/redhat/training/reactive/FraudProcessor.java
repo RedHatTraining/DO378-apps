@@ -3,7 +3,6 @@ package com.redhat.training.reactive;
 import com.redhat.training.event.BankAccountWasCreated;
 import com.redhat.training.event.HighRiskAccountWasDetected;
 import com.redhat.training.event.LowRiskAccountWasDetected;
-import io.smallrye.reactive.messaging.annotations.Merge;
 import org.eclipse.microprofile.reactive.messaging.*;
 import org.jboss.logging.Logger;
 
