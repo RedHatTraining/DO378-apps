@@ -2,6 +2,8 @@ package com.redhat.training.expense;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.mockito.InjectMock;
+import io.restassured.http.ContentType;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -27,7 +29,7 @@ public class ServiceMockTest {
                     99999
                 )
             )
-           .contentType("application/json")
+           .contentType(ContentType.JSON)
        .when()
            .post("/expenses")
        .then()
