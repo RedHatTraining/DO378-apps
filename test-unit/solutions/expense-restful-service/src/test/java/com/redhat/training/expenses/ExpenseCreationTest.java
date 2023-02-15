@@ -23,14 +23,13 @@ public class ExpenseCreationTest {
 
         when()
                 .get()
-                .then()
+        .then()
                 .statusCode( 200 )
                 .assertThat()
                 .body( "size()", is( 1 ) )
-                .body(
-                        containsString( "\"name\":\"Test Expense\"" ),
-                        containsString( "\"paymentMethod\":\"" + PaymentMethod.CASH + "\"" ),
-                        containsString( "\"amount\":1234.0" ) );
+                .body( "[0].name", is( "Test Expense" ) )
+                .body( "[0].paymentMethod", is( PaymentMethod.CASH.name() ) )
+                .body( "[0].amount", is( 1234.0F ) );
 
     }
 
