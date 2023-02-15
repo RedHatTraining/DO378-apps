@@ -61,16 +61,10 @@ public class SpeakerResource {
     @DELETE
     @Path("/{id}")
     @Transactional
-    public Response deleteSpeaker(@PathParam("id") Long id) {
-        Speaker speaker = Speaker.findById(id);
-
-        if (speaker == null) {
+    public void deleteSpeaker(@PathParam("id") Long id) {
+        if (!Speaker.deleteById(id)) {
             throw new NotFoundException();
         }
-
-        speaker.delete();
-
-        return Response.noContent().build();
     }
 
     private URI generateUriForSpeaker(Speaker speaker, UriInfo uriInfo) {
