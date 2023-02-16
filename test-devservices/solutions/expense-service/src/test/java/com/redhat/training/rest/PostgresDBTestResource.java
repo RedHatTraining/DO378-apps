@@ -1,6 +1,5 @@
 package com.redhat.training.rest;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.testcontainers.containers.PostgreSQLContainer;
