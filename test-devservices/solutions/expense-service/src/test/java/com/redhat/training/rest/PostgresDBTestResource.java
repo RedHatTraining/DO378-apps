@@ -10,10 +10,10 @@ import io.quarkus.test.common.QuarkusTestResourceConfigurableLifecycleManager;
 
 public class PostgresDBTestResource implements QuarkusTestResourceConfigurableLifecycleManager<WithPostgresDB> {
 
-    public static final DockerImageName imageName = DockerImageName
+    private static final DockerImageName imageName = DockerImageName
             .parse( "registry.ocp4.example.com:8443/redhattraining/do378-postgres:14.1" )
             .asCompatibleSubstituteFor( "postgres" );
-    public static final PostgreSQLContainer<?> DATABASE = new PostgreSQLContainer<>( imageName );
+    private static final PostgreSQLContainer<?> DATABASE = new PostgreSQLContainer<>( imageName );
 
     private String name;
     private String username;
@@ -32,11 +32,12 @@ public class PostgresDBTestResource implements QuarkusTestResourceConfigurableLi
                 .withUsername( username )
                 .withPassword( password )
                 .start();
-        Map<String, String> datasourceProperties = new HashMap<>();
-        datasourceProperties.put( "quarkus.datasource.username", username );
-        datasourceProperties.put( "quarkus.datasource.password", password );
-        datasourceProperties.put( "quarkus.datasource.jdbc.url", DATABASE.getJdbcUrl() );
-        return datasourceProperties;
+
+        return  Map.of(
+                "quarkus.datasource.username", username,
+                "quarkus.datasource.password", password,
+                "quarkus.datasource.jdbc.url", DATABASE.getJdbcUrl()
+            );
     }
 
     @Override
