@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.inject.Inject;
+import io.smallrye.mutiny.Uni;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
@@ -55,13 +56,13 @@ public class ParksResource {
         description = "Starts a new weather check. If weather warnings are active for the city, the park might be closed"
     )
     @Transactional
-    public void checkWeather( @PathParam("id") Long id ) {
+    public Uni<Void>  checkWeather( @PathParam("id") Long id ) {
         Park park = Park.findById( id );
 
         if ( park == null ) {
             throw new NotFoundException();
         }
 
-        guard.checkWeatherForPark(park);
+        return guard.checkWeatherForPark(park);
     }
 }

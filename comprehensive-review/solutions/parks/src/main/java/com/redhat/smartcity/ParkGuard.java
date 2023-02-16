@@ -17,6 +17,7 @@ import com.redhat.smartcity.weather.WeatherWarningLevel;
 import com.redhat.smartcity.weather.WeatherWarningType;
 
 import io.quarkus.logging.Log;
+import io.smallrye.mutiny.Uni;
 
 @ApplicationScoped
 public class ParkGuard {
@@ -48,16 +49,30 @@ public class ParkGuard {
      */
     @Fallback(fallbackMethod = "assumeNoWarnings")
     @Timeout
-    public void checkWeatherForPark(Park park) {
-        var warnings = weatherService.getWarningsByCity(park.city);
+    public Uni<Void> checkWeatherForPark(Park park) {
+        var warningsStream = weatherService.getWarningsByCity(park.city);
 
-        for (WeatherWarning warning : warnings) {
-            var parkClosed = updateParkBasedOnWarning(park, warning);
-            if (parkClosed) {
-                return;
-            }
-        }
+        return warningsStream
+            .onItem()
+                .invoke( warnings -> {
+                        for (WeatherWarning warning : warnings) {
+                            var parkClosed = updateParkBasedOnWarning(park, warning);
+                            if (parkClosed) {
+                                return;
+                            }
+                        }
+                    })
+                .replaceWithVoid();
 
+    }
+
+    public Uni<Void> assumeNoWarnings(Park park) {
+        Log.warn(
+            "Weather service is not reachable. " +
+            "Assuming no weather warnings are active for park " +
+            park.id + " (" + park.name + ")."
+        );
+        return Uni.createFrom().voidItem();
     }
 
     /**
@@ -92,13 +107,5 @@ public class ParkGuard {
     public void closePark(Park park) {
         park.status = Park.Status.CLOSED;
         park.persist();
-    }
-
-    public void assumeNoWarnings(Park park) {
-        Log.warn(
-            "Weather service is not reachable. " +
-            "Assuming no weather warnings are active for park " +
-            park.id + " (" + park.name + ")."
-        );
     }
 }
