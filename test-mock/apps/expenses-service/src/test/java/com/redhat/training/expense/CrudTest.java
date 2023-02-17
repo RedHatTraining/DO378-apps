@@ -8,7 +8,6 @@ import org.junit.jupiter.api.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 
-
 @QuarkusTest
 @TestHTTPEndpoint(ExpenseResource.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -142,6 +141,33 @@ public class CrudTest {
         .then()
             .statusCode(404);
     }
+
+    @Test
+    @Order(5)
+    public void deleteExistingExpenseReturns204() {
+        // Getting the list of expenses
+        Response expense = given()
+                .when()
+                    .get()
+                .then()
+                    .statusCode(200)
+                    .body("$.size()", is(1))
+                    .extract()
+                    .response();
+
+        // Extracting the UUID of the stored expense
+        String expenseUuid = expense
+                .jsonPath()
+                .getString("[0].uuid");
+
+        given()
+            .pathParam("uuid", expenseUuid)
+        .when()
+            .delete("/{uuid}")
+        .then()
+            .statusCode(204);
+    }
+
 
     public static String generateExpenseJson(String uuid, String expenseName, String paymentType, double amount) {
         return "{"
