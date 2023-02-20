@@ -16,6 +16,10 @@ items:
         labels:
           deployment: microservice-session
       spec:
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          runAsNonRoot: true
         containers:
         - image: registry.ocp4.example.com:8443/developer/do378-deploy-review-session
           name: microservice-session
@@ -24,6 +28,11 @@ items:
           env:
           - name: SPEAKER_SVC
             value: "http://microservice-speaker:80"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
 - apiVersion: v1
   kind: Service
   metadata:

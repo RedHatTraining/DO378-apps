@@ -16,6 +16,10 @@ items:
         labels:
           deployment: do378-expense
       spec:
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          runAsNonRoot: true
         containers:
         - name: do378-expense
           image: registry.ocp4.example.com:8443/developer/do378-expense
@@ -23,7 +27,12 @@ items:
           - containerPort: 8080
           envFrom:
           - configMapRef:
-              name: expenses-config
+              name: 'expenses-config'
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
 - apiVersion: v1
   kind: Service
   metadata:
