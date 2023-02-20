@@ -25,9 +25,9 @@ public class WeatherWarningsProcessor {
 
         List<Park> parks = Park.find( "city = ?1", warning.city ).list();
 
-        for ( Park park : parks ) {
+        parks.forEach( park -> {
             guard.updateParkBasedOnWarning( park, warning );
-        }
+        } );
 
         return emitter.send( parks );
     }
