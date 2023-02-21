@@ -10,22 +10,18 @@ import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
-import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.ArrayList;
 
 @Path("/speakers")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class SpeakerResource {
 
-    Set<Speaker> speakers = Collections.newSetFromMap(
-            Collections.synchronizedMap(new LinkedHashMap<>())
-    );
+    List<Speaker> speakers = new ArrayList<>();
 
     @GET
-    public Set<Speaker> getSpeakers() {
+    public List<Speaker> getSpeakers() {
         return speakers;
     }
 
