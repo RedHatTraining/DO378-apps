@@ -35,34 +35,30 @@ public class ParksResource {
     @RolesAllowed( { "Admin" } )
     @Transactional
     public void update( Park receivedPark ) {
-        Park park = Park.findById( receivedPark.id );
+        Park
+            .<Park>findByIdOptional( receivedPark.id )
+            .ifPresentOrElse(
+                    park -> {
+                        park.city = receivedPark.city;
+                        park.name = receivedPark.name;
+                        park.size = receivedPark.size;
+                        park.status = receivedPark.status;
 
-        if ( park == null ) {
-            throw new NotFoundException();
-        }
-
-        park.city = receivedPark.city;
-        park.name = receivedPark.name;
-        park.size = receivedPark.size;
-        park.status = receivedPark.status;
-
-        park.persist();
+                        park.persist();
+                    },
+                    () -> {
+                        throw new NotFoundException();
+                    } );
     }
 
     @POST
-    @Path("/{id}/weathercheck")
-    @Operation(
-        summary = "Weather check",
-        description = "Starts a new weather check. If weather warnings are active for the city, the park might be closed"
-    )
+    @Path( "/{id}/weathercheck" )
+    @Operation( summary = "Weather check", description = "Starts a new weather check. If weather warnings are active for the city, the park might be closed" )
     @Transactional
-    public Uni<Void>  checkWeather( @PathParam("id") Long id ) {
-        Park park = Park.findById( id );
-
-        if ( park == null ) {
-            throw new NotFoundException();
-        }
-
-        return guard.checkWeatherForPark(park);
+    public Uni<Void> checkWeather( @PathParam( "id" ) Long id ) {
+        return Park
+                .<Park>findByIdOptional( id )
+                .map( guard::checkWeatherForPark )
+                .orElseThrow( NotFoundException::new );
     }
 }
