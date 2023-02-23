@@ -9,6 +9,8 @@ cd /tmp && rm -rf tenther && /opt/apache-maven/bin/mvn \
         -DprojectArtifactId=tenther \
         -DplatformVersion=2.13.5.Final-redhat-00002
 
+cd /home/student/DO378/DO378-apps
+
 find . -name "pom.xml" \
         -not -path "./quarkus-conference/*" \
         -not -path "./quarkus-calculator/*"  \
