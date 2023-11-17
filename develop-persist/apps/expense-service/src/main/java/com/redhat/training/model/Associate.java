@@ -19,7 +19,7 @@ public class Associate {
     // TODO: Add one to many relationship between associate and expenses
     public List<Expense> expenses = new ArrayList<>();
 
-    // TODO: Add a default constructor
+    // TODO: Add a no-argument constructor
 
     public Associate(String name) {
         this.name = name;
