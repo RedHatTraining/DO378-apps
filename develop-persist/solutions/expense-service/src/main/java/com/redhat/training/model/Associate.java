@@ -22,7 +22,7 @@ public class Associate extends PanacheEntity {
     @OneToMany(mappedBy = "associate", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public List<Expense> expenses = new ArrayList<>();
 
-    // TODO: Add a default constructor
+    // TODO: Add a no-argument constructor
     public Associate() {
     }
 

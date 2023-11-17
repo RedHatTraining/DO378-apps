@@ -43,7 +43,7 @@ public class Expense {
      // TODO: Annotate the associateId with @Column
     public Long associateId;
 
-    // TODO: Add a default constructor
+    // TODO: Add a no-argument constructor
 
     public Expense(UUID uuid, String name, LocalDateTime creationDate,
             PaymentMethod paymentMethod, String amount, Associate associate) {
