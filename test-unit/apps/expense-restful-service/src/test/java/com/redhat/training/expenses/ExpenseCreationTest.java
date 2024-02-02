@@ -7,14 +7,14 @@ import io.quarkus.test.common.http.TestHTTPEndpoint;
 import com.redhat.training.expenses.Expense.PaymentMethod;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 
+@QuarkusTest
 public class ExpenseCreationTest {
 
     @Test
     public void testCreateExpense() {
-
+        org.junit.jupiter.api.Assertions.fail();
     }
 
 }
