@@ -1,8 +1,8 @@
 package com.redhat.training;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class ExpenseValidator {
