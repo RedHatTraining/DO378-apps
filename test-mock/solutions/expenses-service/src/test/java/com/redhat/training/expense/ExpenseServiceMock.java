@@ -2,7 +2,7 @@ package com.redhat.training.expense;
 
 import io.quarkus.test.Mock;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.UUID;
 
 @Mock
