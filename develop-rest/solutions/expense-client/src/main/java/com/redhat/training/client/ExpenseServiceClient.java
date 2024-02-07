@@ -9,7 +9,7 @@ import javax.ws.rs.GET;
 import java.util.Set;
 
 @Path("/expenses")
-@RegisterRestClient
+@RegisterRestClient(configKey = "expense-service")
 public interface ExpenseServiceClient {
 
     @GET
