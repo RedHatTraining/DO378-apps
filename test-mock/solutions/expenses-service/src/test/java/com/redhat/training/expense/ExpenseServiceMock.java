@@ -2,11 +2,9 @@ package com.redhat.training.expense;
 
 import io.quarkus.test.Mock;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import java.util.UUID;
 
 @Mock
-@ApplicationScoped
 public class ExpenseServiceMock extends ExpenseService {
     @Override
     public boolean exists(UUID uuid) {
