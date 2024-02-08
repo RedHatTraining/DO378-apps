@@ -18,7 +18,6 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import org.hibernate.annotations.Type;
 
 // TODO: Add @Entity annotation and extend PanacheEntity
 public class Expense {
@@ -27,7 +26,6 @@ public class Expense {
         CASH, CREDIT_CARD, DEBIT_CARD,
     }
 
-    @Type(type = "uuid-char")
     @NotNull
     public UUID uuid;
     public String name;

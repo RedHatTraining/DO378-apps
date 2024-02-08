@@ -18,7 +18,6 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import org.hibernate.annotations.Type;
 
 // TODO: Add @Entity annotation and extend PanacheEntity
 @Entity
@@ -28,7 +27,6 @@ public class Expense extends PanacheEntity {
         CASH, CREDIT_CARD, DEBIT_CARD,
     }
 
-    @Type(type = "uuid-char")
     @NotNull
     public UUID uuid;
     public String name;
@@ -81,7 +79,7 @@ public class Expense extends PanacheEntity {
     public static void update(final Expense expense) throws RuntimeException {
         Optional<Expense> previousExpense = Expense.findByIdOptional(expense.id);
 
-        previousExpense.ifPresentOrElse((updatedExpense) -> {
+        previousExpense.ifPresentOrElse( updatedExpense -> {
             updatedExpense.uuid = expense.uuid;
             updatedExpense.name = expense.name;
             updatedExpense.amount = expense.amount;
