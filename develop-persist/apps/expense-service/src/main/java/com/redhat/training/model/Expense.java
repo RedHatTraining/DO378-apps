@@ -5,17 +5,17 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.Optional;
 
-import javax.json.bind.annotation.JsonbCreator;
-import javax.json.bind.annotation.JsonbDateFormat;
-import javax.json.bind.annotation.JsonbTransient;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import jakarta.json.bind.annotation.JsonbCreator;
+import jakarta.json.bind.annotation.JsonbDateFormat;
+import jakarta.json.bind.annotation.JsonbTransient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import org.hibernate.annotations.Type;

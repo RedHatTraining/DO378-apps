@@ -3,12 +3,12 @@ package com.redhat.training.model;
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.json.bind.annotation.JsonbCreator;
-import javax.json.bind.annotation.JsonbTransient;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import jakarta.json.bind.annotation.JsonbCreator;
+import jakarta.json.bind.annotation.JsonbTransient;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
