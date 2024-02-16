@@ -2,7 +2,7 @@ package com.redhat.expenses;
 
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import io.quarkus.funqy.Funq;
 
