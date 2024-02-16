@@ -6,29 +6,29 @@ insert into Associate (id, name)
 
 
 insert into Expense (id, name, paymentmethod, amount, associate_id)
- values (nextval('hibernate_sequence'), 'Desk', '0','150.50', 1);
+ values (nextval('expense_seq'), 'Desk', '0','150.50', 1);
 insert into Expense (id, name, paymentmethod, amount, associate_id)
- values (nextval('hibernate_sequence'), 'Online Learning', '1','75.00', 1);
+ values (nextval('expense_seq'), 'Online Learning', '1','75.00', 1);
 
 insert into Expense (id, name, paymentmethod, amount, associate_id)
- values (nextval('hibernate_sequence'), 'Books', '0','50.00', 1);
+ values (nextval('expense_seq'), 'Books', '0','50.00', 1);
 
 insert into Expense (id, name, paymentmethod, amount, associate_id)
- values (nextval('hibernate_sequence'), 'Internet', '1','20.00', 1);
+ values (nextval('expense_seq'), 'Internet', '1','20.00', 1);
 
 insert into Expense (id, name, paymentmethod, amount, associate_id)
- values (nextval('hibernate_sequence'), 'Phone', '0','15.00', 1);
+ values (nextval('expense_seq'), 'Phone', '0','15.00', 1);
 
  insert into Expense (id, name, paymentmethod, amount, associate_id)
- values (nextval('hibernate_sequence'), 'Bookshelf', '0','150.50', 1);
+ values (nextval('expense_seq'), 'Bookshelf', '0','150.50', 1);
 insert into Expense (id, name, paymentmethod, amount, associate_id)
- values (nextval('hibernate_sequence'), 'Printer Cartridges', '1','15.00', 2);
+ values (nextval('expense_seq'), 'Printer Cartridges', '1','15.00', 2);
 
 insert into Expense (id, name, paymentmethod, amount, associate_id)
- values (nextval('hibernate_sequence'), 'Online Learning', '0','50.00', 2);
+ values (nextval('expense_seq'), 'Online Learning', '0','50.00', 2);
 
 insert into Expense (id, name, paymentmethod, amount, associate_id)
- values (nextval('hibernate_sequence'), 'Internet', '1','20.00', 2);
+ values (nextval('expense_seq'), 'Internet', '1','20.00', 2);
 
 insert into Expense (id, name, paymentmethod, amount, associate_id)
- values (nextval('hibernate_sequence'), 'Phone', '0','15.00', 2);
+ values (nextval('expense_seq'), 'Phone', '0','15.00', 2);

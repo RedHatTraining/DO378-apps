@@ -1,7 +1,7 @@
 package com.redhat.training.expense;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.NotFoundException;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.UUID;
 
