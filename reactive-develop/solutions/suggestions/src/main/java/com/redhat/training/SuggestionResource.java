@@ -11,6 +11,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import io.quarkus.hibernate.reactive.panache.Panache;
+import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 
@@ -20,19 +21,15 @@ import io.smallrye.mutiny.Uni;
 public class SuggestionResource {
 
     @POST
+    @WithTransaction
     public Uni<Suggestion> create( Suggestion newSuggestion ) {
-        return Panache.withTransaction(newSuggestion::persist);
+        return newSuggestion.persist();
     }
 
     @GET
     @Path( "/{id}" )
     public Uni<Suggestion> get( Long id ) {
         return Suggestion.findById(id);
-    }
-
-    @GET
-    public Multi<Suggestion> list() {
-        return Suggestion.streamAll();
     }
 
     @DELETE
