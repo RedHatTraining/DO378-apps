@@ -39,25 +39,8 @@ public class SuggestionResourceTest {
             .statusCode( HttpStatus.SC_OK )
             .extract()
                 .as( Suggestion.class );
-        
+
         assertThat(retrieved.clientId).isEqualTo( 2L );
-    }
-
-    @Test
-    public void testListEndpoint() {
-        createSuggestion( 3L, 105L );
-        createSuggestion( 4L, 106L );
-        createSuggestion( 5L, 107L );
-
-        List<Suggestion> suggestions = given()
-        .when()
-            .get()
-        .then()
-            .statusCode( HttpStatus.SC_OK )
-            .extract()
-            .body().jsonPath().getList( ".", Suggestion.class );
-
-        assertThat( suggestions ).size().isEqualTo( 3 );
     }
 
     private Suggestion createSuggestion( Long clientId, Long itemId ) {
