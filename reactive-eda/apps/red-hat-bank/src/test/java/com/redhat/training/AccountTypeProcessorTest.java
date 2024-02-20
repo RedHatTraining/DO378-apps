@@ -6,8 +6,8 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.reactive.messaging.providers.connectors.InMemoryConnector;
 import org.junit.jupiter.api.*;
 
-import javax.enterprise.inject.Any;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Any;
+import jakarta.inject.Inject;
 
 @QuarkusTest
 @QuarkusTestResource(KafkaTestResourceLifecycleManager.class)
