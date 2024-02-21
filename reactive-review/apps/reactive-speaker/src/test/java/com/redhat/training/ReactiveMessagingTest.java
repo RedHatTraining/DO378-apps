@@ -6,7 +6,7 @@ import com.redhat.training.event.UpstreamMemberSignedUp;
 import com.redhat.training.model.Affiliation;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
-import io.smallrye.reactive.messaging.providers.connectors.InMemoryConnector;
+import io.smallrye.reactive.messaging.memory.InMemoryConnector;
 import io.smallrye.reactive.messaging.providers.connectors.InMemorySink;
 import io.smallrye.reactive.messaging.providers.connectors.InMemorySource;
 import org.eclipse.microprofile.reactive.messaging.Message;
@@ -15,8 +15,8 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import javax.enterprise.inject.Any;
-import javax.inject.Inject;
+import jakarta.enterprise.inject.Any;
+import jakarta.inject.Inject;
 import java.util.List;
 
 import static com.redhat.training.SpeakerResourceTest.*;
