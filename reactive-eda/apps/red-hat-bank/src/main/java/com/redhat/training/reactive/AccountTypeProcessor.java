@@ -16,7 +16,7 @@ public class AccountTypeProcessor {
     private static final Logger LOGGER = Logger.getLogger(AccountTypeProcessor.class);
 
     @Inject
-    Mutiny.Session session;
+    Mutiny.SessionFactory session;
 
     public String calculateAccountType(Long balance) {
     }
