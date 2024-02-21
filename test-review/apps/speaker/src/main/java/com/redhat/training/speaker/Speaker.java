@@ -3,8 +3,8 @@ package com.redhat.training.speaker;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Entity;
-import javax.persistence.Transient;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 

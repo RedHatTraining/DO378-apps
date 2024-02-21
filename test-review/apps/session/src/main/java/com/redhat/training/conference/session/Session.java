@@ -1,6 +1,6 @@
 package com.redhat.training.conference.session;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import com.redhat.training.conference.speaker.Speaker;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
