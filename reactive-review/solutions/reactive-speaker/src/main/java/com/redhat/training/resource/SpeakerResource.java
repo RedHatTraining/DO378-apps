@@ -3,7 +3,6 @@ package com.redhat.training.resource;
 import com.redhat.training.event.SpeakerWasCreated;
 import com.redhat.training.model.Speaker;
 import io.quarkus.hibernate.reactive.panache.Panache;
-import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
@@ -53,7 +52,7 @@ public class SpeakerResource {
     }
 
     @GET
-    public Multi<Speaker> listAll () {
-        return Speaker.streamAll();
+    public Uni<List<Speaker>> listAll () {
+        return Speaker.listAll();
     }
 }

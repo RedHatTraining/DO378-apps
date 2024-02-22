@@ -5,7 +5,7 @@ import com.redhat.training.model.Affiliation;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.smallrye.reactive.messaging.memory.InMemoryConnector;
-import io.smallrye.reactive.messaging.providers.connectors.InMemorySink;
+import io.smallrye.reactive.messaging.memory.InMemorySink;
 import org.junit.jupiter.api.*;
 
 import jakarta.enterprise.inject.Any;
