@@ -7,16 +7,16 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.control.ActivateRequestContext;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.control.ActivateRequestContext;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class AccountTypeProcessor {
     private static final Logger LOGGER = Logger.getLogger(AccountTypeProcessor.class);
 
     @Inject
-    Mutiny.Session session;
+    Mutiny.SessionFactory session;
 
     public String calculateAccountType(Long balance) {
     }

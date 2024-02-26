@@ -6,7 +6,7 @@ import com.redhat.training.event.LowRiskAccountWasDetected;
 import org.eclipse.microprofile.reactive.messaging.*;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped
