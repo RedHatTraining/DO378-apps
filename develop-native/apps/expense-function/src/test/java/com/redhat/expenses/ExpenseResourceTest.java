@@ -11,9 +11,9 @@ public class ExpenseResourceTest {
     @Test
     public void testHelloEndpoint() {
         given()
-          .when().get("/expenses")
-          .then()
-             .statusCode(200);
+            .when().get("/expenses")
+            .then()
+                .statusCode(200);
     }
 
 }

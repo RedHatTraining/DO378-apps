@@ -7,16 +7,16 @@ import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.hibernate.reactive.mutiny.Mutiny;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.control.ActivateRequestContext;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.control.ActivateRequestContext;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class AccountTypeProcessor {
     private static final Logger LOGGER = Logger.getLogger(AccountTypeProcessor.class);
 
     @Inject
-    Mutiny.Session session;
+    Mutiny.SessionFactory session;
 
     @Incoming("new-bank-accounts-in")
     @ActivateRequestContext
@@ -26,13 +26,13 @@ public class AccountTypeProcessor {
         logEvent(event, assignedAccountType);
 
         return session.withTransaction(
-            t -> BankAccount.<BankAccount>findById(event.id)
+            s -> BankAccount.<BankAccount>findById(event.id)
                 .onItem()
                 .ifNotNull()
                 .invoke(
-                    entity -> entity.type = assignedAccountType
-                ).replaceWithVoid()
-        ).onTermination().call(() -> session.close());
+                        entity -> entity.type = assignedAccountType)
+                .replaceWithVoid()
+        );
     }
 
     public String calculateAccountType(Long balance) {
@@ -41,10 +41,10 @@ public class AccountTypeProcessor {
 
     private void logEvent(BankAccountWasCreated event, String assignedType) {
         LOGGER.infov(
-                "Processing BankAccountWasCreated - ID: {0} Balance: {1} Type: {2}",
-                event.id,
-                event.balance,
-                assignedType
+            "Processing BankAccountWasCreated - ID: {0} Balance: {1} Type: {2}",
+            event.id,
+            event.balance,
+            assignedType
         );
     }
 }

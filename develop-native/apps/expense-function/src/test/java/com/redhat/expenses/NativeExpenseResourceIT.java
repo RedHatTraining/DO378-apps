@@ -1,8 +1,8 @@
 package com.redhat.expenses;
 
-import io.quarkus.test.junit.NativeImageTest;
+import io.quarkus.test.junit.QuarkusIntegrationTest;
 
-@NativeImageTest
+@QuarkusIntegrationTest
 public class NativeExpenseResourceIT extends ExpenseResourceTest {
 
     // Execute the same tests but in native mode.

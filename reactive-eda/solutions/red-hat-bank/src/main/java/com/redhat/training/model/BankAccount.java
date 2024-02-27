@@ -2,8 +2,8 @@ package com.redhat.training.model;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Entity;
 
 @Entity
 @Cacheable

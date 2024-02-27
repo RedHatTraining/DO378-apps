@@ -5,9 +5,9 @@ import com.redhat.training.client.ExpenseServiceClient;
 import com.redhat.training.model.Expense;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import java.util.Set;
 
 @Path("/expenses")
