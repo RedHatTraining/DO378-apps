@@ -18,6 +18,7 @@ import com.redhat.training.conference.speaker.SpeakerService;
 public class SessionResourceTest {
 
     @RestClient
+    @InjectMock
     SpeakerService speakerService;
 
     @Test
