@@ -2,7 +2,7 @@ package com.redhat.training.model;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntity;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 @Entity
 public class Speaker extends PanacheEntity {
