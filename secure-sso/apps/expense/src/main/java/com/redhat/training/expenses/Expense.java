@@ -21,7 +21,6 @@ public class Expense extends PanacheEntityBase {
     }
 
     @Id
-    @Type(type="uuid-char")
     public UUID uuid;
     public String name;
 

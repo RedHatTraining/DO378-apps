@@ -8,20 +8,20 @@ if [ $# -lt 2 ]; then
   exit 1
 fi
 
-SERVER="https://localhost:8888/realms/quarkus/protocol/openid-connect/token"
+SERVER="https://localhost:9999/realms/quarkus/protocol/openid-connect/token"
 SECRET_ID="backend-service"
 SECRET_PW="secret"
 USERNAME="$1"
 PASSWORD="$2"
 
 export TOKEN=$(curl --insecure -s -X POST "$SERVER" \
- --user ${SECRET_ID}:${SECRET_PW} \
- -H "Content-Type: application/x-www-form-urlencoded" \
- -d "username=${USERNAME}" \
- -d "password=${PASSWORD}" \
- -d 'grant_type=password' \
- | jq --raw-output '.access_token'
- )
+  --user ${SECRET_ID}:${SECRET_PW} \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=${USERNAME}" \
+  -d "password=${PASSWORD}" \
+  -d 'grant_type=password' \
+  | jq --raw-output '.access_token'
+)
 
 if [[ "$TOKEN" == "null" ]] || [[ "$TOKEN" == ""  ]]; then
     echo 1>&2 "Token was not retrieved! Review input parameters."
