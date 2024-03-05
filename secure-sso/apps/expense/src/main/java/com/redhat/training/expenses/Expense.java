@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response;
 
 import org.hibernate.annotations.Type;
 
@@ -21,7 +21,6 @@ public class Expense extends PanacheEntityBase {
     }
 
     @Id
-    @Type(type="uuid-char")
     public UUID uuid;
     public String name;
 
