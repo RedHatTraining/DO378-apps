@@ -1,7 +1,7 @@
 package com.redhat.training.speaker;
 
 import java.util.UUID;
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import io.quarkus.test.Mock;
 
 import com.redhat.training.speaker.idgenerator.IdGenerator;

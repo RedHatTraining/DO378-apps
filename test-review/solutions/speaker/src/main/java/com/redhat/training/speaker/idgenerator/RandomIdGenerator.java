@@ -2,7 +2,7 @@ package com.redhat.training.speaker.idgenerator;
 
 import java.util.UUID;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 
 @Singleton
 public class RandomIdGenerator implements IdGenerator {
