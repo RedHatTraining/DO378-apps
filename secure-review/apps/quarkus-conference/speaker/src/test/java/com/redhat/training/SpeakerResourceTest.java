@@ -3,14 +3,14 @@ package com.redhat.training;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
+import org.junit.jupiter.api.Test;
+
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.h2.H2DatabaseTestResource;
-import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Test;
-import io.quarkus.test.security.TestSecurity;
-
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
+import io.restassured.http.ContentType;
 
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource.class)
@@ -27,6 +27,7 @@ public class SpeakerResourceTest {
     }
 
     @Test
+    @TestSecurity
     public void testListAllUnauthenticated() {
         given()
           .when()
