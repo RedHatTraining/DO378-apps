@@ -1,7 +1,7 @@
 package com.redhat.training.sysinfo;
 
 import io.quarkus.logging.Log;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.faulttolerance.Retry;
 
 /**
