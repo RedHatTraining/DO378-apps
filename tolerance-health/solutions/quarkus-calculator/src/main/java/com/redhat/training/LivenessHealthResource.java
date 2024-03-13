@@ -1,7 +1,7 @@
 package com.redhat.training;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import com.redhat.training.service.StateService;
 import org.eclipse.microprofile.health.HealthCheck;

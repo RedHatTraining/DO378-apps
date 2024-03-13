@@ -1,6 +1,6 @@
 package com.redhat.training.service;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class StateService {
