@@ -3,7 +3,7 @@ package com.redhat.training.conference.session;
 import com.redhat.training.conference.speaker.Speaker;
 import com.redhat.training.conference.speaker.SpeakerServiceClient;
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectMock;
+import io.quarkus.test.InjectMock;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
