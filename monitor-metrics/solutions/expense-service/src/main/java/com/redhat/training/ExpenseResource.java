@@ -5,11 +5,11 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tags;
 import org.apache.commons.lang3.time.StopWatch;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -37,6 +37,16 @@ public class ExpenseResource {
         );
     }
 
+    @POST
+    public Expense create(Expense expense) {
+        registry.counter("callsToPostExpenses").increment();
+
+        return registry.timer("expenseCreationTime")
+        .wrap(
+            (Supplier<Expense>) () -> expenseService.create(expense)
+            ).get();
+    }
+
     @GET
     @Counted(value = "callsToGetExpenses")
     public Set<Expense> list() {
@@ -44,16 +54,6 @@ public class ExpenseResource {
         stopWatch.start();
 
         return expenseService.list();
-    }
-
-    @POST
-    public Expense create(Expense expense) {
-        registry.counter("callsToPostExpenses").increment();
-
-        return registry.timer("expenseCreationTime")
-                .wrap(
-                    (Supplier<Expense>) () -> expenseService.create(expense)
-                ).get();
     }
 
     @DELETE

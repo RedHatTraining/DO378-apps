@@ -25,14 +25,14 @@ public class ExpenseResource {
     public void initMeters() {
     }
 
-    @GET
-    public Set<Expense> list() {
-        return expenseService.list();
-    }
-
     @POST
     public Expense create(Expense expense) {
         return expenseService.create(expense);
+    }
+
+    @GET
+    public Set<Expense> list() {
+        return expenseService.list();
     }
 
     @DELETE
