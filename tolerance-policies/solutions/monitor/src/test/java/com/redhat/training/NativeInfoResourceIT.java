@@ -1,6 +1,6 @@
 package com.redhat.training;
 
-import io.quarkus.test.junit.NativeImageTest;
+import io.quarkus.test.junit5.NativeImageTest;
 
 @NativeImageTest
 public class NativeInfoResourceIT extends MonitorResourceTest {
