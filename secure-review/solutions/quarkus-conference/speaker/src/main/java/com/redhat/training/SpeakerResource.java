@@ -41,8 +41,8 @@ public class SpeakerResource {
         return Speaker.find("uuid", uuid).firstResultOptional();
     }
 
-    @Transactional
     @POST
+    @Transactional
     @RolesAllowed("modify")
     public Speaker insert(Speaker speaker) {
         speaker.uuid=generator.generate();
@@ -57,8 +57,8 @@ public class SpeakerResource {
         }
     }
 
-    @Transactional
     @PUT
+    @Transactional
     @Path("/{uuid}")
     @RolesAllowed("modify")
     public Speaker update(@PathParam("uuid") String uuid, Speaker speaker) {

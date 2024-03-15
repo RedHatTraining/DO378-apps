@@ -39,8 +39,8 @@ public class SpeakerResource {
         return Speaker.find("uuid", uuid).firstResultOptional();
     }
 
-    @Transactional
     @POST
+    @Transactional
     public Speaker insert(Speaker speaker) {
         speaker.uuid=generator.generate();
         speaker.persist();
@@ -54,8 +54,8 @@ public class SpeakerResource {
         }
     }
 
-    @Transactional
     @PUT
+    @Transactional
     @Path("/{uuid}")
     public Speaker update(@PathParam("uuid") String uuid, Speaker speaker) {
         if (null==uuid || null==Speaker.find("uuid", uuid)) {
