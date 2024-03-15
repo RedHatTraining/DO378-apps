@@ -37,6 +37,16 @@ public class ExpenseResource {
         );
     }
 
+    @POST
+    public Expense create(Expense expense) {
+        registry.counter("callsToPostExpenses").increment();
+
+        return registry.timer("expenseCreationTime")
+        .wrap(
+            (Supplier<Expense>) () -> expenseService.create(expense)
+            ).get();
+    }
+
     @GET
     @Counted(value = "callsToGetExpenses")
     public Set<Expense> list() {
@@ -44,16 +54,6 @@ public class ExpenseResource {
         stopWatch.start();
 
         return expenseService.list();
-    }
-
-    @POST
-    public Expense create(Expense expense) {
-        registry.counter("callsToPostExpenses").increment();
-
-        return registry.timer("expenseCreationTime")
-                .wrap(
-                    (Supplier<Expense>) () -> expenseService.create(expense)
-                ).get();
     }
 
     @DELETE
