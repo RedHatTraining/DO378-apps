@@ -13,7 +13,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.mockito.Mockito;
 
-import javax.ws.rs.InternalServerErrorException;
+import jakarta.ws.rs.InternalServerErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
