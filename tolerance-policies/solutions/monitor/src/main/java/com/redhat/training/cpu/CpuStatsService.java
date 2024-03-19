@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Collectors;
 import io.quarkus.logging.Log;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.faulttolerance.Fallback;
 
 /**
