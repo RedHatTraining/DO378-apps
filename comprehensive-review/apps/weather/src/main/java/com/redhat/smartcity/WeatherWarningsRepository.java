@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import com.redhat.smartcity.entities.WeatherWarning;
 
 @ApplicationScoped
