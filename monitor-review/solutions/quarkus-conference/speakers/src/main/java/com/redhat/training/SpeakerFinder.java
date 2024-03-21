@@ -3,7 +3,7 @@ package com.redhat.training;
 import java.util.List;
 import java.util.Optional;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.eclipse.microprofile.opentracing.Traced;
 
