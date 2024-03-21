@@ -1,9 +1,9 @@
 package com.redhat.training.conference.speaker;
 
 import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 @Path( "/speakers" )
