@@ -4,7 +4,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import io.quarkus.test.junit.mockito.InjectMock;
+import io.quarkus.test.InjectMock;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.mockito.Mockito;
 
-import javax.ws.rs.InternalServerErrorException;
+import jakarta.ws.rs.InternalServerErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
