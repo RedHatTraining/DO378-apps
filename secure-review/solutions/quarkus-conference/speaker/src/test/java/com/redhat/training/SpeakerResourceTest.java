@@ -16,17 +16,18 @@ import io.quarkus.test.junit.QuarkusTest;
 @QuarkusTestResource(H2DatabaseTestResource.class)
 public class SpeakerResourceTest {
 
-     @Test
-     @TestSecurity(user = "user", roles = {""})
-     public void testListAllUnauthorized() {
-         given()
-           .when()
-             .get("/speakers")
-           .then()
-             .statusCode(403);
-     }
+    @Test
+    @TestSecurity(user = "user", roles = {""})
+    public void testListAllUnauthorized() {
+        given()
+          .when()
+            .get("/speakers")
+          .then()
+            .statusCode(403);
+    }
 
     @Test
+    @TestSecurity
     public void testListAllUnauthenticated() {
         given()
           .when()
