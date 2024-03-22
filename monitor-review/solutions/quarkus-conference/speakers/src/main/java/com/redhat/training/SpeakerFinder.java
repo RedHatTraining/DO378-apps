@@ -5,12 +5,9 @@ import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-import org.eclipse.microprofile.opentracing.Traced;
-
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Sort;
 
-@Traced
 @ApplicationScoped
 public class SpeakerFinder {
 

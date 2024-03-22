@@ -6,15 +6,12 @@ import java.util.HashMap;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 
-import org.eclipse.microprofile.opentracing.Traced;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 /**
  * Speaker
  */
 @Entity
-@Traced
 public class Speaker extends PanacheEntity {
 
     public String uuid;
