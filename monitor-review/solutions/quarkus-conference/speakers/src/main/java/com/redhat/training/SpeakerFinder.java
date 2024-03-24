@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Sort;
 

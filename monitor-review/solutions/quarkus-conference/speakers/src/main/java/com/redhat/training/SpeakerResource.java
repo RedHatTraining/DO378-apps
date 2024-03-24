@@ -14,6 +14,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,6 +29,7 @@ public class SpeakerResource {
     SpeakerFinder finder;
 
     @GET
+    @WithSpan
     public Collection<Speaker> listAll() {
         return finder.all();
     }

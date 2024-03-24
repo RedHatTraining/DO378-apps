@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+
 @Path( "/speaker" )
 @Produces( MediaType.APPLICATION_JSON )
 @Consumes( MediaType.APPLICATION_JSON )
@@ -27,6 +29,7 @@ public class SpeakerResource {
     SpeakerFinder finder;
 
     @GET
+    @WithSpan
     public Collection<Speaker> listAll() {
         return finder.all();
     }
