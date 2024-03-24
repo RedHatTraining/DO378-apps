@@ -29,7 +29,6 @@ public class SpeakerResource {
     SpeakerFinder finder;
 
     @GET
-    @WithSpan
     public Collection<Speaker> listAll() {
         return finder.all();
     }
