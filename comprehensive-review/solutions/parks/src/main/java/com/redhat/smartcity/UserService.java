@@ -1,6 +1,6 @@
 package com.redhat.smartcity;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class UserService {

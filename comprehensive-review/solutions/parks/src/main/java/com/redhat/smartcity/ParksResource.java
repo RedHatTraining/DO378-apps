@@ -2,17 +2,17 @@ package com.redhat.smartcity;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
-import javax.transaction.Transactional;
-import javax.ws.rs.GET;
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.POST;
-import javax.ws.rs.PathParam;
-import javax.inject.Inject;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotFoundException;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PathParam;
+import jakarta.inject.Inject;
 import io.smallrye.mutiny.Uni;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
