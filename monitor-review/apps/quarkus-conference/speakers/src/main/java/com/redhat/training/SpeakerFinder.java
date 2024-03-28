@@ -3,9 +3,7 @@ package com.redhat.training;
 import java.util.List;
 import java.util.Optional;
 
-import javax.enterprise.context.ApplicationScoped;
-
-import org.eclipse.microprofile.opentracing.Traced;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Sort;

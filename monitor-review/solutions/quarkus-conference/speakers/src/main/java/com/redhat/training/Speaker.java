@@ -3,10 +3,8 @@ package com.redhat.training;
 import java.util.Map;
 import java.util.HashMap;
 
-import javax.persistence.Entity;
-import javax.persistence.Transient;
-
-import org.eclipse.microprofile.opentracing.Traced;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
@@ -14,7 +12,6 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
  * Speaker
  */
 @Entity
-@Traced
 public class Speaker extends PanacheEntity {
 
     public String uuid;
